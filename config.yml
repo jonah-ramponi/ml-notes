@@ -1,6 +1,6 @@
-baseURL: http://jonah-ramponi.github.io/jonahsdemo/
+baseURL: http://www.jonahramponi.com
 languageCode: en-us
-title: My New Hugo Site
+title: Jonah's ML Notes
 theme: PaperMod
 params:
   math: true
