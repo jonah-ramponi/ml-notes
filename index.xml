@@ -13,7 +13,7 @@
       <link>https://www.jonahramponi.com/posts/test-copy/</link>
       <pubDate>Sat, 30 Mar 2024 11:49:13 +0000</pubDate>
       <guid>https://www.jonahramponi.com/posts/test-copy/</guid>
-      <description>Here&amp;rsquo;s my second content View as PDF.&#xA;test 2</description>
+      <description>Here&amp;rsquo;s my second content View as PDF.&#xA;Here is a quote by me&#xA;def attention(Q, K, V): dk = K.size(-1) scores = torch.matmul(Q, K.transpose(-2, -1)) / torch.sqrt(dk) attn_weights = torch.nn.functional.softmax(scores, dim=-1) return torch.matmul(attn_weights, V) test 2</description>
     </item>
     <item>
       <title>Test</title>
