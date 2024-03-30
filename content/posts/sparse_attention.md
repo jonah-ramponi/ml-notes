@@ -7,7 +7,7 @@ draft: false
 tags: [attention, inference] 
 ---
 
-\textit{Sparse Attention} \cite{sparseatt} introduces sparse factorizations on the attention matrix. To implement this we introduce a \textit{connectivity pattern} $S = \{S_1,\dots,S_n\}$. Here, $S_i$ denotes the set of indices of the input vectors to which the $i$th output vector attends. For instance, in regular $n^2$ attention every input vector attends to every output vector before it in the sequence. Remember that $d_k$ is the inner dimension of our queries and keys. Sparse Attention is given as follows
+[*Sparse Attention*](https://arxiv.org/pdf/1904.10509v1.pdf) introduces sparse factorizations on the attention matrix. To implement this we introduce a *connectivity pattern* $S = \{S_1,\dots,S_n\}$. Here, $S_i$ denotes the set of indices of the input vectors to which the $i$th output vector attends. For instance, in regular $n^2$ attention every input vector attends to every output vector before it in the sequence. Remember that $d_k$ is the inner dimension of our queries and keys. Sparse Attention is given as follows
 
 \begin{align}
     \text{attention}(Q,K,V, S_i) &= \text{softmax}\Big( \frac{(Q_{S_i}) K^T_{S_i}}{\sqrt{d_k}} \Big) V_{S_i}.
@@ -15,12 +15,12 @@ tags: [attention, inference]
 
 Here, we have defined
 
-$$ Q_{S_i} = (W_q \vec{x}_j )_{j \in S_i} $$
+$$ Q_{S_i} = (W_q \vec{x}_j )_{j \text{ in }  S_i} $$
 
 \begin{align*}
     Q_{S_i} &= (W_q \vec{x}_j )_{j \in S_i}, \\\\
     K_{S_i} &= (W_k \vec{x}_j )_{j \in S_i}, \\\\
-    V_{S_i} &= (W_v\ vec{x}_j )_{j \in S_i}. 
+    V_{S_i} &= (W_v\ vec{x}_j )_{j \text{ in } S_i}. 
 \end{align*}
 
 So how do we define the set of connectivity patterns $S$? Formally, we let $S_i = A_i^{h}$ for head $h$ where $A_i^{h} \subset \{j : j \leq i\}$. It is still no clearer how we pick which indices we should take for a given $S_i$. The original authors consider two key criteria initially:
