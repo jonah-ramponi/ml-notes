@@ -1,6 +1,6 @@
 baseURL: https://www.jonahramponi.com
 languageCode: en-us
 title: Jonah's ML Notes
-theme: PaperMod
+theme: Archie
 params:
   math: true
