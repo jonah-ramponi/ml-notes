@@ -1,20 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Posts on Jonah&#39;s ML Notes</title>
-    <link>https://www.jonahramponi.com/posts/</link>
-    <description>Recent content in Posts on Jonah&#39;s ML Notes</description>
+    <title>Attention on Jonah&#39;s ML Notes</title>
+    <link>https://www.jonahramponi.com/tags/attention/</link>
+    <description>Recent content in Attention on Jonah&#39;s ML Notes</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 30 Mar 2024 11:49:13 +0000</lastBuildDate>
-    <atom:link href="https://www.jonahramponi.com/posts/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Post 2</title>
-      <link>https://www.jonahramponi.com/posts/test-copy/</link>
-      <pubDate>Sat, 30 Mar 2024 11:49:13 +0000</pubDate>
-      <guid>https://www.jonahramponi.com/posts/test-copy/</guid>
-      <description>Here&amp;rsquo;s my second content View as PDF.&#xA;Here is a quote by me&#xA;def attention(Q, K, V): dk = K.size(-1) scores = torch.matmul(Q, K.transpose(-2, -1)) / torch.sqrt(dk) attn_weights = torch.nn.functional.softmax(scores, dim=-1) return torch.matmul(attn_weights, V) test 2</description>
-    </item>
+    <lastBuildDate>Tue, 26 Mar 2024 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://www.jonahramponi.com/tags/attention/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Flash Attention</title>
       <link>https://www.jonahramponi.com/posts/flash_attention/</link>

@@ -16,11 +16,11 @@
       <description>Here&amp;rsquo;s my second content View as PDF.&#xA;Here is a quote by me&#xA;def attention(Q, K, V): dk = K.size(-1) scores = torch.matmul(Q, K.transpose(-2, -1)) / torch.sqrt(dk) attn_weights = torch.nn.functional.softmax(scores, dim=-1) return torch.matmul(attn_weights, V) test 2</description>
     </item>
     <item>
-      <title>Test</title>
-      <link>https://www.jonahramponi.com/posts/test/</link>
-      <pubDate>Sat, 30 Mar 2024 11:49:13 +0000</pubDate>
-      <guid>https://www.jonahramponi.com/posts/test/</guid>
-      <description>Here&amp;rsquo;s my content! What do you think ? $1^2$</description>
+      <title>Flash Attention</title>
+      <link>https://www.jonahramponi.com/posts/flash_attention/</link>
+      <pubDate>Tue, 26 Mar 2024 00:00:00 +0000</pubDate>
+      <guid>https://www.jonahramponi.com/posts/flash_attention/</guid>
+      <description>The goal of Flash Attention [1] is to compute the attention value with fewer high bandwidth memory read / writes. The approach has since been refined in Flash Attention 2 [2]. \&#xA;We will split the attention inputs $Q,K,V$ into blocks. Each block will be handled separately, and attention will therefore be computed with respect to each block. With the correct scaling, adding the outputs from each block we will give us the same attention value as we would get by computing everything all together.</description>
     </item>
   </channel>
 </rss>
