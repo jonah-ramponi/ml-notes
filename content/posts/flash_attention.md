@@ -1,12 +1,12 @@
 ---
 title: Flash Attention
-description: Reduce the memory usage used to compute exact attention
+description: Reduce the memory usage used to compute exact attention by  
 date: 2024-03-26
 tldr: Reduce the memory usage used to compute exact attention
 draft: false
 tags: [attention] 
 ---
-The goal of *Flash Attention* [PDF](https://arxiv.org/pdf/2205.14135.pdf) is to compute the attention value with fewer high bandwidth memory read / writes. The approach has since been refined in *Flash Attention 2* [PDF](https://arxiv.org/pdf/2307.08691.pdf). \\
+The goal of *Flash Attention* [(PDF)](https://arxiv.org/pdf/2205.14135.pdf) is to compute the attention value with fewer high bandwidth memory read / writes. The approach has since been refined in *Flash Attention 2* [(PDF)](https://arxiv.org/pdf/2307.08691.pdf). \\
 
 We will split the attention inputs $Q,K,V$ into blocks. Each block will be handled separately, and attention will therefore be computed with respect to each block. With the correct scaling, adding the outputs from each block we will give us the same attention value as we would get by computing everything all together. \\  
 
@@ -28,14 +28,12 @@ Therefore, approximately any $x$ larger than $709$ will result in overflow issue
 
 To compute softmax in blocks, we decompose our vector $\vec{x} \in \mathbb{R}^{2n}$ into two smaller vectors in $\mathbb{R}^n$.Let's look at the simple case of decomposing into two vectors. Denote these vectors $\vec{x}_1,\vec{x}_2$ each in $\mathbb{R}^n$. Our softmax calculation becomes
 
-\[
 \begin{aligned}
     m(x) &= m([x_1\hspace{3mm}  x_2]) = \max (m(x_1),m(x_2)), \\
     f(x) &= [e^{m(x_1) - m(x)}f(x_1) \hspace{3mm} e^{m(x_2) - m(x)}f(x_2)], \\
     \ell(x) &= \ell([x_1\hspace{3mm}  x_2]) = [e^{m(x_1) - m(x)}\ell(x_1) \hspace{3mm} e^{m(x_2) - m(x)}\ell(x_2)], \\
     \text{softmax}(x) &= \frac{f(x)}{\ell(x)}.
 \end{aligned}
-\]
 
 Notice that we use $m(x_i) - m(x)$ as the normalization factor, as we do not know which group will contain the maximum value of $\vec{x}$. By keeping track of both $m(x)$ and $\ell(x)$ we will be able to accurately recombine the softmax outputs for each block, as will know how to rescale the softmax outputs. \\
 
