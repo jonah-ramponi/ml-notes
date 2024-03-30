@@ -4,3 +4,5 @@ title: Jonah's ML Notes
 theme: Archie
 params:
   math: true
+  mathjax: true 
+  katex: true 
