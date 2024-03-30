@@ -16,6 +16,10 @@ tags: [attention, inference]
 Here, we have defined
 
 $$ Q_{S_i} = (W_q \vec{x}_j )_{j \text{ in }  S_i} $$
+$$ Q_{S_i} = (W_q \vec{x}_j ) $$
+$$ Q_{S_i} = (W_q \vec{x}_j )_{S_i} $$
+$$ Q_{S_i} = (W_q x_j )_{j \text{ in }  S_i} $$
+$$ Q_{S_i} = a_{j \text{ in }  S_i} $$
 
 \begin{align*}
     Q_{S_i} &= (W_q \vec{x}_j )_{j \in S_i}, \\\\
