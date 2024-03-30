@@ -95,31 +95,18 @@
 \begin{equation}
 Q \times K^T = \begin{pmatrix}
 Q_{11} &amp; Q_{12} &amp; \cdots &amp; Q_{1d} \\
-Q_{21} &amp; Q_{22} &amp; \cdots &amp; Q_{2d} \\
+\vdots &amp; \ddots &amp; \cdots &amp; \vdots \\
 Q_{n1} &amp; Q_{n2} &amp; \cdots &amp; Q_{nd}
 \end{pmatrix} \times
 \begin{pmatrix}
 K_{11} &amp; K_{21} &amp; \cdots &amp; K_{n1} \\
-K_{12} &amp; K_{22} &amp; \cdots &amp; K_{n2} \\
+\vdots &amp; \ddots &amp; \cdots &amp; \vdots \\
 K_{1d} &amp; K_{2d} &amp; \cdots &amp; K_{nd}
 \end{pmatrix}
 \end{equation}</p>
 <p>Our goal is to simplify this computation. Instead of letting each token attend to all of the other tokens, we will define a window size $w$. The token we are calculating attention values for will then only get to look at the tokens $\frac{1}{2}w$ either side of it. For our example, we could consider a sliding window of size $2$ which will look $1$ token to either side of the current token. Only the values shaded in \colorbox{olive}{olive} will be calculated.</p>
 <p><img src="/img/sliding_window.png" alt="Sliding Window Attention Matrix"></p>
-<p>This greatly reduces the cost of the computation of $Q \times K^T$, as our computation will now look like</p>
-<p>\begin{equation}
-Q \times K^T = \begin{pmatrix}
-Q_{11} &amp; Q_{12} &amp;  &amp;\\
-Q_{21} &amp; Q_{22} &amp; \cdots &amp;  \\
-&amp;  &amp; \cdots &amp; Q_{nd}
-\end{pmatrix} \times
-\begin{pmatrix}
-K_{11} &amp; K_{21} &amp;  &amp;  \\
-K_{12} &amp; K_{22}  &amp; \cdots &amp;  \\
-&amp;  &amp; \cdots &amp; K_{nd}
-\end{pmatrix}
-\end{equation}</p>
-<p>However, the original authors encountered a problem in training. The authors found that this approach is not flexible enough to learn to complete specific tasks. They solved this problem through the introduction of \textit{global attention}. This will give a few of our tokens some special properties: A token with a global attention attends to all other tokens in the sequence and all tokens in the sequence attend to every token with a global attention.</p>
+<p>This greatly reduces the cost of the computation of $Q \times K^T$, however, the original authors encountered a problem in training. The authors found that this approach is not flexible enough to learn to complete specific tasks. They solved this problem through the introduction of \textit{global attention}. This will give a few of our tokens some special properties: A token with a global attention attends to all other tokens in the sequence and all tokens in the sequence attend to every token with a global attention.</p>
 <p>The local attention (sliding window attention) is primarily used to build contextual representations, while the global attention allows the model to build full sequence representations for prediction.</p>
 <p>We will require two sets of our projection matrices. Firstly, projections to compute attention scores for our sliding window approach ${Q_s, K_s, V_s}$ and secondly attention scores for the global attention ${Q_g,K_g,V_g}$. These are initialized to the same values.</p>
 <p>We first calculate local attention weights using ${Q_s,K_s,V_s}$. This gives us an attention output, which is then combined with the output using the global attention weights. The global weights are written on top of the output attention weight matrix calculated by the local attention calculation.</p>
