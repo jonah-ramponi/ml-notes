@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Fine-Tuning on Jonah&#39;s ML Notes</title>
+    <link>https://www.jonahramponi.com/tags/fine-tuning/</link>
+    <description>Recent content in Fine-Tuning on Jonah&#39;s ML Notes</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 24 Mar 2024 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://www.jonahramponi.com/tags/fine-tuning/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>LoRa</title>
+      <link>https://www.jonahramponi.com/posts/lora/</link>
+      <pubDate>Sun, 24 Mar 2024 00:00:00 +0000</pubDate>
+      <guid>https://www.jonahramponi.com/posts/lora/</guid>
+      <description>Let&amp;rsquo;s consider a weight matrix $W$. Typically, the weight matrices in a dense neural networks layers have full-rank. Full-rank means many different things mathematically. I think the easiest explanation of a $d$-dimensional matrix $(let&amp;rsquo;s consider a square matrix, M \in \mathbb{R}^{d,d})$ being full-rank is one in which the columns could be used to span (hit every point) in $d$-dimensional space. If you consider $d=3$, a matrix like&#xA;\begin{equation} M = \begin{pmatrix} 1 &amp;amp; 0 &amp;amp; 1 \\ 1 &amp;amp; 0 &amp;amp; 1 \\ 1 &amp;amp; 1 &amp;amp; 0 \end{pmatrix} \end{equation}</description>
+    </item>
+  </channel>
+</rss>
