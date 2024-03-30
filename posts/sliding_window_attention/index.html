@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html><head lang="en">
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>Sliding Window Attention - Jonah&#39;s ML Notes</title><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Altering the tokens to which a token in the input sequence attends." />
+	<meta property="og:image" content=""/>
+	<meta property="og:title" content="Sliding Window Attention" />
+<meta property="og:description" content="Altering the tokens to which a token in the input sequence attends." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.jonahramponi.com/posts/sliding_window_attention/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-03-22T00:00:00+00:00" />
+<meta property="article:modified_time" content="2024-03-22T00:00:00+00:00" />
+<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Sliding Window Attention"/>
+<meta name="twitter:description" content="Altering the tokens to which a token in the input sequence attends."/>
+
+	
+        <link href="https://www.jonahramponi.com/css/fonts.2c2227b81b1970a03e760aa2e6121cd01f87c88586803cbb282aa224720a765f.css" rel="stylesheet">
+	
+
+	
+	<link rel="stylesheet" type="text/css" media="screen" href="https://www.jonahramponi.com/css/main.ac08a4c9714baa859217f92f051deb58df2938ec352b506df655005dcaf98cc0.css" />
+
+	
+	
+		<script type="text/javascript"
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+		</script>
+	
+		
+		<script type="text/x-mathjax-config">
+		MathJax.Hub.Config({
+			tex2jax: {
+				inlineMath: [['$','$'], ['\\(','\\)']],
+				displayMath: [['$$','$$'], ['\[','\]']],
+				processEscapes: true,
+				processEnvironments: true,
+				skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+				TeX: { equationNumbers: { autoNumber: "AMS" },
+						 extensions: ["AMSmath.js", "AMSsymbols.js"] }
+			}
+		});
+		</script>
+	
+
+	
+	
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css">
+		<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.js"></script>
+		<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+		
+		
+		<script>
+			document.addEventListener("DOMContentLoaded", function() {
+					renderMathInElement(document.body, {
+							delimiters: [
+									{left: "$$", right: "$$", display: true},
+									{left: "$", right: "$", display: false}
+							]
+					});
+			});
+			</script>
+	
+	
+	
+</head>
+<body>
+        <div class="content"><header>
+	<div class="main">
+		<a href="https://www.jonahramponi.com/">Jonah&#39;s ML Notes</a>
+	</div>
+	<nav>
+		
+		
+	</nav>
+</header>
+
+<main>
+	<article>
+		<div class="title">
+			<h1 class="title">Sliding Window Attention</h1>
+			<div class="meta">Posted on Mar 22, 2024</div>
+		</div>
+		
+		<div class="tldr">
+			<strong>tl;dr:</strong>
+			Altering the tokens to which a token in the input sequence attends.
+		</div>
+
+		<section class="body">
+			<p><a href="https://arxiv.org/pdf/2004.05150.pdf"><em>Sliding Window Attention</em></a> reduces the number of calculations we are doing when computing self attention. Previously, to compute attention we took our input matrix of positional encodings $M$, and made copies named $Q, K$ and $V$. We used these copies to compute</p>
+<p>\begin{equation}
+\text{attention}(Q,K,V) = \text{softmax}\Big(\frac{Q K^T}{\sqrt{d_k}}\Big) V.
+\end{equation}</p>
+<p>For now, let&rsquo;s ignore the re-scaling by $\sqrt{d_k}$ and just look at the computation of $QK^T$. This computation looks like
+\begin{equation}
+Q \times K^T = \begin{pmatrix}
+Q_{11} &amp; Q_{12} &amp; \cdots &amp; Q_{1d} \\
+Q_{21} &amp; Q_{22} &amp; \cdots &amp; Q_{2d} \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+Q_{n1} &amp; Q_{n2} &amp; \cdots &amp; Q_{nd}
+\end{pmatrix} \times
+\begin{pmatrix}
+K_{11} &amp; K_{21} &amp; \cdots &amp; K_{n1} \\
+K_{12} &amp; K_{22} &amp; \cdots &amp; K_{n2} \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+K_{1d} &amp; K_{2d} &amp; \cdots &amp; K_{nd}
+\end{pmatrix}
+\end{equation}</p>
+<p>Our goal is to simplify this computation. Instead of letting each token attend to all of the other tokens, we will define a window size $w$. The token we are calculating attention values for will then only get to look at the tokens $\frac{1}{2}w$ either side of it. For our example, we could consider a sliding window of size $2$ which will look $1$ token to either side of the current token. Only the values shaded in \colorbox{olive}{olive} will be calculated.</p>
+<p><img src="/img/sliding_window.png" alt="Sliding Window Attention Matrix"></p>
+<p>This greatly reduces the cost of the computation of $Q \times K^T$, as our computation will now look like</p>
+<p>\begin{equation}
+Q \times K^T = \begin{pmatrix}
+Q_{11} &amp; Q_{12} &amp;  &amp;\\
+Q_{21} &amp; Q_{22} &amp; \cdots &amp;  \\
+&amp; \vdots &amp; \ddots &amp; \vdots \\
+&amp;  &amp; \cdots &amp; Q_{nd}
+\end{pmatrix} \times
+\begin{pmatrix}
+K_{11} &amp; K_{21} &amp;  &amp;  \\
+K_{12} &amp; K_{22}  &amp; \cdots &amp;  \\
+&amp; \vdots &amp; \ddots &amp; \vdots \\
+&amp;  &amp; \cdots &amp; K_{nd}
+\end{pmatrix}
+\end{equation}</p>
+<p>However, the original authors encountered a problem in training. The authors found that this approach is not flexible enough to learn to complete specific tasks. They solved this problem through the introduction of \textit{global attention}. This will give a few of our tokens some special properties:</p>
+<p>\begin{itemize}
+\item A token with a global attention attends to all other tokens in the sequence
+\item All tokens in the sequence attend to every token with a global attention.
+\end{itemize}</p>
+<p>The local attention (sliding window attention) is primarily used to build contextual representations, while the global attention allows the model to build full sequence representations for prediction.</p>
+<p>We will require two sets of our projection matrices. Firstly, projections to compute attention scores for our sliding window approach ${Q_s, K_s, V_s}$ and secondly attention scores for the global attention ${Q_g,K_g,V_g}$. These are initialized to the same values.</p>
+<p>We first calculate local attention weights using ${Q_s,K_s,V_s}$. This gives us an attention output, which is then combined with the output using the global attention weights. The global weights are written on top of the output attention weight matrix calculated by the local attention calculation.</p>
+<p>\textbf{Dilated Sliding Window Attention} is another approach to achieve a similar result. This time, instead of simply taking the $\frac{1}{2}w$ tokens either side of a given $w$ we will introduce some gaps of size $d$. This is referred to as the dilation. Using $w=2, d=1$ in our example we would have an attention matrix which looks like</p>
+<p><img src="/img/dilated_sliding_window.png" alt="Dilated Sliding Window Attention Matrix"></p>
+<p>The authors provide a nice visual of how this looks generally, which you can see in Figure (\ref{fig:longform}). The authors note they use dilated sliding window attention with small window sizes for lower layers, and larger window sizes for higher layers. They do not introduce dilation for lower layers, however for higher layers a small amount of increasing dilation was introduced on $2$ heads.</p>
+<p><img src="/img/longformer.png" alt="Attention Matrix Visualizations from the Longformer Paper"></p>
+
+		</section>
+
+		<div class="post-tags">
+			
+			
+			<nav class="nav tags">
+				<ul class="tags">
+					
+					<li><a href="/tags/attention">attention</a></li>
+					
+					<li><a href="/tags/inference">inference</a></li>
+					
+				</ul>
+			</nav>
+			
+			
+		</div>
+		</article>
+</main>
+<footer>
+  <div style="display:flex"></div>
+  <div class="footer-info">
+    2024  <a
+      href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
+  </div>
+</footer>
+
+
+</div>
+    </body>
+</html>
