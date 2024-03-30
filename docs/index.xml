@@ -13,7 +13,8 @@
       <link>http://jonah-ramponi.github.io/jonahsdemo/docs/test/</link>
       <pubDate>Sat, 30 Mar 2024 11:49:13 +0000</pubDate>
       <guid>http://jonah-ramponi.github.io/jonahsdemo/docs/test/</guid>
-      <description>Here&amp;rsquo;s my content! What do you think ?</description>
+      <description>Here&amp;rsquo;s my content! What do you think ? $1^2$
+\sqrt{3} # with or without delimiters </description>
     </item>
   </channel>
 </rss>
