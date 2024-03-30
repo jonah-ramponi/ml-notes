@@ -50,4 +50,4 @@ Here, $A_i^{(1)}$ simply takes the previous $l$ locations. $A_i^{(2)}$ then take
 
 These are best understood visually in my opinion. In the image below, $A_i^{(1)}$ is responsible for the dark blue shading and $A_i^{(2)}$ for the light blue shading. If we take stride, $l$ = 128 and $c=8$, then all positions greater than 128 can attend to positions $120-128$. The authors find choosing $c \in \{8,16,32\}$ worked well. 
 
-![my alt text](/img/sparse_attention.png)
+![my alt text](/img/sparse_attention.png){: style="width: 85%;"}
