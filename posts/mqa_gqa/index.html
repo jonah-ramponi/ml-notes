@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html><head lang="en">
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>Multi &amp; Grouped Query Attention - Jonah&#39;s ML Notes</title><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="Using less K &amp; V Matrices." />
+	<meta property="og:image" content=""/>
+	<meta property="og:title" content="Multi &amp; Grouped Query Attention" />
+<meta property="og:description" content="Using less K &amp; V Matrices." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.jonahramponi.com/posts/mqa_gqa/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-03-22T00:00:00+00:00" />
+<meta property="article:modified_time" content="2024-03-22T00:00:00+00:00" />
+<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Multi &amp; Grouped Query Attention"/>
+<meta name="twitter:description" content="Using less K &amp; V Matrices."/>
+
+	
+        <link href="https://www.jonahramponi.com/css/fonts.2c2227b81b1970a03e760aa2e6121cd01f87c88586803cbb282aa224720a765f.css" rel="stylesheet">
+	
+
+	
+	<link rel="stylesheet" type="text/css" media="screen" href="https://www.jonahramponi.com/css/main.ac08a4c9714baa859217f92f051deb58df2938ec352b506df655005dcaf98cc0.css" />
+
+	
+	
+		<script type="text/javascript"
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+		</script>
+	
+		
+		<script type="text/x-mathjax-config">
+		MathJax.Hub.Config({
+			tex2jax: {
+				inlineMath: [['$','$'], ['\\(','\\)']],
+				displayMath: [['$$','$$'], ['\[','\]']],
+				processEscapes: true,
+				processEnvironments: true,
+				skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+				TeX: { equationNumbers: { autoNumber: "AMS" },
+						 extensions: ["AMSmath.js", "AMSsymbols.js"] }
+			}
+		});
+		</script>
+	
+
+	
+	
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css">
+		<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.js"></script>
+		<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+		
+		
+		<script>
+			document.addEventListener("DOMContentLoaded", function() {
+					renderMathInElement(document.body, {
+							delimiters: [
+									{left: "$$", right: "$$", display: true},
+									{left: "$", right: "$", display: false}
+							]
+					});
+			});
+			</script>
+	
+	
+	
+</head>
+<body>
+        <div class="content"><header>
+	<div class="main">
+		<a href="https://www.jonahramponi.com/">Jonah&#39;s ML Notes</a>
+	</div>
+	<nav>
+		
+		
+	</nav>
+</header>
+
+<main>
+	<article>
+		<div class="title">
+			<h1 class="title">Multi &amp; Grouped Query Attention</h1>
+			<div class="meta">Posted on Mar 22, 2024</div>
+		</div>
+		
+		<div class="tldr">
+			<strong>tl;dr:</strong>
+			Using less K &amp; V Matrices.
+		</div>
+
+		<section class="body">
+			<p><a href="https://arxiv.org/pdf/1911.02150v1.pdf"><em>Multi Query Attention</em></a> (MQA) using the same $K$ and $V$ matrices for each head in our multi head self attention mechanism. For a given head, $h$, $1 \leq h \leq H$, the attention mechanism is calculated as</p>
+<p>\begin{equation}
+h_i = \text{attention}(M\cdot W_h^Q, M \cdot W^K,M \cdot W^V).
+\end{equation}</p>
+<p>For each of our $H$ heads, the only difference in the weight matrices is in $W_h^Q$. Each of these $W_h$ has dimension $(n \times d_q)$. The attention output for each head $i$ is given by</p>
+<p>\begin{equation}
+\text{attention}(Q_h,K,V) = \text{softmax}\Big(\frac{Q_h \cdot K^T}{\sqrt{d_k}} \Big) \cdot V
+\end{equation}</p>
+<p>As before, we simply concatenate our attention outputs and multiply by $W^O$, which is defined as before.</p>
+<p><a href="https://arxiv.org/pdf/2305.13245v3.pdf"><em>Grouped Query Attention</em></a> (GQA) is very similar to MQA. The difference is that instead of using just one set of $K$, $V$ values for attention calculations it uses $G$ different sets of $K,V$ values. If we have $H$ heads, GQA is equivalent to MHA if $G=H$ and equivalent to MQA if $G=1$. Suppose we want to use $G$ groups. We would firstly allocate each of our $H$ heads into one of the $G$ groups. It would likely make sense to pick $G$ such that $G \mod H \equiv 0$. Though this is not a requirement.</p>
+<p>For each  head in a given group, we calculate attention outputs as
+\begin{align}
+\text{attention}({h}) &amp;= \text{attention}(M\cdot W_h^Q, M \cdot W^K_g,M \cdot W^V_g) \\
+&amp;= \text{softmax}\Big(\frac{Q_h \cdot K^T_g}{\sqrt{d_k}} \Big) \cdot V_g
+\end{align}</p>
+<p>The query matrices will be shared by all groups under a given head, and the key and value matrices will be used for all attention calculations within a given group.</p>
+<p><strong>Conversions from Multi Head Attention.</strong> A natural question might be how one could take a model which uses multi-head attention and convert it to model using multi query attention or grouped query attention. To convert to multi query attention, we want to find a single representative matrix for both $K$ and $V$ from our set of $H$ different heads. We achieve this via mean pooling. For instance for $K$,</p>
+<p>\begin{equation}
+\text{mean pooling}(K_1,\dots,K_h) \rightarrow K&rsquo;.
+\end{equation}</p>
+<p>We need to decide the size of our mean pooling window, $w$. Our process then involves three steps.</p>
+<p>Firstly, divide each of the input matrices $(K_1,\dots,K_H)$ into non-overlapping $w \times w$ regions. Then compute the average value within each $w \times w$ region for each input matrix $(K_1,\dots,K_H)$. Finally compute the mean of the corresponding regions across all $H$ input matrices and set this to the corresponding values in our final matrix $K&rsquo;$.</p>
+<p>We now have our matrix $K&rsquo;$. It is required at this stage to pre-train for a small portion of the original training steps. The process is nearly identical for grouped query attention. However this time we mean pool over each group of matrices (instead of the whole set). The matrices within a given group are simply dictated by how we chose to assign our $G$ groups to the original $H$ heads.</p>
+
+		</section>
+
+		<div class="post-tags">
+			
+			
+			<nav class="nav tags">
+				<ul class="tags">
+					
+					<li><a href="/tags/attention">attention</a></li>
+					
+					<li><a href="/tags/inference">inference</a></li>
+					
+				</ul>
+			</nav>
+			
+			
+		</div>
+		</article>
+</main>
+<footer>
+  <div style="display:flex"></div>
+  <div class="footer-info">
+    2024  <a
+      href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
+  </div>
+</footer>
+
+
+</div>
+    </body>
+</html>
