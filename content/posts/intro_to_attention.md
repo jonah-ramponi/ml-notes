@@ -95,7 +95,7 @@ The top row is the first vector output of our positional encoding. The second ro
     y_i = \sum_{j = 1}^{{n}} w_{ij} \cdot x_j, \text{ } \forall 1 \leq i \leq m.
 \end{equation}
 
-for some mapping $w_{ij}$. The challenge is in figuring out how we should define our mapping $w_{ij}$. Let's look at the first way $w_{ij}$ was defined, introduced in ![Attention is All You Need](https://arxiv.org/pdf/1706.03762.pdf). 
+for some mapping $w_{ij}$. The challenge is in figuring out how we should define our mapping $w_{ij}$. Let's look at the first way $w_{ij}$ was defined, introduced in [Attention is All You Need](https://arxiv.org/pdf/1706.03762.pdf). 
 
 **Scaled Dot Product Self Attention.** To compute scaled dot product self attention, we will use the matrix $M$ with rows corresponding to the positionally encoded vectors. $M$ has dimensions $(n \times d_{\text{model}})$. 
 

@@ -7,7 +7,7 @@ draft: false
 tags: [attention, inference] 
 ---
 
-![*Multi Query Attention*](https://arxiv.org/pdf/1911.02150v1.pdf) (MQA) using the same $K$ and $V$ matrices for each head in our multi head self attention mechanism. For a given head, $h$, $1 \leq h \leq H$, the attention mechanism is calculated as
+[*Multi Query Attention*](https://arxiv.org/pdf/1911.02150v1.pdf) (MQA) using the same $K$ and $V$ matrices for each head in our multi head self attention mechanism. For a given head, $h$, $1 \leq h \leq H$, the attention mechanism is calculated as
 
 \begin{equation}
     h_i = \text{attention}(M\cdot W_h^Q, M \cdot W^K,M \cdot W^V).
