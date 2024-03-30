@@ -39,7 +39,8 @@ We will require two sets of our projection matrices. Firstly, projections to com
 
 We first calculate local attention weights using $\{Q_s,K_s,V_s\}$. This gives us an attention output, which is then combined with the output using the global attention weights. The global weights are written on top of the output attention weight matrix calculated by the local attention calculation. 
 
-**Dilated Sliding Window Attention.** is another approach to achieve a similar result. This time, instead of simply taking the $\frac{1}{2}w$ tokens either side of a given $w$ we will introduce some gaps of size $d$. This is referred to as the dilation. Using $w=2, d=1$ in our example we would have an attention matrix which looks like   
+#### Dilated Sliding Window Attention. 
+This is another approach to achieve a similar result. This time, instead of simply taking the $\frac{1}{2}w$ tokens either side of a given $w$ we will introduce some gaps of size $d$. This is referred to as the dilation. Using $w=2, d=1$ in our example we would have an attention matrix which looks like   
 
 
 ![Dilated Sliding Window Attention Matrix](/img/dilated_sliding_window.png)

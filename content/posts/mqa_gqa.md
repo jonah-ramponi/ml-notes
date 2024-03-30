@@ -7,6 +7,7 @@ draft: false
 tags: [attention, inference] 
 ---
 
+#### Multi Query Attention
 [*Multi Query Attention*](https://arxiv.org/pdf/1911.02150v1.pdf) (MQA) using the same $K$ and $V$ matrices for each head in our multi head self attention mechanism. For a given head, $h$, $1 \leq h \leq H$, the attention mechanism is calculated as
 
 \begin{equation}
@@ -21,7 +22,7 @@ For each of our $H$ heads, the only difference in the weight matrices is in $W_h
 
 As before, we simply concatenate our attention outputs and multiply by $W^O$, which is defined as before. 
 
-
+#### Grouped Query Attention
 [*Grouped Query Attention*](https://arxiv.org/pdf/2305.13245v3.pdf) (GQA) is very similar to MQA. The difference is that instead of using just one set of $K$, $V$ values for attention calculations it uses $G$ different sets of $K,V$ values. If we have $H$ heads, GQA is equivalent to MHA if $G=H$ and equivalent to MQA if $G=1$. Suppose we want to use $G$ groups. We would firstly allocate each of our $H$ heads into one of the $G$ groups. It would likely make sense to pick $G$ such that $G \mod H \equiv 0$. Though this is not a requirement.
 
 For each  head in a given group, we calculate attention outputs as
