@@ -7,12 +7,15 @@ draft: false
 tags: [attention, inference] 
 ---
 
+$\require{\nicematrix}$
+$\require{\minted}$
+
 The computation of attention is costly. Remember that our decoder works in an auto-regressive fashion. For our given input ``\textit{\colorbox{red}{What}\colorbox{magenta}{ is}\colorbox{green}{ the}\colorbox{orange}{ capital}\colorbox{purple}{ of}\colorbox{brown}{ France}\colorbox{cyan}{?}"}
 
 \begin{align}
-    \text{Prediction 1} &= \colorbox{orange}{The} \\
-    \text{Prediction 2} &= \colorbox{orange}{The}\colorbox{pink}{ capital} \\
-    &\vdots \\
+    \text{Prediction 1} &= \colorbox{orange}{The} \\\\
+    \text{Prediction 2} &= \colorbox{orange}{The}\colorbox{pink}{ capital} \\\\
+    &\vdots \\\\
     \text{Prediction $p$} &= \colorbox{orange}{The}\colorbox{pink}{ capital} (\dots) \colorbox{red}{ Paris.}
 \end{align}
 
