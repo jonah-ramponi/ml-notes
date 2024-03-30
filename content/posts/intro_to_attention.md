@@ -119,7 +119,7 @@ Our matrix $QK^T$ of dimension $(n \times d_{\text{model}}) \times (n \times d_{
 We multiply the softmax of the attention matrix with each row of $V$. This re-scales each row of the output matrix to sum to one. The equation for softmax applied to a matrix $X$ is as follows
 
 \begin{equation}
-    \text{softmax}(X)_{ij} = \frac{e^{X_{ij}}}{\sum_{k=1}^{n} e^{X_{ik}}}.
+    softmax(X)\_{ i j } = \frac{e^{X_{ij}}}{\sum_{k=1}^{n} e^{X_{ik}}}.
 \end{equation}
 
 ```python
@@ -153,7 +153,7 @@ Well, our *attention matrix* after softmax has been applied is simply $w$ with $
 The attention matrix is a nice thing to visualize. For our toy example, it might look like 
 
 
-<att-m>
+1[Attention Matrix Visualisation](/img/attnm.png)
 
 What can we notice about our attention matrix?
 

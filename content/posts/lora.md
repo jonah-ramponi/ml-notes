@@ -7,7 +7,7 @@ draft: false
 tags: [fine-tuning, training] 
 ---
 
-Let's consider a weight matrix $W$. Typically, the weight matrices in a dense neural networks layers have full-rank. Full-rank means many different things mathematically. I think the easiest explanation of a $d$-dimensional matrix $(let's consider a square matrix, M \in \mathbb{R}^{d,d})$ being full-rank is one in which the columns could be used to span (hit every point) in $d$-dimensional space. If you consider $d=3$, a matrix like
+Let's consider a weight matrix $W$. Typically, the weight matrices in a dense neural networks layers have full-rank. Full-rank means many different things mathematically. I think the easiest explanation of a $d$-dimensional matrix (let's consider a square matrix $,M \in \mathbb{R}^{d,d}$) being full-rank is one in which the columns could be used to span (hit every point) in $d$-dimensional space. If you consider $d=3$, a matrix like
 
 \begin{equation}
     M = \begin{pmatrix}
@@ -40,7 +40,7 @@ In our square matrix case, we will have a matrix with 1000 rows and 1000 columns
 
 When we're updating the weight matrix, at each step we're figuring out how to slightly alter the values in our matrix. To visualize in a low dimensional case, we're doing something like  
 
-\begin{equation}
+\begin{equation*}
     W + \Delta W = \begin{pmatrix}
         1 & 0 & 1 \\\\ 
         1 & 0 & 1 \\\\
@@ -54,7 +54,7 @@ When we're updating the weight matrix, at each step we're figuring out how to sl
         1.00003 & 0.0002 & 1.00001 \\\\ 
         1.01 & 0.9999 & 0.003 
     \end{pmatrix} 
-\end{equation}
+\end{equation*}
 
 But if $d$ is large, the matrix $\Delta W$ will contain lots of values. We're doing lots of calculations, and this is costly. And importantly, if $W$ has a low intrinsic dimension, we can assume that we may not even need to perform this update to each and every row of $W$. Remember, a matrix having a rank $r < d$ implies that the *information* stored in the matrix could be stored in something with $r$ dimensions instead of $d$.   
 
