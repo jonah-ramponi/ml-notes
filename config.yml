@@ -28,3 +28,5 @@ disableKinds:
 
 custom_css:
   - "css/custom.css"
+
+favicon: "/assets/favicon.ico"
