@@ -27,7 +27,7 @@ K_{1d} & K_{2d} & \cdots & K_{nd}
     \end{pmatrix}
 \end{equation}
 
-Our goal is to simplify this computation. Instead of letting each token attend to all of the other tokens, we will define a window size $w$. The token we are calculating attention values for will then only get to look at the tokens $\frac{1}{2}w$ either side of it. For our example, we could consider a sliding window of size $2$ which will look $1$ token to either side of the current token. Only the values shaded in \colorbox{olive}{olive} will be calculated.
+Our goal is to simplify this computation. Instead of letting each token attend to all of the other tokens, we will define a window size $w$. The token we are calculating attention values for will then only get to look at the tokens $\frac{1}{2}w$ either side of it. For our example, we could consider a sliding window of size $2$ which will look $1$ token to either side of the current token. Only the values shaded in $\colorbox{olive}{olive}$ will be calculated.
 
 ![Sliding Window Attention Matrix](/img/sliding_window.png)
 

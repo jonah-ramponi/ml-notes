@@ -9,27 +9,27 @@ tags: [attention, inference]
 
 Suppose you give an LLM the input
 
-> *``What is the capital of France?"*
+*``What is the capital of France?"*
 
 The first thing the LLM will do is split this input into tokens. A token is just some combinations of characters. You can see an example of the tokenization outputs for the question below.
 
-> ``*$\colorbox{red}{What}\colorbox{magenta}{ is}\colorbox{green}{ the}\colorbox{orange}{ capital}\colorbox{purple}{ of}\colorbox{brown}{ France}\colorbox{cyan}?$*" 
+``*$\colorbox{red}{What}\colorbox{magenta}{ is}\colorbox{green}{ the}\colorbox{orange}{ capital}\colorbox{purple}{ of}\colorbox{brown}{ France}\colorbox{cyan}?$*" 
 
 (This tokenization was produced using cl100k_base, the tokenizer used in GPT-3.5-turbo and GPT-4.)
 
 In this example we have $(n = 7)$ tokens. Importantly, from our model's point of view, our input size is defined by the number of tokens instead of words. A numerical representation (vector representation) of each token is now found. Finding this vector representation is called producing an embedding of the token. The token *$\colorbox{red}{ What}$* might get tokenized as follows 
 
 \begin{equation}
-    \text{tokenizer}(\textit{\colorbox{red}{What}}) \rightarrow \begin{bmatrix} -0.4159 \\\\ -0.5147 \\\\  0.5690 \\\\  \vdots \\\\  -0.2577 \\\\   0.5710 \\\\   \end{bmatrix}
+    \text{tokenizer}(\textit{\colorbox{red}{What}}) \rightarrow \begin{pmatrix} -0.4159 \\\\ -0.5147 \\\\  0.5690 \\\\  \vdots \\\\  -0.2577 \\\\   0.5710 \\\\   \end{pmatrix}
 \end{equation}
 
 The length of each of our embeddings, these vector outputs of our tokenizer, are the same regardless of the number of characters in our token. Let us denote this length $d_{\text{model}}$. So after we embed each token in our input sequence with our tokenizer we are left with
 
 $$
-\begin{bmatrix} -0.415 \\\\ -0.514 \\\\  0.569 \\\\  \vdots \\\\  -0.257 \\\\   0.571 \\\\   \end{bmatrix} 
-\begin{bmatrix} -0.130 \\\\ -0.464 \\\\ 0.23 \\\\ \vdots \\\\ -0.154 \\\\ 0.192 \\\\ \end{bmatrix}
+\begin{pmatrix} -0.415 \\\\ -0.514 \\\\  0.569 \\\\  \vdots \\\\  -0.257 \\\\   0.571 \\\\   \end{pmatrix} 
+\begin{pmatrix} -0.130 \\\\ -0.464 \\\\ 0.23 \\\\ \vdots \\\\ -0.154 \\\\ 0.192 \\\\ \end{pmatrix}
 , \dots ,
-\begin{bmatrix} 0.127 \\\\ 0.453 \\\\ 0.110 \\\\ \vdots \\\\ -0.155 \\\\ 0.484 \\\\ \end{bmatrix}
+\begin{pmatrix} 0.127 \\\\ 0.453 \\\\ 0.110 \\\\ \vdots \\\\ -0.155 \\\\ 0.484 \\\\ \end{pmatrix}
 $$
 
 
@@ -38,8 +38,8 @@ This output is now passed through a *positional encoder*. Broadly, this is usefu
 The only thing that matters for now, is that each of our numerical representations (vectors) are slightly altered. For the numerical representation of the token ``$\colorbox{red}{ What}$" that we get from our embedding model, it might look something like:  
 
 \begin{equation}
-     \text{positional encoder}\Bigg(\begin{bmatrix} -0.415 \\\\ -0.514 \\\\    \vdots \\\\  -0.257 \\\\   0.571 \\\\   \end{bmatrix}\Bigg) = 
-    \begin{bmatrix} -0.424 \\\\ -0.574 \\\\  \vdots \\\\  -0.235 \\\\   0.534 \\\\   \end{bmatrix} 
+     \text{positional encoder}\Bigg(\begin{pmatrix} -0.415 \\\\ -0.514 \\\\    \vdots \\\\  -0.257 \\\\   0.571 \\\\   \end{pmatrix}\Bigg) = 
+    \begin{pmatrix} -0.424 \\\\ -0.574 \\\\  \vdots \\\\  -0.235 \\\\   0.534 \\\\   \end{pmatrix} 
 \end{equation}
 
 Importantly, the positional encoder does not alter the length of our vector, $d_{\text{model}}$. It simply tweaks the values slightly. So far, we entered our prompt: 
@@ -53,17 +53,17 @@ This was tokenized
 Then embedded 
 
 $$
-\begin{bmatrix} -0.415 \\\\ -0.514 \\\\  0.569 \\\\  \vdots \\\\  -0.257 \\\\   0.571 \\\\   \end{bmatrix} 
-\begin{bmatrix} -0.130 \\\\ -0.464 \\\\ 0.23 \\\\ \vdots \\\\ -0.154 \\\\ 0.192 \\\\ \end{bmatrix}
+\begin{pmatrix} -0.415 \\\\ -0.514 \\\\  0.569 \\\\  \vdots \\\\  -0.257 \\\\   0.571 \\\\   \end{pmatrix} 
+\begin{pmatrix} -0.130 \\\\ -0.464 \\\\ 0.23 \\\\ \vdots \\\\ -0.154 \\\\ 0.192 \\\\ \end{pmatrix}
 , \dots ,
-\begin{bmatrix} 0.127 \\\\ 0.453 \\\\ 0.110 \\\\ \vdots \\\\ -0.155 \\\\ 0.484 \\\\ \end{bmatrix}
+\begin{pmatrix} 0.127 \\\\ 0.453 \\\\ 0.110 \\\\ \vdots \\\\ -0.155 \\\\ 0.484 \\\\ \end{pmatrix}
 $$
 
 and finally positionally encoded 
 
 \begin{equation}
-     \text{positional encoder}\Bigg(\begin{bmatrix} -0.415 \\\\ -0.514 \\\\    \vdots \\\\  -0.257 \\\\   0.571 \\\\   \end{bmatrix}\Bigg) = 
-    \begin{bmatrix} -0.424 \\\\ -0.574 \\\\  \vdots \\\\  -0.235 \\\\   0.534 \\\\   \end{bmatrix} 
+     \text{positional encoder}\Bigg(\begin{pmatrix} -0.415 \\\\ -0.514 \\\\    \vdots \\\\  -0.257 \\\\   0.571 \\\\   \end{pmatrix}\Bigg) = 
+    \begin{pmatrix} -0.424 \\\\ -0.574 \\\\  \vdots \\\\  -0.235 \\\\   0.534 \\\\   \end{pmatrix} 
 \end{equation}
 
 We're now very close to being able to introduce attention. One last thing remains, at this point we will transform the output of our positional encoding to a matrix $M$ as follows 
