@@ -1,7 +1,7 @@
 ---
 title: Sliding Window Attention
 description: Altering the tokens to which a token in the input sequence attends.
-date: 2024-03-22
+date: 2024-03-27
 tldr: Altering the tokens to which a token in the input sequence attends.
 draft: false
 tags: [attention] 

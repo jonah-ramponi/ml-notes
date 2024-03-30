@@ -33,7 +33,8 @@ For each  head in a given group, we calculate attention outputs as
 
 The query matrices will be shared by all groups under a given head, and the key and value matrices will be used for all attention calculations within a given group. 
 
-**Conversions from Multi Head Attention.** A natural question might be how one could take a model which uses multi-head attention and convert it to model using multi query attention or grouped query attention. To convert to multi query attention, we want to find a single representative matrix for both $K$ and $V$ from our set of $H$ different heads. We achieve this via mean pooling. For instance for $K$, 
+#### Conversions from Multi Head Attention. 
+A natural question might be how one could take a model which uses multi-head attention and convert it to model using multi query attention or grouped query attention. To convert to multi query attention, we want to find a single representative matrix for both $K$ and $V$ from our set of $H$ different heads. We achieve this via mean pooling. For instance for $K$, 
 
 \begin{equation}
     \text{mean pooling}(K_1,\dots,K_h) \rightarrow K'.

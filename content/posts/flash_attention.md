@@ -1,7 +1,7 @@
 ---
 title: Flash Attention
 description: Reduce the memory usage used to compute exact attention.
-date: 2024-03-26
+date: 2024-03-23
 tldr: Reduce the memory usage used to compute exact attention.
 draft: false
 tags: [attention, inference] 

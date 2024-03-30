@@ -1,7 +1,7 @@
 ---
 title: Sparse Attention
 description: Reducing the number of calculations to compute attention.
-date: 2024-03-22
+date: 2024-03-25
 tldr: Reducing the number of calculations to compute attention.
 draft: false
 tags: [attention] 
