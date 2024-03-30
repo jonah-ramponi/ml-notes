@@ -152,7 +152,7 @@ M = \Big( \text{number of tokens in input} \times \text{length of embedding}  \B
 <p>\begin{equation}
 y_i = \sum_{j = 1}^{{n}} w_{ij} \cdot x_j, \text{ } \forall 1 \leq i \leq m.
 \end{equation}</p>
-<p>for some mapping $w_{ij}$. The challenge is in figuring out how we should define our mapping $w_{ij}$. Let&rsquo;s look at the first way $w_{ij}$ was defined, introduced in <img src="https://arxiv.org/pdf/1706.03762.pdf" alt="Attention is All You Need">.</p>
+<p>for some mapping $w_{ij}$. The challenge is in figuring out how we should define our mapping $w_{ij}$. Let&rsquo;s look at the first way $w_{ij}$ was defined, introduced in <a href="https://arxiv.org/pdf/1706.03762.pdf">Attention is All You Need</a>.</p>
 <p><strong>Scaled Dot Product Self Attention.</strong> To compute scaled dot product self attention, we will use the matrix $M$ with rows corresponding to the positionally encoded vectors. $M$ has dimensions $(n \times d_{\text{model}})$.</p>
 <p>We begin by producing query, key and value matrices, analogous to how a search engine maps a user query to relevant items in its database. We will make 3 copies of our matrix $M$. These become the matrices $Q, K$ and $V$. Each of these has dimension $(n \times d_{\text{model}})$. We let $d_k$ denote the dimensions of the keys, which in this case is $d_{\text{model}}$. We are ready to define attention as</p>
 <p>\begin{equation}

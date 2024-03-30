@@ -87,7 +87,7 @@
 		</div>
 
 		<section class="body">
-			<p>The goal of <img src="https://arxiv.org/pdf/2205.14135.pdf" alt="Flash Attention"> is to compute the attention value with fewer high bandwidth memory read / writes. The approach has since been refined in  <img src="https://arxiv.org/pdf/2307.08691.pdf" alt="Flash Attention 2">.</p>
+			<p>The goal of <a href="https://arxiv.org/pdf/2205.14135.pdf"><em>Flash Attention</em></a> is to compute the attention value with fewer high bandwidth memory read / writes. The approach has since been refined in  <a href="https://arxiv.org/pdf/2307.08691.pdf"><em>Flash Attention 2</em></a>.</p>
 <p>We will split the attention inputs $Q,K,V$ into blocks. Each block will be handled separately, and attention will therefore be computed with respect to each block. With the correct scaling, adding the outputs from each block we will give us the same attention value as we would get by computing everything all together.</p>
 <p><strong>Tilling.</strong> To compute attention, we multiply $Q \times K^T$, divide by $\sqrt{d_k}$ and then take the softmax. Keeping track of the scaling values in softmax is the key to making this technique work. The softmax for a vector $\vec{x} \in \mathbb{R}^{2n}$ is given by</p>
 <p>$$
