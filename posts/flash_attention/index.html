@@ -95,12 +95,12 @@ m(x):= \max_i x_i, \hspace{3mm} f(x):= [e^{x_1-m(x)}, \dots, e^{x_b -m(x)}], \hs
 $$</p>
 <p>This looks unfriendly, but is really just the notation for a more numerically stable softmax. What does that mean? Well, notice we are just applying regular softmax but with some shifting of each element of vector $\vec{x}$ by $\max(x)$ units. We can do this because softmax$(\vec{x}) = \text{softmax}(\vec{x}-c)$ for any scalar $c$.</p>
 <p><em>Proof</em>
-\begin{align}
-\text{softmax}(x - c) &amp;= \frac{e^{x - c}}{\sum_{j} e^{x_j - c}} \\
-&amp;= \frac{e^{x} \cdot e^{-c}}{\sum_{j} e^{x_j} \cdot e^{-c}} \\
-&amp;= \frac{e^{x}}{\sum_{j} e^{x_j}} \\
-&amp;= \text{softmax}(x)
-\end{align}</p>
+\begin{align*}
+\text{softmax}(\vec{x} - c) &amp;= \frac{e^{\vec{x} - c}}{\sum_{j} e^{x_j - c}} \\
+&amp;= \frac{e^{\vec{x}} \cdot e^{-c}}{\sum_{j} e^{x_j} \cdot e^{-c}} \\
+&amp;= \frac{e^{\vec{x}}}{\sum_{j} e^{x_j}} \\
+&amp;= \text{softmax}(\vec{x})
+\end{align*}</p>
 <p>In this case, we improve numerical stability by ensuring we do not take the exponential of very large numbers. This can lead to overflow issues. This simply means our number gets too big to store in the given datatype. By subtracting the largest element, we ensure the vector $\vec{x}$ only has non-positive entries. For example, in floating point 64, the maximum value we can represent is very large $(10^{308})$. However</p>
 <p>$$
 e^x &gt; 10^{308} \implies x &gt; \ln(10^{308}) \implies x &gt; 308 \times \ln(10) \implies x &gt; 709.
@@ -111,7 +111,7 @@ $$</p>
 </span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>np<span style="color:#f92672">.</span>exp(<span style="color:#ae81ff">710</span>)
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># &lt;stdin&gt;:1: RuntimeWarning: overflow encountered in exp</span>
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># inf</span>
-</span></span></code></pre></div><p>We certainly do not want our model to hit any overflow errors. It is therefore preferable to use this numerically stable version of softmax. \</p>
+</span></span></code></pre></div><p>We certainly do not want our model to hit any overflow errors. It is therefore preferable to use this numerically stable version of softmax.</p>
 <p>To compute softmax in blocks, we decompose our vector $\vec{x} \in \mathbb{R}^{2n}$ into two smaller vectors in $\mathbb{R}^n$.Let&rsquo;s look at the simple case of decomposing into two vectors. Denote these vectors $\vec{x}_1,\vec{x}_2$ each in $\mathbb{R}^n$. Our softmax calculation becomes</p>
 <p>\begin{aligned}
 m(x) &amp;= m([x_1\hspace{3mm}  x_2]) = \max (m(x_1),m(x_2)), \\
