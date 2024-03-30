@@ -87,11 +87,13 @@
 		</div>
 
 		<section class="body">
-			<p>The computation of attention is costly. Remember that our decoder works in an auto-regressive fashion. For our given input ``\textit{\colorbox{red}{What}\colorbox{magenta}{ is}\colorbox{green}{ the}\colorbox{orange}{ capital}\colorbox{purple}{ of}\colorbox{brown}{ France}\colorbox{cyan}{?}&quot;}</p>
+			<p>$\require{\nicematrix}$
+$\require{\minted}$</p>
+<p>The computation of attention is costly. Remember that our decoder works in an auto-regressive fashion. For our given input ``\textit{\colorbox{red}{What}\colorbox{magenta}{ is}\colorbox{green}{ the}\colorbox{orange}{ capital}\colorbox{purple}{ of}\colorbox{brown}{ France}\colorbox{cyan}{?}&quot;}</p>
 <p>\begin{align}
-\text{Prediction 1} &amp;= \colorbox{orange}{The} \
-\text{Prediction 2} &amp;= \colorbox{orange}{The}\colorbox{pink}{ capital} \
-&amp;\vdots \
+\text{Prediction 1} &amp;= \colorbox{orange}{The} \\
+\text{Prediction 2} &amp;= \colorbox{orange}{The}\colorbox{pink}{ capital} \\
+&amp;\vdots \\
 \text{Prediction $p$} &amp;= \colorbox{orange}{The}\colorbox{pink}{ capital} (\dots) \colorbox{red}{ Paris.}
 \end{align}</p>
 <p>To produce prediction $2$, we will take the output from prediction $1$. At each step, the model will also see our input sequence. Without any tricks, at every step, we&rsquo;re going to be re-computing values that have already been calculated. Our attention matrix used for our first prediction will have the following structure</p>
