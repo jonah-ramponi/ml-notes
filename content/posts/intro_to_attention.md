@@ -153,7 +153,7 @@ Well, our *attention matrix* after softmax has been applied is simply $w$ with $
 The attention matrix is a nice thing to visualize. For our toy example, it might look like 
 
 
-1[Attention Matrix Visualisation](/img/attnm.png)
+![Attention Matrix Visualisation](/img/attnm.png)
 
 What can we notice about our attention matrix?
 
