@@ -115,7 +115,7 @@ A^{(1)}_i &amp;= \Big{ j : \left\lfloor \frac{j}{l} \right\rfloor = \left\lfloor
 A^{(2)}_i &amp;= \Big{ j : j \mod l \in { t, t + 1, \ldots, l } \Big},  \text{ where } t = l - c \text{ and } c \text{ is a hyperparameter.}
 \end{align*}</p>
 <p>These are best understood visually in my opinion. In the image below, $A_i^{(1)}$ is responsible for the dark blue shading and $A_i^{(2)}$ for the light blue shading. If we take stride, $l$ = 128 and $c=8$, then all positions greater than 128 can attend to positions $120-128$. The authors find choosing $c \in {8,16,32}$ worked well.</p>
-<p><img src="/img/sparse_attention.png" alt="my alt text"></p>
+<p><img src="/img/sparse_attention.png" alt="my alt text">{: style=&ldquo;width: 85%;&rdquo;}</p>
 
 		</section>
 
