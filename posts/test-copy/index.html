@@ -2,69 +2,28 @@
 <html><head lang="en">
 	<meta charset="utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>Post 2 - Jonah&#39;s ML Notes</title><meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="description" content="Here&rsquo;s my second content View as PDF.
-Here is a quote by me
-def attention(Q, K, V): dk = K.size(-1) scores = torch.matmul(Q, K.transpose(-2, -1)) / torch.sqrt(dk) attn_weights = torch.nn.functional.softmax(scores, dim=-1) return torch.matmul(attn_weights, V) test 2" />
+	<meta name="description" content="Here&rsquo;s my second content" />
 	<meta property="og:image" content=""/>
 	<meta property="og:title" content="Post 2" />
-<meta property="og:description" content="Here&rsquo;s my second content View as PDF.
-Here is a quote by me
-def attention(Q, K, V): dk = K.size(-1) scores = torch.matmul(Q, K.transpose(-2, -1)) / torch.sqrt(dk) attn_weights = torch.nn.functional.softmax(scores, dim=-1) return torch.matmul(attn_weights, V) test 2" />
+<meta property="og:description" content="Here&rsquo;s my second content" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://www.jonahramponi.com/posts/test-copy/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2024-03-30T11:49:13+00:00" />
 <meta property="article:modified_time" content="2024-03-30T11:49:13+00:00" />
 <meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Post 2"/>
-<meta name="twitter:description" content="Here&rsquo;s my second content View as PDF.
-Here is a quote by me
-def attention(Q, K, V): dk = K.size(-1) scores = torch.matmul(Q, K.transpose(-2, -1)) / torch.sqrt(dk) attn_weights = torch.nn.functional.softmax(scores, dim=-1) return torch.matmul(attn_weights, V) test 2"/>
+<meta name="twitter:description" content="Here&rsquo;s my second content"/>
 
 	
-        <link href="https://www.jonahramponi.com/css/fonts.2c2227b81b1970a03e760aa2e6121cd01f87c88586803cbb282aa224720a765f.css" rel="stylesheet">
-	
-
-	
-	<link rel="stylesheet" type="text/css" media="screen" href="https://www.jonahramponi.com/css/main.ac08a4c9714baa859217f92f051deb58df2938ec352b506df655005dcaf98cc0.css" />
-
-	
-	
-		<script type="text/javascript"
-		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-		</script>
-	
-		
-		<script type="text/x-mathjax-config">
-		MathJax.Hub.Config({
-			tex2jax: {
-				inlineMath: [['$','$'], ['\\(','\\)']],
-				displayMath: [['$$','$$'], ['\[','\]']],
-				processEscapes: true,
-				processEnvironments: true,
-				skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
-				TeX: { equationNumbers: { autoNumber: "AMS" },
-						 extensions: ["AMSmath.js", "AMSsymbols.js"] }
-			}
-		});
-		</script>
+        <link href="https://www.jonahramponi.com/css/fonts.11a1877508139eac0b5b4852ceb110c35641b3533321e66e39149e901ed5756b.css" rel="stylesheet">
 	
 
 	
+	<link rel="stylesheet" type="text/css" media="screen" href="https://www.jonahramponi.com/css/main.d902908ac6e0fab67957de5db5aea1b6455b19ae2ca98eac4c95a4a0fdc02238.css" />
+
 	
-		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css">
-		<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.js"></script>
-		<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
-		
-		
-		<script>
-			document.addEventListener("DOMContentLoaded", function() {
-					renderMathInElement(document.body, {
-							delimiters: [
-									{left: "$$", right: "$$", display: true},
-									{left: "$", right: "$", display: false}
-							]
-					});
-			});
-			</script>
+	
+
+	
 	
 	
 	
@@ -89,22 +48,7 @@ def attention(Q, K, V): dk = K.size(-1) scores = torch.matmul(Q, K.transpose(-2,
 		
 
 		<section class="body">
-			<p>Here&rsquo;s my second content <a href="/posts/file/Attention_Mechanisms.pdf">View as PDF</a>.</p>
-<blockquote>
-<p>Here is a quote by me</p>
-</blockquote>
-<p><img src="/img/longformer.png" alt="my alt text"></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">attention</span>(Q, K, V):
-</span></span><span style="display:flex;"><span>    dk <span style="color:#f92672">=</span> K<span style="color:#f92672">.</span>size(<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>)
-</span></span><span style="display:flex;"><span>    scores <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>matmul(Q, K<span style="color:#f92672">.</span>transpose(<span style="color:#f92672">-</span><span style="color:#ae81ff">2</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>)) <span style="color:#f92672">/</span> torch<span style="color:#f92672">.</span>sqrt(dk)
-</span></span><span style="display:flex;"><span>    attn_weights <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>nn<span style="color:#f92672">.</span>functional<span style="color:#f92672">.</span>softmax(scores, dim<span style="color:#f92672">=-</span><span style="color:#ae81ff">1</span>)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> torch<span style="color:#f92672">.</span>matmul(attn_weights, V)
-</span></span></code></pre></div>
-<div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
-  <iframe src="https://www.youtube.com/embed/q389nbmv4MU" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" allowfullscreen title="YouTube Video"></iframe>
-</div>
-
-<p>test 2</p>
+			<p>Here&rsquo;s my second content</p>
 
 		</section>
 

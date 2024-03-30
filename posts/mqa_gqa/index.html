@@ -2,16 +2,16 @@
 <html><head lang="en">
 	<meta charset="utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>Multi &amp; Grouped Query Attention - Jonah&#39;s ML Notes</title><meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="description" content="Using less K &amp; V Matrices." />
+	<meta name="description" content="Use less K and V matrices to use less memory." />
 	<meta property="og:image" content=""/>
 	<meta property="og:title" content="Multi &amp; Grouped Query Attention" />
-<meta property="og:description" content="Using less K &amp; V Matrices." />
+<meta property="og:description" content="Use less K and V matrices to use less memory." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://www.jonahramponi.com/posts/mqa_gqa/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2024-03-22T00:00:00+00:00" />
 <meta property="article:modified_time" content="2024-03-22T00:00:00+00:00" />
 <meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Multi &amp; Grouped Query Attention"/>
-<meta name="twitter:description" content="Using less K &amp; V Matrices."/>
+<meta name="twitter:description" content="Use less K and V matrices to use less memory."/>
 
 	
         <link href="https://www.jonahramponi.com/css/fonts.2c2227b81b1970a03e760aa2e6121cd01f87c88586803cbb282aa224720a765f.css" rel="stylesheet">
@@ -83,11 +83,11 @@
 		
 		<div class="tldr">
 			<strong>tl;dr:</strong>
-			Using less K &amp; V Matrices.
+			Use less K and V matrices to use less memory.
 		</div>
 
 		<section class="body">
-			<p><a href="https://arxiv.org/pdf/1911.02150v1.pdf"><em>Multi Query Attention</em></a> (MQA) using the same $K$ and $V$ matrices for each head in our multi head self attention mechanism. For a given head, $h$, $1 \leq h \leq H$, the attention mechanism is calculated as</p>
+			<p><img src="https://arxiv.org/pdf/1911.02150v1.pdf" alt="Multi Query Attention"> (MQA) using the same $K$ and $V$ matrices for each head in our multi head self attention mechanism. For a given head, $h$, $1 \leq h \leq H$, the attention mechanism is calculated as</p>
 <p>\begin{equation}
 h_i = \text{attention}(M\cdot W_h^Q, M \cdot W^K,M \cdot W^V).
 \end{equation}</p>

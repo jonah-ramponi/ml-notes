@@ -13,21 +13,21 @@
       <link>https://www.jonahramponi.com/posts/flash_attention/</link>
       <pubDate>Tue, 26 Mar 2024 00:00:00 +0000</pubDate>
       <guid>https://www.jonahramponi.com/posts/flash_attention/</guid>
-      <description>The goal of Flash Attention is to compute the attention value with fewer high bandwidth memory read / writes. The approach has since been refined in Flash Attention 2.&#xA;We will split the attention inputs $Q,K,V$ into blocks. Each block will be handled separately, and attention will therefore be computed with respect to each block. With the correct scaling, adding the outputs from each block we will give us the same attention value as we would get by computing everything all together.</description>
+      <description>The goal of is to compute the attention value with fewer high bandwidth memory read / writes. The approach has since been refined in .&#xA;We will split the attention inputs $Q,K,V$ into blocks. Each block will be handled separately, and attention will therefore be computed with respect to each block. With the correct scaling, adding the outputs from each block we will give us the same attention value as we would get by computing everything all together.</description>
     </item>
     <item>
       <title>Intro to Attention</title>
       <link>https://www.jonahramponi.com/posts/intro_to_attention/</link>
       <pubDate>Fri, 22 Mar 2024 00:00:00 +0000</pubDate>
       <guid>https://www.jonahramponi.com/posts/intro_to_attention/</guid>
-      <description>Suppose you give an LLM the input \begin{center} \textbf{input:} \textit{What is the capital of France?&amp;quot;} \end{center} The first thing the LLM will do is split this input into tokens. A token is just some combinations of characters. You can see an example of the tokenization outputs for the question below. \begin{center} \textit{\colorbox{red}{What}\colorbox{magenta}{ is}\colorbox{green}{ the}\colorbox{orange}{ capital}\colorbox{purple}{ of}\colorbox{brown}{ France}\colorbox{cyan}?&amp;quot;}\footnote{This tokenization was produced using cl100k_base, the tokenizer used in GPT-3.5-turbo and GPT-4.} \end{center} In this example we have $(n = 7)$ tokens.</description>
+      <description>Suppose you give an LLM the input&#xA;``What is the capital of France?&amp;quot;&#xA;The first thing the LLM will do is split this input into tokens. A token is just some combinations of characters. You can see an example of the tokenization outputs for the question below.&#xA;``$\colorbox{red}{What}\colorbox{magenta}{ is}\colorbox{green}{ the}\colorbox{orange}{ capital}\colorbox{purple}{ of}\colorbox{brown}{ France}\colorbox{cyan}?$&amp;quot;&#xA;(This tokenization was produced using cl100k_base, the tokenizer used in GPT-3.5-turbo and GPT-4.)&#xA;In this example we have $(n = 7)$ tokens.</description>
     </item>
     <item>
       <title>Multi &amp; Grouped Query Attention</title>
       <link>https://www.jonahramponi.com/posts/mqa_gqa/</link>
       <pubDate>Fri, 22 Mar 2024 00:00:00 +0000</pubDate>
       <guid>https://www.jonahramponi.com/posts/mqa_gqa/</guid>
-      <description>Multi Query Attention (MQA) using the same $K$ and $V$ matrices for each head in our multi head self attention mechanism. For a given head, $h$, $1 \leq h \leq H$, the attention mechanism is calculated as&#xA;\begin{equation} h_i = \text{attention}(M\cdot W_h^Q, M \cdot W^K,M \cdot W^V). \end{equation}&#xA;For each of our $H$ heads, the only difference in the weight matrices is in $W_h^Q$. Each of these $W_h$ has dimension $(n \times d_q)$.</description>
+      <description>(MQA) using the same $K$ and $V$ matrices for each head in our multi head self attention mechanism. For a given head, $h$, $1 \leq h \leq H$, the attention mechanism is calculated as&#xA;\begin{equation} h_i = \text{attention}(M\cdot W_h^Q, M \cdot W^K,M \cdot W^V). \end{equation}&#xA;For each of our $H$ heads, the only difference in the weight matrices is in $W_h^Q$. Each of these $W_h$ has dimension $(n \times d_q)$.</description>
     </item>
     <item>
       <title>Sliding Window Attention</title>
