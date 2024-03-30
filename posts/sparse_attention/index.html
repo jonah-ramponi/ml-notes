@@ -92,7 +92,11 @@
 \text{attention}(Q,K,V, S_i) &amp;= \text{softmax}\Big( \frac{(Q_{S_i}) K^T_{S_i}}{\sqrt{d_k}} \Big) V_{S_i}.
 \end{align}</p>
 <p>Here, we have defined</p>
-<p>$$ Q_{S_i} = (W_q \vec{x}<em>j )</em>{j \text{ in }  S_i} $$</p>
+<p>$$ Q_{S_i} = (W_q \vec{x}<em>j )</em>{j \text{ in }  S_i} $$
+$$ Q_{S_i} = (W_q \vec{x}<em>j ) $$
+$$ Q</em>{S_i} = (W_q \vec{x}<em>j )</em>{S_i} $$
+$$ Q_{S_i} = (W_q x_j )<em>{j \text{ in }  S_i} $$
+$$ Q</em>{S_i} = a_{j \text{ in }  S_i} $$</p>
 <p>\begin{align*}
 Q_{S_i} &amp;= (W_q \vec{x}<em>j )</em>{j \in S_i}, \\
 K_{S_i} &amp;= (W_k \vec{x}<em>j )</em>{j \in S_i}, \\
