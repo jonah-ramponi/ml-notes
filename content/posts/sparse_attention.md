@@ -13,13 +13,11 @@ tags: [attention, inference]
     \text{attention}(Q,K,V, S_i) = \text{softmax}\Big( \frac{(Q_{S_i}) K^T_{S_i}}{\sqrt{d_k}} \Big) V_{S_i}.
 \end{equation*}
 
-Here, we have defined
+Here, we have defined 
 
-\begin{align*}
-    Q_{S_i} &= (W_q x_j)_{j \text{ in } S_i}, \\\\
-    K_{S_i} &= (W_k x_j)_{j \text{ in } S_i}, \\\\
-    V_{S_i} &= (W_v x_j)_{j \text{ in } S_i}. 
-\end{align*}
+$ Q_{S_i} = (W_q x_j)_{j \text{ in } S_i}$
+
+$$ Q_{S_i} = (W_q x_j), K_{S_i} = (W_k x_j), V_{S_i} = (W_v x_j) \text{ for } j \in S_i $$ 
 
 So how do we define the set of connectivity patterns $S$? Formally, we let $S_i = A_i^{h}$ for head $h$ where $A_i^{h} \subset \{j : j \leq i\}$. It is still no clearer how we pick which indices we should take for a given $S_i$. The original authors consider two key criteria initially:
 
