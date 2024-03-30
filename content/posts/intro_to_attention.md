@@ -1,7 +1,7 @@
 ---
 title: Intro to Attention
 description: A brief introduction to attention in the transformer architecture. 
-date: 2024-03-22
+date: 2024-03-30
 tldr: A brief introduction to attention in the transformer architecture.  
 draft: false
 tags: [attention] 
@@ -53,18 +53,20 @@ This was tokenized
 Then embedded 
 
 $$
-\begin{pmatrix} -0.415 \\\\ -0.514 \\\\  0.569 \\\\  \vdots \\\\  -0.257 \\\\   0.571 \\\\   \end{pmatrix} 
-\begin{pmatrix} -0.130 \\\\ -0.464 \\\\ 0.23 \\\\ \vdots \\\\ -0.154 \\\\ 0.192 \\\\ \end{pmatrix}
+\begin{pmatrix} -0.415 \\\\  \vdots \\\\   0.571 \\\\   \end{pmatrix} 
+\begin{pmatrix} -0.130  \\\\ \vdots  \\\\ 0.192 \\\\ \end{pmatrix}
 , \dots ,
-\begin{pmatrix} 0.127 \\\\ 0.453 \\\\ 0.110 \\\\ \vdots \\\\ -0.155 \\\\ 0.484 \\\\ \end{pmatrix}
+\begin{pmatrix} 0.127  \\\\ \vdots \\\\ 0.484 \\\\ \end{pmatrix}
 $$
 
 and finally positionally encoded 
 
-\begin{equation}
-     \text{positional encoder}\Bigg(\begin{pmatrix} -0.415 \\\\ -0.514 \\\\    \vdots \\\\  -0.257 \\\\   0.571 \\\\   \end{pmatrix}\Bigg) = 
-    \begin{pmatrix} -0.424 \\\\ -0.574 \\\\  \vdots \\\\  -0.235 \\\\   0.534 \\\\   \end{pmatrix} 
-\end{equation}
+$$
+\begin{pmatrix} -0.424 \\\\  \vdots \\\\   0.534 \\\\   \end{pmatrix} 
+\begin{pmatrix} 0.110  \\\\ \vdots  \\\\ 0.212 \\\\ \end{pmatrix}
+, \dots ,
+\begin{pmatrix} 0.070  \\\\ \vdots \\\\ 0.324 \\\\ \end{pmatrix}
+$$
 
 We're now very close to being able to introduce attention. One last thing remains, at this point we will transform the output of our positional encoding to a matrix $M$ as follows 
 
@@ -98,12 +100,13 @@ At a high level, self-attention aims to evaluate the importance of each element 
 
 for some mapping $w_{ij}$. The challenge is in figuring out how we should define our mapping $w_{ij}$. Let's look at the first way $w_{ij}$ was defined, introduced in [Attention is All You Need](https://arxiv.org/pdf/1706.03762.pdf). 
 
-### Scaled Dot Product Self Attention. To compute scaled dot product self attention, we will use the matrix $M$ with rows corresponding to the positionally encoded vectors. $M$ has dimensions $(n \times d_{\text{model}})$. 
+### Scaled Dot Product Self Attention. 
+To compute scaled dot product self attention, we will use the matrix $M$ with rows corresponding to the positionally encoded vectors. $M$ has dimensions $(n \times d_{\text{model}})$. 
 
 We begin by producing query, key and value matrices, analogous to how a search engine maps a user query to relevant items in its database. We will make 3 copies of our matrix $M$. These become the matrices $Q, K$ and $V$. Each of these has dimension $(n \times d_{\text{model}})$. We let $d_k$ denote the dimensions of the keys, which in this case is $d_{\text{model}}$. We are ready to define attention as 
 
 \begin{equation}
-    \text{attention}(Q,K,V) = \text{softmax} \Big( \frac{Q K^T}{\sqrt{d_k}} \Big) V.
+    \text{attention}(Q,K,V) = \mathrm{softmax} \Big( \frac{Q K^T}{\sqrt{d_k}} \Big) V.
 \end{equation}
 
 ```python
