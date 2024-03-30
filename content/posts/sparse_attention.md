@@ -15,10 +15,12 @@ tags: [attention, inference]
 
 Here, we have defined
 
+$$ Q_{S_i} = (W_q \vec{x}_j )_{j \in S_i} $$
+
 \begin{align*}
-    Q_{S_i} &=(W_q \vec{x}_j )_{j \in S_i}, \\\\
-    K_{S_i} &=(W_k \vec{x}_j )_{j \in S_i}, \\\\
-    V_{S_i} &= (W_v\vec{x}_j )_{j \in S_i}. 
+    Q_{S_i} &= (W_q \vec{x}_j )_{j \in S_i}, \\\\
+    K_{S_i} &= (W_k \vec{x}_j )_{j \in S_i}, \\\\
+    V_{S_i} &= (W_v\ vec{x}_j )_{j \in S_i}. 
 \end{align*}
 
 So how do we define the set of connectivity patterns $S$? Formally, we let $S_i = A_i^{h}$ for head $h$ where $A_i^{h} \subset \{j : j \leq i\}$. It is still no clearer how we pick which indices we should take for a given $S_i$. The original authors consider two key criteria initially:
@@ -50,4 +52,4 @@ Here, $A_i^{(1)}$ simply takes the previous $l$ locations. $A_i^{(2)}$ then take
 
 These are best understood visually in my opinion. In the image below, $A_i^{(1)}$ is responsible for the dark blue shading and $A_i^{(2)}$ for the light blue shading. If we take stride, $l$ = 128 and $c=8$, then all positions greater than 128 can attend to positions $120-128$. The authors find choosing $c \in \{8,16,32\}$ worked well. 
 
-![my alt text](/img/sparse_attention.png){: style="width: 85%; border: none;"}
+![Sparse Attention Matrix](/img/sparse_attention.png)
