@@ -15,9 +15,11 @@ tags: [attention, inference]
 
 Here, we have defined
 
-\begin{equation}
-    Q_{S_i} = \big(W_q \vec{x}_j \big)_{j \in S_i}, \qquad K_{S_i} = \big(W_k \vec{x}_j \big)_{j \in S_i}, \qquad V_{S_i} = \big(W_v\vec{x}_j \big)_{j \in S_i}. 
-\end{equation}
+\begin{align*}
+    Q_{S_i} &= \big(W_q \vec{x}_j \big)_{j \in S_i}, \\\\
+    K_{S_i} &= \big(W_k \vec{x}_j \big)_{j \in S_i}, \\\\
+    V_{S_i} &= \big(W_v\vec{x}_j \big)_{j \in S_i}. 
+\end{align*}
 
 So how do we define the set of connectivity patterns $S$? Formally, we let $S_i = A_i^{h}$ for head $h$ where $A_i^{h} \subset \{j : j \leq i\}$. It is still no clearer how we pick which indices we should take for a given $S_i$. The original authors consider two key criteria initially:
 
@@ -43,7 +45,7 @@ Here, $A_i^{(1)}$ simply takes the previous $l$ locations. $A_i^{(2)}$ then take
 
 \begin{align*}
     A^{(1)}_i &= \Big\{ j : \left\lfloor \frac{j}{l} \right\rfloor = \left\lfloor \frac{i}{l} \right\rfloor \Big\}, \\\\
-    A^{(2)}_i &= \Big\{ j : j \mod l \in \{ t, t + 1, \ldots, l \} \Big\}, \quad \text{where } t = l - c \text{ and } c \text{ is a hyperparameter.}
+    A^{(2)}_i &= \Big\{ j : j \mod l \in \{ t, t + 1, \ldots, l \} \Big\},  \text{ where } t = l - c \text{ and } c \text{ is a hyperparameter.}
 \end{align*}
 
 These are best understood visually in my opinion. In the image below, $A_i^{(1)}$ is responsible for the dark blue shading and $A_i^{(2)}$ for the light blue shading. If we take stride, $l$ = 128 and $c=8$, then all positions greater than 128 can attend to positions $120-128$. The authors find choosing $c \in \{8,16,32\}$ worked well. 
