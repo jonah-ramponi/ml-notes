@@ -161,15 +161,6 @@ y_i = \sum_{j = 1}^{{n}} w_{ij} \cdot x_j, \text{ } \forall 1 \leq i \leq m.
 <p>\begin{equation}
 \text{attention}(Q,K,V) = \mathrm{softmax} \Big( \frac{Q K^T}{\sqrt{d_k}} \Big) V.
 \end{equation}</p>
-<p>\begin{equation}
-\text{attention}(Q,K,V) = \mathrm{softmax}
-\end{equation}</p>
-<p>\begin{equation}
-\text{attention}(Q,K,V) = \text{softmax} \Big( \frac{Q K^T}{\sqrt{d_k}} \Big)
-\end{equation}</p>
-<p>\begin{equation}
-\frac{Q K^T}{\sqrt{d_k}}
-\end{equation}</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">attention</span>(Q, K, V):
 </span></span><span style="display:flex;"><span>    dk <span style="color:#f92672">=</span> K<span style="color:#f92672">.</span>size(<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>)
 </span></span><span style="display:flex;"><span>    scores <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>matmul(Q, K<span style="color:#f92672">.</span>transpose(<span style="color:#f92672">-</span><span style="color:#ae81ff">2</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>)) <span style="color:#f92672">/</span> torch<span style="color:#f92672">.</span>sqrt(dk)
@@ -232,15 +223,9 @@ h_i = \text{attention}(M \cdot W_h^Q, M\cdot W_h^K,M\cdot W_h^V)
 \end{equation}</p>
 <p>Concat() simply concatenates our output matrices. The output matrix of size $(n \times d_v)$ for each head is simply our matrices stacked on top of one another like so</p>
 <p>\begin{equation*}
-\text{Concat}(\text{head}<em>1, \dots, \text{head}<em>h) =
-\begin{pmatrix}
-\text{head}</em>{1</em>{11}} &amp; \dots &amp; \text{head}<em>{1</em>{1d_v}} &amp; \dots &amp; \text{head}<em>{H</em>{11}} &amp; \dots &amp; \text{head}<em>{H</em>{1d_v}} \\
-\text{head}<em>{1</em>{21}} &amp; \dots &amp; \text{head}<em>{1</em>{2d_v}} &amp; \dots &amp; \text{head}<em>{H</em>{21}} &amp; \dots &amp; \text{head}<em>{H</em>{2d_v}} \\
-\vdots &amp; \ddots &amp; \vdots &amp; \dots &amp; \vdots &amp; \ddots &amp; \vdots \\
-\text{head}<em>{1</em>{n1}} &amp; \dots &amp; \text{head}<em>{1</em>{nd_v}} &amp; \dots &amp; \text{head}<em>{H</em>{n1}} &amp; \dots &amp; \text{head}<em>{H</em>{nd_v}} \\
-\end{pmatrix}
+\text{Concat}(\text{head}_1, \dots, \text{head}_h) =
 \end{equation*}</p>
-<p>This output has dimension $(n \times H d_v)$. We still have $n$ rows, however now we have $h$ different representations of $d_v$. Our output, $W^O$, is another trainable weight matrix which has dimensions $W^O = (Hd_v \times d_{\text{model}})$. Therefore, the multiplication of Concat $(\text{head}_1, \dots, \text{head}<em>H)$ and $W^O$ results in a matrix with dimension $(n \times d</em>{\text{model}})$.</p>
+<p>This output has dimension $(n \times H d_v)$. We still have $n$ rows, however now we have $h$ different representations of $d_v$. Our output, $W^O$, is another trainable weight matrix which has dimensions $W^O = (Hd_v \times d_{\text{model}})$. Therefore, the multiplication of Concat $ (head_1, \dots, head_H)$ and $W^O$ results in a matrix with dimension $(n \times d_{\text{model}})$.</p>
 
 		</section>
 
