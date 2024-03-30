@@ -31,7 +31,7 @@ Our goal is to simplify this computation. Instead of letting each token attend t
 
 ![Sliding Window Attention Matrix](/img/sliding_window.png)
 
-This greatly reduces the cost of the computation of $Q \times K^T$, however, the original authors encountered a problem in training. The authors found that this approach is not flexible enough to learn to complete specific tasks. They solved this problem through the introduction of \textit{global attention}. This will give a few of our tokens some special properties: A token with a global attention attends to all other tokens in the sequence and all tokens in the sequence attend to every token with a global attention. 
+This greatly reduces the cost of the computation of $Q \times K^T$, however, the original authors encountered a problem in training. The authors found that this approach is not flexible enough to learn to complete specific tasks. They solved this problem through the introduction of *global attention*. This will give a few of our tokens some special properties: A token with a global attention attends to all other tokens in the sequence and all tokens in the sequence attend to every token with a global attention. 
 
 The local attention (sliding window attention) is primarily used to build contextual representations, while the global attention allows the model to build full sequence representations for prediction. 
 
@@ -45,7 +45,7 @@ We first calculate local attention weights using $\{Q_s,K_s,V_s\}$. This gives u
 ![Dilated Sliding Window Attention Matrix](/img/dilated_sliding_window.png)
 
 
-The authors provide a nice visual of how this looks generally, which you can see in Figure (\ref{fig:longform}). The authors note they use dilated sliding window attention with small window sizes for lower layers, and larger window sizes for higher layers. They do not introduce dilation for lower layers, however for higher layers a small amount of increasing dilation was introduced on $2$ heads.
+The authors provide a nice visual of how this looks generally, which you can see in the image below. The authors note they use dilated sliding window attention with small window sizes for lower layers, and larger window sizes for higher layers. They do not introduce dilation for lower layers, however for higher layers a small amount of increasing dilation was introduced on $2$ heads.
 
 
 ![Attention Matrix Visualizations from the Longformer Paper](/img/longformer.png)
