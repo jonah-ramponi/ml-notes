@@ -6,18 +6,19 @@ pygmentsstyle: "monokai"
 pygmentscodefences: true
 pygmentscodefencesguesssyntax: true
 paginate: 3
+
 params:
   mode: "toggle" 
   math: true
   mathjax: true 
   katex: true 
 
-[[menu.main]]
-name: "Home"
-url: "/"
-weight: 1
+menu:
+  main:
+   - name: "Home"
+     url: "/"
+     weight: 1
 
-[[menu.main]]
-name: "About"
-url: "/about"
-weight: 3
+   - name: "About"
+     url: "/about"
+     weight: 3
