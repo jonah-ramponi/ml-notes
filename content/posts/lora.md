@@ -36,7 +36,7 @@ $M$ has rank $2$ because it has two linearly in-dependant rows, because it has a
 
 Imagine a one thousand dimensional matrix ($d=1000$). 
 
-In our square matrix case, we will have a matrix with 1000 rows and 1000 columns. Storing such a large matrix is in-efficient if the *rank* was something like $200$. This is precisely why LoRa is so useful. Large language models are [thought](https://arxiv.org/pdf/1804.08838.pdf) to have a low intrinsic dimension. The authors of the LoRa approach propose that we could apply lower dimensional weight updates when training. We achieve this by manipulating the weight update matrix's *size*. 
+In our square matrix case, we will have a matrix with 1000 rows and 1000 columns. Storing such a large matrix is in-efficient if the *rank* was something like $200$. This is precisely why LoRa is so useful. Large language models are [thought](https://arxiv.org/pdf/1804.08838.pdf) to have a low intrinsic dimension. The [authors of the LoRa approach](https://arxiv.org/pdf/2106.09685.pdf) propose that we could apply lower dimensional weight updates when training. We achieve this by manipulating the weight update matrix's *size*. 
 
 When we're updating the weight matrix, at each step we're figuring out how to slightly alter the values in our matrix. To visualize in a low dimensional case, we're doing something like  
 
@@ -69,3 +69,31 @@ But why, you might wonder? What does this matrix decomposition give us? Well, im
 **Example.** Consider a weight matrix with dimension $10,000$. Before applying LoRa, we'd have $10,000 \times 10,000 = 100,000,000$ values in our update weight matrix. Now, let's apply LoRa with $r = 100$. We're saying instead of using $\Delta W$ with dimension ($10,000 \times 10,000$), let's use $\Delta W = A \times B$ where $A$ has dimension $(10,000 \times 100)$ and $B$ has dimension $(100 \times 10,000)$. Instead of 100 million values, we now have just $2 \times 100 \times 10,000 = 2,000,000$. We've reduced the number of values we're updating by a factor of 50.
 
 When LoRa is implemented, we typically also scale our update to the weights $\Delta W$. We use the update $\frac{\alpha}{r} \Delta W$.Increasing $\alpha$ will increase the size (and thus affect) of our weight update relative to the initial weights. We take $\alpha$ to be constant in $r$. This means that if we took $r=50$ or $r=20$, we implement $\alpha$ such that the size of the weight matrix update would be the same.
+
+#### ReLora 
+
+Using regular LoRa, we describe our weight update matrix as $\Delta W = A \times B$ where $A$ has dimension $(d \times r)$ and $B$ has dimension $(r \times d)$. The resulting matrix, $\Delta W$, can have at most rank $r$. We remember the fundamental rule from maths that
+
+\begin{align}
+    \text{rank}(A + B) &\leq \text{rank} (A) + \text{rank}(B) 
+\end{align}
+
+Because using LoRa the update we make is restricted to rank $r \leq d$, what this really means is that the weight update we apply isn't of full rank. However, maybe we want to try to apply an update to the weight matrices with as high a rank as possible. To do this, [the authors](https://arxiv.org/pdf/2307.05695.pdf) essentially propose applying *LoRa* multiple times. Say we choose to perform three LoRa updates. Enumerate these $\Delta W_1, \Delta W_2$ and $\Delta W_3$. Then we have that
+
+\begin{equation}
+    \Delta W = \Delta W_1 + \Delta W_2 + \Delta W_3
+\end{equation}
+
+Our total weight update is described as the sum of the three component updates. Each of these three updates has, at most, rank $r$. Thus, the important conclusion we can draw is that 
+
+\begin{equation}
+    r \leq \text{rank}(\Delta W_1) + \text{rank}(\Delta W_2) + \text{rank}(\Delta W_3) = \text{rank}(\Delta W)
+\end{equation}
+
+Therefore, the dimension of the rank update we would have achieved with LoRa $(r)$ is less than or equal to the dimension of the rank update using ReLoRa. However, a number of practical considerations must be made. First of all, how do we implement these three weight updates with respect to the original optimization process? 
+
+The first thing we need to do is implement a scheduler. This scheduler controls the learning rate. We want to ensure that upon starting to produce a *new* set of weight updates, i.e. $\Delta W_4$ for instance, we reset the learning rate to $0$. We also ensure that we have set $99\%$ of the low-magnitude optimizer state values to zero too. All this means is that the vast majority of our optimizer state values that are close to zero, we will simply set to zero for each new $\Delta W_i$ we look to produce.
+
+![ReLora Cosine Scheduler](/img/relora.png)
+
+The type of scheduler we use here is called a *Jagged Cosine Scheduler*. In the above image, you can see that $4$ different updates have been made. At each update, the learning rate is set to zero. There is a brief warm up period for the learning rate after the reset, the authors suggest 50-100 steps.
