@@ -25,3 +25,6 @@ menu:
 
 disableKinds:
   - "404"
+
+custom_css:
+  - "css/custom.css"
