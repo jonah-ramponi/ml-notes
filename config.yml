@@ -22,3 +22,6 @@ menu:
    - name: "About"
      url: "/about"
      weight: 3
+
+disableKinds:
+  - "404"

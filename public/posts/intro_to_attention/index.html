@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html><head lang="en">
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>Intro to Attention - Jonah&#39;s ML Notes</title><meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="A brief introduction to attention in the transformer architecture." />
+	<meta property="og:image" content=""/>
+	<meta property="og:title" content="Intro to Attention" />
+<meta property="og:description" content="A brief introduction to attention in the transformer architecture." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://www.jonahramponi.com/posts/intro_to_attention/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2024-03-30T00:00:00+00:00" />
+<meta property="article:modified_time" content="2024-03-30T00:00:00+00:00" />
+<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Intro to Attention"/>
+<meta name="twitter:description" content="A brief introduction to attention in the transformer architecture."/>
+<script src="https://www.jonahramponi.com/js/feather.min.js"></script>
+	
+	
+        <link href="https://www.jonahramponi.com/css/fonts.11a1877508139eac0b5b4852ceb110c35641b3533321e66e39149e901ed5756b.css" rel="stylesheet">
+	
+
+	
+	<link rel="stylesheet" type="text/css" media="screen" href="https://www.jonahramponi.com/css/main.d902908ac6e0fab67957de5db5aea1b6455b19ae2ca98eac4c95a4a0fdc02238.css" />
+		<link id="darkModeStyle" rel="stylesheet" type="text/css" href="https://www.jonahramponi.com/css/dark.c95c5dcf5f32f8b67bd36f7dab66680e068fce2b303087294114aabf7a7c080b.css"  disabled />
+	
+
+	
+	
+		<script type="text/javascript"
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+		</script>
+	
+		
+		<script type="text/x-mathjax-config">
+		MathJax.Hub.Config({
+			tex2jax: {
+				inlineMath: [['$','$'], ['\\(','\\)']],
+				displayMath: [['$$','$$'], ['\[','\]']],
+				processEscapes: true,
+				processEnvironments: true,
+				skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+				TeX: { equationNumbers: { autoNumber: "AMS" },
+						 extensions: ["AMSmath.js", "AMSsymbols.js"] }
+			}
+		});
+		</script>
+	
+
+	
+	
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css">
+		<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.js"></script>
+		<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+		
+		
+		<script>
+			document.addEventListener("DOMContentLoaded", function() {
+					renderMathInElement(document.body, {
+							delimiters: [
+									{left: "$$", right: "$$", display: true},
+									{left: "$", right: "$", display: false}
+							]
+					});
+			});
+			</script>
+	
+	
+	
+</head>
+<body>
+        <div class="content"><header>
+	<div class="main">
+		<a href="https://www.jonahramponi.com/">Jonah&#39;s ML Notes</a>
+	</div>
+	<nav>
+		
+		<a href="/">Home</a>
+		
+		<a href="/about">About</a>
+		
+		| <span id="dark-mode-toggle" onclick="toggleTheme()"></span>
+		<script src="https://www.jonahramponi.com/js/themetoggle.js"></script>
+		
+	</nav>
+</header>
+
+<main>
+	<article>
+		<div class="title">
+			<h1 class="title">Intro to Attention</h1>
+			<div class="meta">Posted on Mar 30, 2024</div>
+		</div>
+		
+		<div class="tldr">
+			<strong>tl;dr:</strong>
+			A brief introduction to attention in the transformer architecture.
+		</div>
+
+		<section class="body">
+			<p>Suppose you give an LLM the input</p>
+<p><em>What is the capital of France?</em></p>
+<p>The first thing the LLM will do is split this input into tokens. A token is just some combinations of characters. You can see an example of the tokenization outputs for the question below.</p>
+<p><em>$\colorbox{red}{What}\colorbox{magenta}{ is}\colorbox{green}{ the}\colorbox{orange}{ capital}\colorbox{purple}{ of}\colorbox{brown}{ France}\colorbox{cyan}?$</em></p>
+<p>(This tokenization was produced using cl100k_base, the tokenizer used in GPT-3.5-turbo and GPT-4.)</p>
+<p>In this example we have $(n = 7)$ tokens. Importantly, from our model&rsquo;s point of view, our input size is defined by the number of tokens instead of words. A numerical representation (vector representation) of each token is now found. Finding this vector representation is called producing an embedding of the token. The token <em>$\colorbox{red}{ What}$</em> might get tokenized as follows</p>
+<p>\begin{equation}
+\text{tokenizer}(\textit{\colorbox{red}{What}}) \rightarrow \begin{pmatrix} -0.4159 \\  \vdots \\   0.5710 \\   \end{pmatrix}
+\end{equation}</p>
+<p>The length of each of our embeddings, these vector outputs of our tokenizer, are the same regardless of the number of characters in our token. Let us denote this length $d_{\text{model}}$. So after we embed each token in our input sequence with our tokenizer we are left with</p>
+<p>$$
+\begin{pmatrix} -0.415 \\  \vdots \\   0.571 \\   \end{pmatrix}
+\begin{pmatrix} -0.130  \\ \vdots  \\ 0.192 \\ \end{pmatrix}
+, \dots ,
+\begin{pmatrix} 0.127  \\ \vdots \\ 0.484 \\ \end{pmatrix}
+$$</p>
+<p>This output is now passed through a <em>positional encoder</em>. Broadly, this is useful to provide the model with information about the position of words or tokens within a sequence. You might wonder why we need to positionally encode each token. What does it even mean to positionally encode something? Why can&rsquo;t we just use the index of the item? These questions are for another post.</p>
+<p>The only thing that matters for now, is that each of our numerical representations (vectors) are slightly altered. For the numerical representation of the token $\colorbox{red}{ What}$ that we get from our embedding model, it might look something like:</p>
+<p>\begin{equation}
+\text{positional encoder}\Bigg(\begin{pmatrix} -0.415 \\    \vdots \\    0.571 \\   \end{pmatrix}\Bigg) =
+\begin{pmatrix} -0.424 \\  \vdots \\   0.534 \\   \end{pmatrix}
+\end{equation}</p>
+<p>Importantly, the positional encoder does not alter the length of our vector, $d_{\text{model}}$. It simply tweaks the values slightly. So far, we entered our prompt:</p>
+<p><em>What is the capital of France?</em></p>
+<p>This was tokenized</p>
+<p><em>$\colorbox{red}{What}\colorbox{magenta}{ is}\colorbox{green}{ the}\colorbox{orange}{ capital}\colorbox{purple}{ of}\colorbox{brown}{ France}\colorbox{cyan}?$</em></p>
+<p>Then embedded</p>
+<p>$$
+\begin{pmatrix} -0.415 \\  \vdots \\   0.571 \\   \end{pmatrix}
+\begin{pmatrix} -0.130  \\ \vdots  \\ 0.192 \\ \end{pmatrix}
+, \dots ,
+\begin{pmatrix} 0.127  \\ \vdots \\ 0.484 \\ \end{pmatrix}
+$$</p>
+<p>and finally positionally encoded</p>
+<p>$$
+\begin{pmatrix} -0.424 \\  \vdots \\   0.534 \\   \end{pmatrix}
+\begin{pmatrix} 0.110  \\ \vdots  \\ 0.212 \\ \end{pmatrix}
+, \dots ,
+\begin{pmatrix} 0.070  \\ \vdots \\ 0.324 \\ \end{pmatrix}
+$$</p>
+<p>We&rsquo;re now very close to being able to introduce attention. One last thing remains, at this point we will transform the output of our positional encoding to a matrix $M$ as follows</p>
+<p>\begin{equation}
+M = \begin{pmatrix}
+-0.424 &amp; -0.574 &amp; 0.513 &amp;  \dots &amp; -0.235 &amp; 0.534 \\
+-0.133 &amp; 0.461 &amp; 0.228 &amp; \dots &amp; -0.151 &amp; 0.193 \\<br>
+\vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots &amp; \vdots \\
+0.123 &amp; 0.455 &amp; 0.110 &amp; \dots &amp; -0.121 &amp; 0.489
+\end{pmatrix}
+= \text{positional encoding}\begin{pmatrix}
+\colorbox{red}{ What} \\
+\colorbox{magenta}{ is} \\
+\vdots \\
+\colorbox{cyan}{?}
+\end{pmatrix}
+\end{equation}</p>
+<p>The top row is the first vector output of our positional encoding. The second row is the second, and so on. If we had $n$ tokens in our input sequence, then matrix $M$ would have $n$ rows. The dimensions of $M$ are as follows</p>
+<p>\begin{equation}
+M = \Big( \text{number of tokens in input} \times \text{length of embedding}  \Big) = \Big( n \times d_{\text{model}} \Big).
+\end{equation}</p>
+<h3 id="introduction-to-self-attention">Introduction To Self Attention.</h3>
+<p>At a high level, self-attention aims to evaluate the importance of each element in a sequence with respect to all other elements and use this to compute a representation of the sequence. All it really does is compute a weighted average of input vectors to produce output vectors. Mathematically, for an input sequence of vectors $x = (x_1, \dots ,x_{n})$ it will return some sequence of vectors, $y = (y_1,\dots,y_m)$ such that</p>
+<p>\begin{equation}
+y_i = \sum_{j = 1}^{{n}} w_{ij} \cdot x_j, \text{ } \forall 1 \leq i \leq m.
+\end{equation}</p>
+<p>for some mapping $w_{ij}$. The challenge is in figuring out how we should define our mapping $w_{ij}$. Let&rsquo;s look at the first way $w_{ij}$ was defined, introduced in <a href="https://arxiv.org/pdf/1706.03762.pdf">Attention is All You Need</a>.</p>
+<h3 id="scaled-dot-product-self-attention">Scaled Dot Product Self Attention.</h3>
+<p>To compute scaled dot product self attention, we will use the matrix $M$ with rows corresponding to the positionally encoded vectors. $M$ has dimensions $(n \times d_{\text{model}})$.</p>
+<p>We begin by producing query, key and value matrices, analogous to how a search engine maps a user query to relevant items in its database. We will make 3 copies of our matrix $M$. These become the matrices $Q, K$ and $V$. Each of these has dimension $(n \times d_{\text{model}})$. We let $d_k$ denote the dimensions of the keys, which in this case is $d_{\text{model}}$. We are ready to define attention as</p>
+<p>\begin{equation}
+\text{attention}(Q,K,V) = \mathrm{softmax} \Big( \frac{Q K^T}{\sqrt{d_k}} \Big) V.
+\end{equation}</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">attention</span>(Q, K, V):
+</span></span><span style="display:flex;"><span>    dk <span style="color:#f92672">=</span> K<span style="color:#f92672">.</span>size(<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>    scores <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>matmul(Q, K<span style="color:#f92672">.</span>transpose(<span style="color:#f92672">-</span><span style="color:#ae81ff">2</span>, <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>)) <span style="color:#f92672">/</span> torch<span style="color:#f92672">.</span>sqrt(dk)
+</span></span><span style="display:flex;"><span>    attn_weights <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>nn<span style="color:#f92672">.</span>functional<span style="color:#f92672">.</span>softmax(scores, dim<span style="color:#f92672">=-</span><span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> torch<span style="color:#f92672">.</span>matmul(attn_weights, V)
+</span></span></code></pre></div><p>Our matrix $QK^T$ of dimension $(n \times d_{\text{model}}) \times (n \times d_{\text{model}})^T = (n \times n)$. After we re-scale by $\sqrt{d_k}$, this matrix is referred to as the <em>attention matrix</em>.</p>
+<p><strong>Why do we divide by $\sqrt{d_k}?$</strong> This was introduced to counteract the effect of having the dot products grow large in magnitude for large dimensional inputs $d_k&raquo;1$. In cases where the dot product grew large in size, it was suspect suspected that application of the softmax function was returning extremely small gradients which in turn lead to the vanishing gradients problem.</p>
+<p>We multiply the softmax of the attention matrix with each row of $V$. This re-scales each row of the output matrix to sum to one. The equation for softmax applied to a matrix $X$ is as follows</p>
+<p>\begin{equation}
+\text{softmax}(X)<em>{ij} = \frac{e^{X</em>{ij}}}{\sum_{k=1}^{n} e^{X_{ik}}}.
+\end{equation}</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">softmax</span>(X):
+</span></span><span style="display:flex;"><span>    exp_X <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>exp(X)
+</span></span><span style="display:flex;"><span>    denom <span style="color:#f92672">=</span> exp_X<span style="color:#f92672">.</span>sum(dim<span style="color:#f92672">=-</span><span style="color:#ae81ff">1</span>, keepdim<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> exp_X <span style="color:#f92672">/</span> denom
+</span></span></code></pre></div><p><strong>Why use softmax?</strong> The dot product of $Q$ and $K^T$ gives us a value anywhere between negative and positive infinity. Application of softmax ensures our outputs are more stable. Otherwise, large elements in $Q$ or $K^T$ would grow even larger, dominating the attention mechanism which may cause convergence issues.</p>
+<p>Earlier on in we described attention as</p>
+<p>\begin{equation}
+y_i = \sum_{j = 1}^{{n}} w_{ij} \cdot x_j, \qquad \forall 1 \leq i \leq m.
+\end{equation}</p>
+<p>Well, our <em>attention matrix</em> after softmax has been applied is simply $w$ with $(i,j)th$ element $w_{ij}$. The output $y_i$ is just the weighted sum using $w$ on the value vectors, $v = (\vec{v}_1,\dots,\vec{v}_n)$. It may be clearer to visualize the output as</p>
+<p>[
+\vec{y} = \begin{pmatrix}
+w_{11} &amp; w_{12} &amp; \dots &amp; w_{1n} \\
+w_{21} &amp; w_{22} &amp; \dots &amp; w_{2n} \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+w_{n1} &amp; w_{n2} &amp; \dots &amp; w_{nn}
+\end{pmatrix} \times \begin{pmatrix}
+v_1 \\ v_2 \\ \vdots \\ v_n
+\end{pmatrix}
+]</p>
+<p>The attention matrix is a nice thing to visualize. For our toy example, it might look like</p>
+<!-- raw HTML omitted -->
+<p>What can we notice about our attention matrix?</p>
+<p><strong>It is symmetric.</strong>
+That is, $w = w^T$. This is to be expected, as remember it was produced by computing $QK^T$ where $Q$ and $K$ are identical.</p>
+<p><strong>The largest values are often times found on the leading diagonal.</strong>
+You can think of the values in the matrix as some measure of how important one token is to another. Typically, we try to ensure that each token pays attention to itself to some extent.</p>
+<p><strong>Every cell is filled.</strong>
+This is because in this attention approach, every token attends to every other token. This is often referred to as <em>full $n^2$ attention</em>.</p>
+<h4 id="multi-head-self-attention">Multi Head Self Attention.</h4>
+<p>It&rsquo;s important to acknowledge that there may not exist a single perfect representation of the attention matrix. Multi Head Self Attention allows us to produce many different representations of the attention matrix. Each individual attention mechanism is referred to as a ``head&quot;. Each head learns slightly different representations of the input sequence, which the original researchers found prompted the best output. Firstly, we&rsquo;re going to introduce some new matrices. These will be defined as</p>
+<p>\begin{align*}
+Q = (n \times d_q), \hspace{3mm} K = (n \times d_k), \hspace{3mm} V = (n \times d_v)
+\end{align*}</p>
+<p>These matrices will be obtained by linearly transforming the original matrix $M$, using weight matrices $W^Q$, $W^K$ and $W^V$ respectively:
+\begin{align*}
+Q &amp;= M\times W^Q, \\
+K &amp;= M \times W^K, \\
+V &amp;= M \times W^V.
+\end{align*}</p>
+<p>Each of these matrices has $d_{\text{model}}$ rows, and remember that $M$ has $d_{\text{model}}$ columns. We have control over parameters $d_q, d_k, d_v$. In the original research they took $d_q = d_k =  d_v = d_{\text{model}}/8 = 64$.</p>
+<p>We&rsquo;re going to use a different set of weight matrices $W^Q$, $W^K$ and $W^V$ for each head. If we have $H$ heads, we will refer to the set of weight matrices of the $h_{th}$ head as ${ W_h^Q, W_h^K, W_h^V }$. For a given head, $h$, the output of the attention mechanism is</p>
+<p>\begin{equation}
+h_i = \text{attention}(M \cdot W_h^Q, M\cdot W_h^K,M\cdot W_h^V)
+\end{equation}</p>
+<p>The overall output of the process is then simply</p>
+<p>\begin{equation}
+\text{MultiHead}(Q,K,V) = \text{Concat}(\text{head}_1, \cdots, \text{head}_H)W^O.<br>
+\end{equation}</p>
+<p>Concat() simply concatenates our output matrices. The output matrix of size $(n \times d_v)$ for each head is simply our matrices stacked on top of one another like so</p>
+<p>\begin{equation*}
+\text{Concat}(\text{head}<em>1, \dots, \text{head}<em>h) =
+\begin{pmatrix}
+\text{head}</em>{1</em>{11}} &amp; \dots &amp; \text{head}<em>{1</em>{1d_v}} &amp; \dots &amp; \text{head}<em>{H</em>{11}} &amp; \dots &amp; \text{head}<em>{H</em>{1d_v}} \\
+\text{head}<em>{1</em>{21}} &amp; \dots &amp; \text{head}<em>{1</em>{2d_v}} &amp; \dots &amp; \text{head}<em>{H</em>{21}} &amp; \dots &amp; \text{head}<em>{H</em>{2d_v}} \\
+\vdots &amp; \ddots &amp; \vdots &amp; \dots &amp; \vdots &amp; \ddots &amp; \vdots \\
+\text{head}<em>{1</em>{n1}} &amp; \dots &amp; \text{head}<em>{1</em>{nd_v}} &amp; \dots &amp; \text{head}<em>{H</em>{n1}} &amp; \dots &amp; \text{head}<em>{H</em>{nd_v}} \\
+\end{pmatrix}
+\end{equation*}</p>
+<p>This output has dimension $(n \times H d_v)$. We still have $n$ rows, however now we have $h$ different representations of $d_v$. Our output, $W^O$, is another trainable weight matrix which has dimensions $W^O = (Hd_v \times d_{\text{model}})$. Therefore, the multiplication of Concat $(\text{head}_1, \dots, \text{head}<em>H)$ and $W^O$ results in a matrix with dimension $(n \times d</em>{\text{model}})$.</p>
+
+		</section>
+
+		<div class="post-tags">
+			
+			
+			<nav class="nav tags">
+				<ul class="tags">
+					
+					<li><a href="/tags/attention">attention</a></li>
+					
+				</ul>
+			</nav>
+			
+			
+		</div>
+		</article>
+</main>
+<footer>
+  <div style="display:flex"></div>
+  <div class="footer-info">
+    2024  <a
+      href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
+  </div>
+</footer>
+
+
+</div>
+    </body>
+</html>

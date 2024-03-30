@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Inference on Jonah&#39;s ML Notes</title>
+    <link>https://www.jonahramponi.com/tags/inference/</link>
+    <description>Recent content in Inference on Jonah&#39;s ML Notes</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 26 Mar 2024 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://www.jonahramponi.com/tags/inference/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Flash Attention</title>
+      <link>https://www.jonahramponi.com/posts/flash_attention/</link>
+      <pubDate>Tue, 26 Mar 2024 00:00:00 +0000</pubDate>
+      <guid>https://www.jonahramponi.com/posts/flash_attention/</guid>
+      <description>The goal of Flash Attention is to compute the attention value with fewer high bandwidth memory read / writes. The approach has since been refined in Flash Attention 2.&#xA;We will split the attention inputs $Q,K,V$ into blocks. Each block will be handled separately, and attention will therefore be computed with respect to each block. With the correct scaling, adding the outputs from each block we will give us the same attention value as we would get by computing everything all together.</description>
+    </item>
+    <item>
+      <title>The KV Cache</title>
+      <link>https://www.jonahramponi.com/posts/kv_cache/</link>
+      <pubDate>Fri, 22 Mar 2024 00:00:00 +0000</pubDate>
+      <guid>https://www.jonahramponi.com/posts/kv_cache/</guid>
+      <description>The computation of attention is costly. Remember that our decoder works in an auto-regressive fashion. For our given input $$\colorbox{red}{What}\colorbox{magenta}{ is}\colorbox{green}{ the}\colorbox{orange}{ capital}\colorbox{purple}{ of}\colorbox{brown}{ France}\colorbox{cyan}{?}&amp;quot;$$&#xA;\begin{align} \text{Prediction 1} &amp;amp;= \colorbox{orange}{The} \\ \text{Prediction 2} &amp;amp;= \colorbox{orange}{The}\colorbox{pink}{ capital} \\ &amp;amp;\vdots \\ \text{Prediction $p$} &amp;amp;= \colorbox{orange}{The}\colorbox{pink}{ capital} (\dots) \colorbox{red}{ Paris.} \end{align}&#xA;To produce prediction $2$, we will take the output from prediction $1$. At each step, the model will also see our input sequence.</description>
+    </item>
+  </channel>
+</rss>

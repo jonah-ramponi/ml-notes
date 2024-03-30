@@ -11,18 +11,56 @@
 <meta property="og:url" content="https://www.jonahramponi.com/posts/" />
 <meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Posts"/>
 <meta name="twitter:description" content=""/>
-
+<script src="https://www.jonahramponi.com/js/feather.min.js"></script>
+	
 	
         <link href="https://www.jonahramponi.com/css/fonts.11a1877508139eac0b5b4852ceb110c35641b3533321e66e39149e901ed5756b.css" rel="stylesheet">
 	
 
 	
 	<link rel="stylesheet" type="text/css" media="screen" href="https://www.jonahramponi.com/css/main.d902908ac6e0fab67957de5db5aea1b6455b19ae2ca98eac4c95a4a0fdc02238.css" />
+		<link id="darkModeStyle" rel="stylesheet" type="text/css" href="https://www.jonahramponi.com/css/dark.c95c5dcf5f32f8b67bd36f7dab66680e068fce2b303087294114aabf7a7c080b.css"  disabled />
+	
 
 	
 	
+		<script type="text/javascript"
+		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+		</script>
+	
+		
+		<script type="text/x-mathjax-config">
+		MathJax.Hub.Config({
+			tex2jax: {
+				inlineMath: [['$','$'], ['\\(','\\)']],
+				displayMath: [['$$','$$'], ['\[','\]']],
+				processEscapes: true,
+				processEnvironments: true,
+				skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+				TeX: { equationNumbers: { autoNumber: "AMS" },
+						 extensions: ["AMSmath.js", "AMSsymbols.js"] }
+			}
+		});
+		</script>
+	
 
 	
+	
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css">
+		<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.js"></script>
+		<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+		
+		
+		<script>
+			document.addEventListener("DOMContentLoaded", function() {
+					renderMathInElement(document.body, {
+							delimiters: [
+									{left: "$$", right: "$$", display: true},
+									{left: "$", right: "$", display: false}
+							]
+					});
+			});
+			</script>
 	
 	
 	
@@ -34,6 +72,12 @@
 	</div>
 	<nav>
 		
+		<a href="/">Home</a>
+		
+		<a href="/about">About</a>
+		
+		| <span id="dark-mode-toggle" onclick="toggleTheme()"></span>
+		<script src="https://www.jonahramponi.com/js/themetoggle.js"></script>
 		
 	</nav>
 </header>
@@ -43,9 +87,19 @@
 
 
 <ul class="posts"><li class="post">
-			<a href="/posts/test-copy/">Post 2</a> <span class="meta">Mar 30, 2024</span>
+			<a href="/posts/intro_to_attention/">Intro to Attention</a> <span class="meta">Mar 30, 2024</span>
 		</li><li class="post">
-			<a href="/posts/test/">Test</a> <span class="meta">Mar 30, 2024</span>
+			<a href="/posts/flash_attention/">Flash Attention</a> <span class="meta">Mar 26, 2024</span>
+		</li><li class="post">
+			<a href="/posts/mqa_gqa/">Multi &amp; Grouped Query Attention</a> <span class="meta">Mar 22, 2024</span>
+		</li><li class="post">
+			<a href="/posts/sliding_window_attention/">Sliding Window Attention</a> <span class="meta">Mar 22, 2024</span>
+		</li><li class="post">
+			<a href="/posts/sparse_attention/">Sparse Attention</a> <span class="meta">Mar 22, 2024</span>
+		</li><li class="post">
+			<a href="/posts/kv_cache/">The KV Cache</a> <span class="meta">Mar 22, 2024</span>
+		</li><li class="post">
+			<a href="/posts/resources/">PDFs and Resources</a> <span class="meta">Feb 28, 2024</span>
 		</li></ul>
 <footer>
   <div style="display:flex"></div>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Attention Matrix on Jonah&#39;s ML Notes</title>
+    <link>https://www.jonahramponi.com/tags/attention-matrix/</link>
+    <description>Recent content in Attention Matrix on Jonah&#39;s ML Notes</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 22 Mar 2024 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://www.jonahramponi.com/tags/attention-matrix/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Multi &amp; Grouped Query Attention</title>
+      <link>https://www.jonahramponi.com/posts/mqa_gqa/</link>
+      <pubDate>Fri, 22 Mar 2024 00:00:00 +0000</pubDate>
+      <guid>https://www.jonahramponi.com/posts/mqa_gqa/</guid>
+      <description>Multi Query Attention Multi Query Attention (MQA) using the same $K$ and $V$ matrices for each head in our multi head self attention mechanism. For a given head, $h$, $1 \leq h \leq H$, the attention mechanism is calculated as&#xA;\begin{equation} h_i = \text{attention}(M\cdot W_h^Q, M \cdot W^K,M \cdot W^V). \end{equation}&#xA;For each of our $H$ heads, the only difference in the weight matrices is in $W_h^Q$. Each of these $W_h$ has dimension $(n \times d_q)$.</description>
+    </item>
+  </channel>
+</rss>
