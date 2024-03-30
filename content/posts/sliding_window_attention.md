@@ -18,13 +18,11 @@ For now, let's ignore the re-scaling by $\sqrt{d_k}$ and just look at the comput
     Q \times K^T = \begin{pmatrix}
         Q_{11} & Q_{12} & \cdots & Q_{1d} \\\\
 Q_{21} & Q_{22} & \cdots & Q_{2d} \\\\
-\vdots & \vdots & \ddots & \vdots \\\\
 Q_{n1} & Q_{n2} & \cdots & Q_{nd}
 \end{pmatrix} \times
 \begin{pmatrix}
 K_{11} & K_{21} & \cdots & K_{n1} \\\\
 K_{12} & K_{22} & \cdots & K_{n2} \\\\
-\vdots & \vdots & \ddots & \vdots \\\\
 K_{1d} & K_{2d} & \cdots & K_{nd}
     \end{pmatrix}
 \end{equation}
@@ -39,33 +37,25 @@ This greatly reduces the cost of the computation of $Q \times K^T$, as our compu
     Q \times K^T = \begin{pmatrix}
         Q_{11} & Q_{12} &  &\\\\
 Q_{21} & Q_{22} & \cdots &  \\\\
- & \vdots & \ddots & \vdots \\\\
  &  & \cdots & Q_{nd}
 \end{pmatrix} \times
 \begin{pmatrix}
 K_{11} & K_{21} &  &  \\\\
 K_{12} & K_{22}  & \cdots &  \\\\
- & \vdots & \ddots & \vdots \\\\
  &  & \cdots & K_{nd}
     \end{pmatrix}
 \end{equation}
 
 
-However, the original authors encountered a problem in training. The authors found that this approach is not flexible enough to learn to complete specific tasks. They solved this problem through the introduction of \textit{global attention}. This will give a few of our tokens some special properties:
-
-\begin{itemize}
-    \item A token with a global attention attends to all other tokens in the sequence
-    \item All tokens in the sequence attend to every token with a global attention. 
-\end{itemize}
+However, the original authors encountered a problem in training. The authors found that this approach is not flexible enough to learn to complete specific tasks. They solved this problem through the introduction of \textit{global attention}. This will give a few of our tokens some special properties: A token with a global attention attends to all other tokens in the sequence and all tokens in the sequence attend to every token with a global attention. 
 
 The local attention (sliding window attention) is primarily used to build contextual representations, while the global attention allows the model to build full sequence representations for prediction. 
-
 
 We will require two sets of our projection matrices. Firstly, projections to compute attention scores for our sliding window approach $\{Q_s, K_s, V_s\}$ and secondly attention scores for the global attention $\{Q_g,K_g,V_g\}$. These are initialized to the same values.
 
 We first calculate local attention weights using $\{Q_s,K_s,V_s\}$. This gives us an attention output, which is then combined with the output using the global attention weights. The global weights are written on top of the output attention weight matrix calculated by the local attention calculation. 
 
-\textbf{Dilated Sliding Window Attention} is another approach to achieve a similar result. This time, instead of simply taking the $\frac{1}{2}w$ tokens either side of a given $w$ we will introduce some gaps of size $d$. This is referred to as the dilation. Using $w=2, d=1$ in our example we would have an attention matrix which looks like   
+**Dilated Sliding Window Attention.** is another approach to achieve a similar result. This time, instead of simply taking the $\frac{1}{2}w$ tokens either side of a given $w$ we will introduce some gaps of size $d$. This is referred to as the dilation. Using $w=2, d=1$ in our example we would have an attention matrix which looks like   
 
 
 ![Dilated Sliding Window Attention Matrix](/img/dilated_sliding_window.png)
