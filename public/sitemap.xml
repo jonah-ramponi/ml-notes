@@ -2,20 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>http://jonah-ramponi.github.io/jonahsdemo/docs/</loc>
+    <loc>https://www.jonahramponi.com/</loc>
     <lastmod>2024-03-30T11:49:13+00:00</lastmod>
   </url><url>
-    <loc>http://jonah-ramponi.github.io/jonahsdemo/</loc>
+    <loc>https://www.jonahramponi.com/posts/test-copy/</loc>
     <lastmod>2024-03-30T11:49:13+00:00</lastmod>
   </url><url>
-    <loc>http://jonah-ramponi.github.io/jonahsdemo/docs/test-copy/</loc>
+    <loc>https://www.jonahramponi.com/posts/</loc>
     <lastmod>2024-03-30T11:49:13+00:00</lastmod>
   </url><url>
-    <loc>http://jonah-ramponi.github.io/jonahsdemo/docs/test/</loc>
+    <loc>https://www.jonahramponi.com/posts/test/</loc>
     <lastmod>2024-03-30T11:49:13+00:00</lastmod>
   </url><url>
-    <loc>http://jonah-ramponi.github.io/jonahsdemo/categories/</loc>
+    <loc>https://www.jonahramponi.com/categories/</loc>
   </url><url>
-    <loc>http://jonah-ramponi.github.io/jonahsdemo/tags/</loc>
+    <loc>https://www.jonahramponi.com/tags/</loc>
   </url>
 </urlset>
