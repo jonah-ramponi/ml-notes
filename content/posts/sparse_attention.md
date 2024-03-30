@@ -16,9 +16,9 @@ tags: [attention, inference]
 Here, we have defined
 
 \begin{align*}
-    Q_{S_i} &= \big(W_q \vec{x}_j \big)_{j \in S_i}, \\\\
-    K_{S_i} &= \big(W_k \vec{x}_j \big)_{j \in S_i}, \\\\
-    V_{S_i} &= \big(W_v\vec{x}_j \big)_{j \in S_i}. 
+    Q_{S_i} &=(W_q \vec{x}_j )_{j \in S_i}, \\\\
+    K_{S_i} &=(W_k \vec{x}_j )_{j \in S_i}, \\\\
+    V_{S_i} &= (W_v\vec{x}_j )_{j \in S_i}. 
 \end{align*}
 
 So how do we define the set of connectivity patterns $S$? Formally, we let $S_i = A_i^{h}$ for head $h$ where $A_i^{h} \subset \{j : j \leq i\}$. It is still no clearer how we pick which indices we should take for a given $S_i$. The original authors consider two key criteria initially:

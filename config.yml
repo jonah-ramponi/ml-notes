@@ -2,6 +2,9 @@ baseURL: https://www.jonahramponi.com
 languageCode: en-us
 title: Jonah's ML Notes
 theme: Archie
+pygmentsstyle: "monokai"
+pygmentscodefences: true
+pygmentscodefencesguesssyntax: true
 params:
   math: true
   mathjax: true 
