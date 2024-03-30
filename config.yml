@@ -2,19 +2,5 @@ baseURL: http://jonah-ramponi.github.io/jonahsdemo/
 languageCode: en-us
 title: My New Hugo Site
 theme: PaperMod
-markup:
-  goldmark:
-    extensions:
-      passthrough:
-        delimiters:
-          block:
-          - - \[
-            - \]
-          - - $$
-            - $$
-          inline:
-          - - \(
-            - \)
-        enable: true
 params:
   math: true
