@@ -93,9 +93,9 @@
 \end{equation*}</p>
 <p>Here, we have defined</p>
 <p>\begin{align*}
-Q_{S_i} &amp;= (W_q x_j)<em>{j \in S_i}, \\
-K</em>{S_i} &amp;= (W_k x_j)<em>{j \in S_i}, \\
-V</em>{S_i} &amp;= (W_v x_j)_{j \in S_i}.
+Q_{S_i} &amp;= (W_q x_j)<em>{j \text{ in } S_i}, \\
+K</em>{S_i} &amp;= (W_k x_j)<em>{j \text{ in } S_i}, \\
+V</em>{S_i} &amp;= (W_v x_j)_{j \text{ in } S_i}.
 \end{align*}</p>
 <p>So how do we define the set of connectivity patterns $S$? Formally, we let $S_i = A_i^{h}$ for head $h$ where $A_i^{h} \subset {j : j \leq i}$. It is still no clearer how we pick which indices we should take for a given $S_i$. The original authors consider two key criteria initially:</p>
 <h4 id="criteria-1">Criteria 1</h4>
@@ -111,7 +111,7 @@ A_i^{(2)} &amp;= {j: (i-j)\mod l \equiv 0}.
 <p>Here, $A_i^{(1)}$ simply takes the previous $l$ locations. $A_i^{(2)}$ then takes every $l$th head from the first head where $i-j$ was divisible by $l$ without remainder. This is particularly useful where you can align the structure of your input with the stride. For instance, with a piece of music. Where our input does not have a well defined structured, we use something different. In the image below, you can see $A_i^{(1)}$ responsible for the dark blue shading and $A_i^{(2)}$ responsible for the light blue.</p>
 <p><em><em>Fixed Attention</em>.</em> Our goal with this approach is to allow specific cells to summarize the previous locations, and to propagate this information on to future cells.</p>
 <p>\begin{align*}
-A^{(1)}_i &amp;= \Big{ j : \left\lfloor \frac{j}{l} \right\rfloor = \left\lfloor \frac{i}{l} \right\rfloor \Big}, \\
+A^{(1)}_i &amp;= \Big{ j : \text{floor}(\frac{j}{l}) = \text{floor}( \frac{i}{l}) \Big}, \\
 A^{(2)}_i &amp;= \Big{ j : j \mod l \in { t, t + 1, \ldots, l } \Big},  \text{ where } t = l - c \text{ and } c \text{ is a hyperparameter.}
 \end{align*}</p>
 <p>These are best understood visually in my opinion. In the image below, $A_i^{(1)}$ is responsible for the dark blue shading and $A_i^{(2)}$ for the light blue shading. If we take stride, $l$ = 128 and $c=8$, then all positions greater than 128 can attend to positions $120-128$. The authors find choosing $c \in {8,16,32}$ worked well.</p>
