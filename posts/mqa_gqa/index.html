@@ -87,7 +87,8 @@
 		</div>
 
 		<section class="body">
-			<p><a href="https://arxiv.org/pdf/1911.02150v1.pdf"><em>Multi Query Attention</em></a> (MQA) using the same $K$ and $V$ matrices for each head in our multi head self attention mechanism. For a given head, $h$, $1 \leq h \leq H$, the attention mechanism is calculated as</p>
+			<h4 id="multi-query-attention">Multi Query Attention</h4>
+<p><a href="https://arxiv.org/pdf/1911.02150v1.pdf"><em>Multi Query Attention</em></a> (MQA) using the same $K$ and $V$ matrices for each head in our multi head self attention mechanism. For a given head, $h$, $1 \leq h \leq H$, the attention mechanism is calculated as</p>
 <p>\begin{equation}
 h_i = \text{attention}(M\cdot W_h^Q, M \cdot W^K,M \cdot W^V).
 \end{equation}</p>
@@ -96,6 +97,7 @@ h_i = \text{attention}(M\cdot W_h^Q, M \cdot W^K,M \cdot W^V).
 \text{attention}(Q_h,K,V) = \text{softmax}\Big(\frac{Q_h \cdot K^T}{\sqrt{d_k}} \Big) \cdot V
 \end{equation}</p>
 <p>As before, we simply concatenate our attention outputs and multiply by $W^O$, which is defined as before.</p>
+<h4 id="grouped-query-attention">Grouped Query Attention</h4>
 <p><a href="https://arxiv.org/pdf/2305.13245v3.pdf"><em>Grouped Query Attention</em></a> (GQA) is very similar to MQA. The difference is that instead of using just one set of $K$, $V$ values for attention calculations it uses $G$ different sets of $K,V$ values. If we have $H$ heads, GQA is equivalent to MHA if $G=H$ and equivalent to MQA if $G=1$. Suppose we want to use $G$ groups. We would firstly allocate each of our $H$ heads into one of the $G$ groups. It would likely make sense to pick $G$ such that $G \mod H \equiv 0$. Though this is not a requirement.</p>
 <p>For each  head in a given group, we calculate attention outputs as
 \begin{align}

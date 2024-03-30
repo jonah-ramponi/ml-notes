@@ -94,20 +94,20 @@
 <p>(This tokenization was produced using cl100k_base, the tokenizer used in GPT-3.5-turbo and GPT-4.)</p>
 <p>In this example we have $(n = 7)$ tokens. Importantly, from our model&rsquo;s point of view, our input size is defined by the number of tokens instead of words. A numerical representation (vector representation) of each token is now found. Finding this vector representation is called producing an embedding of the token. The token <em>$\colorbox{red}{ What}$</em> might get tokenized as follows</p>
 <p>\begin{equation}
-\text{tokenizer}(\textit{\colorbox{red}{What}}) \rightarrow \begin{pmatrix} -0.4159 \\ -0.5147 \\  0.5690 \\  \vdots \\  -0.2577 \\   0.5710 \\   \end{pmatrix}
+\text{tokenizer}(\textit{\colorbox{red}{What}}) \rightarrow \begin{pmatrix} -0.4159 \\  \vdots \\   0.5710 \\   \end{pmatrix}
 \end{equation}</p>
 <p>The length of each of our embeddings, these vector outputs of our tokenizer, are the same regardless of the number of characters in our token. Let us denote this length $d_{\text{model}}$. So after we embed each token in our input sequence with our tokenizer we are left with</p>
 <p>$$
-\begin{pmatrix} -0.415 \\ -0.514 \\  0.569 \\  \vdots \\  -0.257 \\   0.571 \\   \end{pmatrix}
-\begin{pmatrix} -0.130 \\ -0.464 \\ 0.23 \\ \vdots \\ -0.154 \\ 0.192 \\ \end{pmatrix}
+\begin{pmatrix} -0.415 \\  \vdots \\   0.571 \\   \end{pmatrix}
+\begin{pmatrix} -0.130  \\ \vdots  \\ 0.192 \\ \end{pmatrix}
 , \dots ,
-\begin{pmatrix} 0.127 \\ 0.453 \\ 0.110 \\ \vdots \\ -0.155 \\ 0.484 \\ \end{pmatrix}
+\begin{pmatrix} 0.127  \\ \vdots \\ 0.484 \\ \end{pmatrix}
 $$</p>
 <p>This output is now passed through a <em>positional encoder</em>. Broadly, this is useful to provide the model with information about the position of words or tokens within a sequence. You might wonder why we need to positionally encode each token. What does it even mean to positionally encode something? Why can&rsquo;t we just use the index of the item? These questions are for another post.</p>
 <p>The only thing that matters for now, is that each of our numerical representations (vectors) are slightly altered. For the numerical representation of the token ``$\colorbox{red}{ What}$&quot; that we get from our embedding model, it might look something like:</p>
 <p>\begin{equation}
-\text{positional encoder}\Bigg(\begin{pmatrix} -0.415 \\ -0.514 \\    \vdots \\  -0.257 \\   0.571 \\   \end{pmatrix}\Bigg) =
-\begin{pmatrix} -0.424 \\ -0.574 \\  \vdots \\  -0.235 \\   0.534 \\   \end{pmatrix}
+\text{positional encoder}\Bigg(\begin{pmatrix} -0.415 \\    \vdots \\    0.571 \\   \end{pmatrix}\Bigg) =
+\begin{pmatrix} -0.424 \\  \vdots \\   0.534 \\   \end{pmatrix}
 \end{equation}</p>
 <p>Importantly, the positional encoder does not alter the length of our vector, $d_{\text{model}}$. It simply tweaks the values slightly. So far, we entered our prompt:</p>
 <blockquote>
@@ -148,12 +148,13 @@ M = \begin{pmatrix}
 <p>\begin{equation}
 M = \Big( \text{number of tokens in input} \times \text{length of embedding}  \Big) = \Big( n \times d_{\text{model}} \Big).
 \end{equation}</p>
-<p><strong>Introduction To Self Attention.</strong> At a high level, self-attention aims to evaluate the importance of each element in a sequence with respect to all other elements and use this to compute a representation of the sequence. All it really does is compute a weighted average of input vectors to produce output vectors. Mathematically, for an input sequence of vectors $x = (x_1, \dots ,x_{n})$ it will return some sequence of vectors, $y = (y_1,\dots,y_m)$ such that</p>
+<h3 id="introduction-to-self-attention">Introduction To Self Attention.</h3>
+<p>At a high level, self-attention aims to evaluate the importance of each element in a sequence with respect to all other elements and use this to compute a representation of the sequence. All it really does is compute a weighted average of input vectors to produce output vectors. Mathematically, for an input sequence of vectors $x = (x_1, \dots ,x_{n})$ it will return some sequence of vectors, $y = (y_1,\dots,y_m)$ such that</p>
 <p>\begin{equation}
 y_i = \sum_{j = 1}^{{n}} w_{ij} \cdot x_j, \text{ } \forall 1 \leq i \leq m.
 \end{equation}</p>
 <p>for some mapping $w_{ij}$. The challenge is in figuring out how we should define our mapping $w_{ij}$. Let&rsquo;s look at the first way $w_{ij}$ was defined, introduced in <a href="https://arxiv.org/pdf/1706.03762.pdf">Attention is All You Need</a>.</p>
-<p><strong>Scaled Dot Product Self Attention.</strong> To compute scaled dot product self attention, we will use the matrix $M$ with rows corresponding to the positionally encoded vectors. $M$ has dimensions $(n \times d_{\text{model}})$.</p>
+<h3 id="scaled-dot-product-self-attention-to-compute-scaled-dot-product-self-attention-we-will-use-the-matrix-m-with-rows-corresponding-to-the-positionally-encoded-vectors-m-has-dimensions-n-times-d_textmodel">Scaled Dot Product Self Attention. To compute scaled dot product self attention, we will use the matrix $M$ with rows corresponding to the positionally encoded vectors. $M$ has dimensions $(n \times d_{\text{model}})$.</h3>
 <p>We begin by producing query, key and value matrices, analogous to how a search engine maps a user query to relevant items in its database. We will make 3 copies of our matrix $M$. These become the matrices $Q, K$ and $V$. Each of these has dimension $(n \times d_{\text{model}})$. We let $d_k$ denote the dimensions of the keys, which in this case is $d_{\text{model}}$. We are ready to define attention as</p>
 <p>\begin{equation}
 \text{attention}(Q,K,V) = \text{softmax}\Big(\frac{Q K^T}{\sqrt{d_k}}\Big) \cdot V.
@@ -192,13 +193,13 @@ v_1 \\ v_2 \\ \vdots \\ v_n
 <p>The attention matrix is a nice thing to visualize. For our toy example, it might look like</p>
 <!-- raw HTML omitted -->
 <p>What can we notice about our attention matrix?</p>
-<h4 id="it-is-symmetric">It is symmetric.</h4>
-<p>That is, $w = w^T$. This is to be expected, as remember it was produced by computing $QK^T$ where $Q$ and $K$ are identical.</p>
-<h4 id="the-largest-values-are-often-times-found-on-the-leading-diagonal">The largest values are often times found on the leading diagonal.</h4>
-<p>You can think of the values in the matrix as some measure of how important one token is to another. Typically, we try to ensure that each token pays attention to itself to some extent.</p>
-<h4 id="every-cell-is-filled">Every cell is filled.</h4>
-<p>This is because in this attention approach, every token attends to every other token. This is often referred to as \textit{full $n^2$ attention}. In Section (\ref{attentionmatrixopt}) you will see other ways of defining this attention matrix.</p>
-<p><strong>Multi Head Self Attention.</strong></p>
+<p><strong>It is symmetric.</strong>
+That is, $w = w^T$. This is to be expected, as remember it was produced by computing $QK^T$ where $Q$ and $K$ are identical.</p>
+<p><strong>The largest values are often times found on the leading diagonal.</strong>
+You can think of the values in the matrix as some measure of how important one token is to another. Typically, we try to ensure that each token pays attention to itself to some extent.</p>
+<p><strong>Every cell is filled.</strong>
+This is because in this attention approach, every token attends to every other token. This is often referred to as <em>full $n^2$ attention</em>.</p>
+<h4 id="multi-head-self-attention">Multi Head Self Attention.</h4>
 <p>It&rsquo;s important to acknowledge that there may not exist a single perfect representation of the attention matrix. Multi Head Self Attention allows us to produce many different representations of the attention matrix. Each individual attention mechanism is referred to as a ``head&quot;. Each head learns slightly different representations of the input sequence, which the original researchers found prompted the best output. Firstly, we&rsquo;re going to introduce some new matrices. These will be defined as</p>
 <p>\begin{align*}
 Q = (n \times d_q), \hspace{3mm} K = (n \times d_k), \hspace{3mm} V = (n \times d_v)
@@ -219,9 +220,16 @@ h_i = \text{attention}(M \cdot W_h^Q, M\cdot W_h^K,M\cdot W_h^V)
 \text{MultiHead}(Q,K,V) = \text{Concat}(\text{head}_1, \cdots, \text{head}_H)W^O.<br>
 \end{equation}</p>
 <p>Concat() simply concatenates our output matrices. The output matrix of size $(n \times d_v)$ for each head is simply our matrices stacked on top of one another like so</p>
-<!-- raw HTML omitted -->
-<!-- raw HTML omitted -->
-<p>This output has dimension $(n \times H d_v)$. We still have $n$ rows, however now we have $h$ different representations of $d_v$. Our output, $W^O$, is another trainable weight matrix which has dimensions $W^O = (Hd_v \times d_{\text{model}})$. Therefore, the multiplication of $\text{Concat}(\text{head}_1, \cdots, \text{head}<em>H)$ and $W^O$ results in a matrix with dimension $(n \times d</em>{\text{model}})$.</p>
+<p>\begin{equation*}
+\text{Concat}(\text{head}<em>1, \dots, \text{head}<em>h) =
+\begin{pmatrix}
+\text{head}</em>{1</em>{11}} &amp; \dots &amp; \text{head}<em>{1</em>{1d_v}} &amp; \dots &amp; \text{head}<em>{H</em>{11}} &amp; \dots &amp; \text{head}<em>{H</em>{1d_v}} \\
+\text{head}<em>{1</em>{21}} &amp; \dots &amp; \text{head}<em>{1</em>{2d_v}} &amp; \dots &amp; \text{head}<em>{H</em>{21}} &amp; \dots &amp; \text{head}<em>{H</em>{2d_v}} \\
+\vdots &amp; \ddots &amp; \vdots &amp; \dots &amp; \vdots &amp; \ddots &amp; \vdots \\
+\text{head}<em>{1</em>{n1}} &amp; \dots &amp; \text{head}<em>{1</em>{nd_v}} &amp; \dots &amp; \text{head}<em>{H</em>{n1}} &amp; \dots &amp; \text{head}<em>{H</em>{nd_v}} \\
+\end{pmatrix}
+\end{equation*}</p>
+<p>This output has dimension $(n \times H d_v)$. We still have $n$ rows, however now we have $h$ different representations of $d_v$. Our output, $W^O$, is another trainable weight matrix which has dimensions $W^O = (Hd_v \times d_{\text{model}})$. Therefore, the multiplication of Concat $(\text{head}_1, \dots, \text{head}<em>H)$ and $W^O$ results in a matrix with dimension $(n \times d</em>{\text{model}})$.</p>
 
 		</section>
 

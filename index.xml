@@ -27,7 +27,7 @@
       <link>https://www.jonahramponi.com/posts/mqa_gqa/</link>
       <pubDate>Fri, 22 Mar 2024 00:00:00 +0000</pubDate>
       <guid>https://www.jonahramponi.com/posts/mqa_gqa/</guid>
-      <description>Multi Query Attention (MQA) using the same $K$ and $V$ matrices for each head in our multi head self attention mechanism. For a given head, $h$, $1 \leq h \leq H$, the attention mechanism is calculated as&#xA;\begin{equation} h_i = \text{attention}(M\cdot W_h^Q, M \cdot W^K,M \cdot W^V). \end{equation}&#xA;For each of our $H$ heads, the only difference in the weight matrices is in $W_h^Q$. Each of these $W_h$ has dimension $(n \times d_q)$.</description>
+      <description>Multi Query Attention Multi Query Attention (MQA) using the same $K$ and $V$ matrices for each head in our multi head self attention mechanism. For a given head, $h$, $1 \leq h \leq H$, the attention mechanism is calculated as&#xA;\begin{equation} h_i = \text{attention}(M\cdot W_h^Q, M \cdot W^K,M \cdot W^V). \end{equation}&#xA;For each of our $H$ heads, the only difference in the weight matrices is in $W_h^Q$. Each of these $W_h$ has dimension $(n \times d_q)$.</description>
     </item>
     <item>
       <title>Sliding Window Attention</title>
