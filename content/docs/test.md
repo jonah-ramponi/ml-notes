@@ -5,8 +5,3 @@ draft: false
 ---
 
 Here's my content! What do you think ? $1^2$
-
-
-```math
-\sqrt{3}  # with or without delimiters
-```
