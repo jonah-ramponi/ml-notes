@@ -144,12 +144,6 @@ M = \begin{pmatrix}
 \vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots &amp; \vdots \\
 0.123 &amp; 0.455 &amp; 0.110 &amp; \dots &amp; -0.121 &amp; 0.489
 \end{pmatrix}
-= \text{positional encoding}\begin{pmatrix}
-\colorbox{red}{ What} \\
-\colorbox{magenta}{ is} \\
-\vdots \\
-\colorbox{cyan}{?}
-\end{pmatrix}
 \end{equation}</p>
 <p>The top row is the first vector output of our positional encoding. The second row is the second, and so on. If we had $n$ tokens in our input sequence, then matrix $M$ would have $n$ rows. The dimensions of $M$ are as follows</p>
 <p>\begin{equation}
@@ -166,6 +160,15 @@ y_i = \sum_{j = 1}^{{n}} w_{ij} \cdot x_j, \text{ } \forall 1 \leq i \leq m.
 <p>We begin by producing query, key and value matrices, analogous to how a search engine maps a user query to relevant items in its database. We will make 3 copies of our matrix $M$. These become the matrices $Q, K$ and $V$. Each of these has dimension $(n \times d_{\text{model}})$. We let $d_k$ denote the dimensions of the keys, which in this case is $d_{\text{model}}$. We are ready to define attention as</p>
 <p>\begin{equation}
 \text{attention}(Q,K,V) = \mathrm{softmax} \Big( \frac{Q K^T}{\sqrt{d_k}} \Big) V.
+\end{equation}</p>
+<p>\begin{equation}
+\text{attention}(Q,K,V) = \mathrm{softmax}
+\end{equation}</p>
+<p>\begin{equation}
+\text{attention}(Q,K,V) = \text{softmax} \Big( \frac{Q K^T}{\sqrt{d_k}} \Big)
+\end{equation}</p>
+<p>\begin{equation}
+\frac{Q K^T}{\sqrt{d_k}}
 \end{equation}</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">attention</span>(Q, K, V):
 </span></span><span style="display:flex;"><span>    dk <span style="color:#f92672">=</span> K<span style="color:#f92672">.</span>size(<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>)
