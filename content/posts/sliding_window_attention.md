@@ -17,12 +17,12 @@ For now, let's ignore the re-scaling by $\sqrt{d_k}$ and just look at the comput
 \begin{equation}
     Q \times K^T = \begin{pmatrix}
         Q_{11} & Q_{12} & \cdots & Q_{1d} \\\\
-Q_{21} & Q_{22} & \cdots & Q_{2d} \\\\
+\vdots & \ddots & \cdots & \vdots \\\\
 Q_{n1} & Q_{n2} & \cdots & Q_{nd}
 \end{pmatrix} \times
 \begin{pmatrix}
 K_{11} & K_{21} & \cdots & K_{n1} \\\\
-K_{12} & K_{22} & \cdots & K_{n2} \\\\
+\vdots & \ddots & \cdots & \vdots \\\\
 K_{1d} & K_{2d} & \cdots & K_{nd}
     \end{pmatrix}
 \end{equation}
@@ -31,23 +31,7 @@ Our goal is to simplify this computation. Instead of letting each token attend t
 
 ![Sliding Window Attention Matrix](/img/sliding_window.png)
 
-This greatly reduces the cost of the computation of $Q \times K^T$, as our computation will now look like
-
-\begin{equation}
-    Q \times K^T = \begin{pmatrix}
-        Q_{11} & Q_{12} &  &\\\\
-Q_{21} & Q_{22} & \cdots &  \\\\
- &  & \cdots & Q_{nd}
-\end{pmatrix} \times
-\begin{pmatrix}
-K_{11} & K_{21} &  &  \\\\
-K_{12} & K_{22}  & \cdots &  \\\\
- &  & \cdots & K_{nd}
-    \end{pmatrix}
-\end{equation}
-
-
-However, the original authors encountered a problem in training. The authors found that this approach is not flexible enough to learn to complete specific tasks. They solved this problem through the introduction of \textit{global attention}. This will give a few of our tokens some special properties: A token with a global attention attends to all other tokens in the sequence and all tokens in the sequence attend to every token with a global attention. 
+This greatly reduces the cost of the computation of $Q \times K^T$, however, the original authors encountered a problem in training. The authors found that this approach is not flexible enough to learn to complete specific tasks. They solved this problem through the introduction of \textit{global attention}. This will give a few of our tokens some special properties: A token with a global attention attends to all other tokens in the sequence and all tokens in the sequence attend to every token with a global attention. 
 
 The local attention (sliding window attention) is primarily used to build contextual representations, while the global attention allows the model to build full sequence representations for prediction. 
 

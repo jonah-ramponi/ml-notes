@@ -15,8 +15,6 @@ tags: [attention, inference]
 
 Here, we have defined 
 
-$ Q_{S_i} = (W_q x_j)_{j \text{ in } S_i}$
-
 $$ Q_{S_i} = (W_q x_j), K_{S_i} = (W_k x_j), V_{S_i} = (W_v x_j) \text{ for } j \in S_i $$ 
 
 So how do we define the set of connectivity patterns $S$? Formally, we let $S_i = A_i^{h}$ for head $h$ where $A_i^{h} \subset \{j : j \leq i\}$. It is still no clearer how we pick which indices we should take for a given $S_i$. The original authors consider two key criteria initially:
@@ -39,12 +37,11 @@ We now investigate two different approaches that satisfy this criteria, and allo
 
 Here, $A_i^{(1)}$ simply takes the previous $l$ locations. $A_i^{(2)}$ then takes every $l$th head from the first head where $i-j$ was divisible by $l$ without remainder. This is particularly useful where you can align the structure of your input with the stride. For instance, with a piece of music. Where our input does not have a well defined structured, we use something different. In the image below, you can see $A_i^{(1)}$ responsible for the dark blue shading and $A_i^{(2)}$ responsible for the light blue.
 
-**Fixed Attention*.* Our goal with this approach is to allow specific cells to summarize the previous locations, and to propagate this information on to future cells.
+**Fixed Attention**. Our goal with this approach is to allow specific cells to summarize the previous locations, and to propagate this information on to future cells.
 
-\begin{align*}
-    A^{(1)}_i &= \Big\{ j : \text{floor}(\frac{j}{l}) = \text{floor}( \frac{i}{l}) \Big\}, \\\\
-    A^{(2)}_i &= \Big\{ j : j \mod l \in \{ t, t + 1, \ldots, l \} \Big\},  \text{ where } t = l - c \text{ and } c \text{ is a hyperparameter.}
-\end{align*}
+$$ A^{(1)}_i = \Big\{ j : \text{floor}(\frac{j}{l}) = \text{floor}( \frac{i}{l}) \Big\}, $$
+
+$$ A^{(2)}_i = \Big\{ j : j \mod l \in \{ t, t + 1, \ldots, l \} \Big\},  \text{ where } t = l - c \text{ and } c \text{ is a hyperparameter.} $$
 
 These are best understood visually in my opinion. In the image below, $A_i^{(1)}$ is responsible for the dark blue shading and $A_i^{(2)}$ for the light blue shading. If we take stride, $l$ = 128 and $c=8$, then all positions greater than 128 can attend to positions $120-128$. The authors find choosing $c \in \{8,16,32\}$ worked well. 
 
