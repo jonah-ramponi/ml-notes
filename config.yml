@@ -5,12 +5,12 @@ theme: Archie
 pygmentsstyle: "monokai"
 pygmentscodefences: true
 pygmentscodefencesguesssyntax: true
+paginate: 3
 params:
-	mode: "toggle" 
+  mode: "toggle" 
   math: true
   mathjax: true 
   katex: true 
-paginate=3 # articles per page
 
 [[menu.main]]
 name = "Home"
