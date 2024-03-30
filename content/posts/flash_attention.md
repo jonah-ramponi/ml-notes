@@ -20,12 +20,12 @@ This looks unfriendly, but is really just the notation for a more numerically st
 
 
 *Proof* 
-\begin{align}
-\text{softmax}(x - c) &= \frac{e^{x - c}}{\sum_{j} e^{x_j - c}} \\\\
-&= \frac{e^{x} \cdot e^{-c}}{\sum_{j} e^{x_j} \cdot e^{-c}} \\\\
-&= \frac{e^{x}}{\sum_{j} e^{x_j}} \\\\
-&= \text{softmax}(x)
-\end{align}
+\begin{align*}
+\text{softmax}(\vec{x} - c) &= \frac{e^{\vec{x} - c}}{\sum_{j} e^{x_j - c}} \\\\
+&= \frac{e^{\vec{x}} \cdot e^{-c}}{\sum_{j} e^{x_j} \cdot e^{-c}} \\\\
+&= \frac{e^{\vec{x}}}{\sum_{j} e^{x_j}} \\\\
+&= \text{softmax}(\vec{x})
+\end{align*}
 
 In this case, we improve numerical stability by ensuring we do not take the exponential of very large numbers. This can lead to overflow issues. This simply means our number gets too big to store in the given datatype. By subtracting the largest element, we ensure the vector $\vec{x}$ only has non-positive entries. For example, in floating point 64, the maximum value we can represent is very large $(10^{308})$. However
 
@@ -46,7 +46,7 @@ np.exp(710)
 # inf
 ```
 
-We certainly do not want our model to hit any overflow errors. It is therefore preferable to use this numerically stable version of softmax. \\ 
+We certainly do not want our model to hit any overflow errors. It is therefore preferable to use this numerically stable version of softmax. 
 
 
 To compute softmax in blocks, we decompose our vector $\vec{x} \in \mathbb{R}^{2n}$ into two smaller vectors in $\mathbb{R}^n$.Let's look at the simple case of decomposing into two vectors. Denote these vectors $\vec{x}_1,\vec{x}_2$ each in $\mathbb{R}^n$. Our softmax calculation becomes
