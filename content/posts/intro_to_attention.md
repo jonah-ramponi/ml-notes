@@ -77,12 +77,6 @@ We're now very close to being able to introduce attention. One last thing remain
         \vdots & \vdots & \vdots & \ddots & \vdots & \vdots \\\\
         0.123 & 0.455 & 0.110 & \dots & -0.121 & 0.489
     \end{pmatrix}
-    = \text{positional encoding}\begin{pmatrix}
-        \colorbox{red}{ What} \\\\
-        \colorbox{magenta}{ is} \\\\
-        \vdots \\\\
-        \colorbox{cyan}{?}
-    \end{pmatrix}
 \end{equation}
 
 The top row is the first vector output of our positional encoding. The second row is the second, and so on. If we had $n$ tokens in our input sequence, then matrix $M$ would have $n$ rows. The dimensions of $M$ are as follows
@@ -107,6 +101,18 @@ We begin by producing query, key and value matrices, analogous to how a search e
 
 \begin{equation}
     \text{attention}(Q,K,V) = \mathrm{softmax} \Big( \frac{Q K^T}{\sqrt{d_k}} \Big) V.
+\end{equation}
+
+\begin{equation}
+    \text{attention}(Q,K,V) = \mathrm{softmax}
+\end{equation}
+
+\begin{equation}
+    \text{attention}(Q,K,V) = \text{softmax} \Big( \frac{Q K^T}{\sqrt{d_k}} \Big)
+\end{equation}
+
+\begin{equation}
+    \frac{Q K^T}{\sqrt{d_k}}
 \end{equation}
 
 ```python
