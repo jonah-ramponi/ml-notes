@@ -88,9 +88,9 @@
 
 		<section class="body">
 			<p>Suppose you give an LLM the input</p>
-<p><em>``What is the capital of France?&quot;</em></p>
+<p><em>What is the capital of France?</em></p>
 <p>The first thing the LLM will do is split this input into tokens. A token is just some combinations of characters. You can see an example of the tokenization outputs for the question below.</p>
-<p>``<em>$\colorbox{red}{What}\colorbox{magenta}{ is}\colorbox{green}{ the}\colorbox{orange}{ capital}\colorbox{purple}{ of}\colorbox{brown}{ France}\colorbox{cyan}?$</em>&quot;</p>
+<p><em>$\colorbox{red}{What}\colorbox{magenta}{ is}\colorbox{green}{ the}\colorbox{orange}{ capital}\colorbox{purple}{ of}\colorbox{brown}{ France}\colorbox{cyan}?$</em></p>
 <p>(This tokenization was produced using cl100k_base, the tokenizer used in GPT-3.5-turbo and GPT-4.)</p>
 <p>In this example we have $(n = 7)$ tokens. Importantly, from our model&rsquo;s point of view, our input size is defined by the number of tokens instead of words. A numerical representation (vector representation) of each token is now found. Finding this vector representation is called producing an embedding of the token. The token <em>$\colorbox{red}{ What}$</em> might get tokenized as follows</p>
 <p>\begin{equation}
@@ -104,19 +104,15 @@
 \begin{pmatrix} 0.127  \\ \vdots \\ 0.484 \\ \end{pmatrix}
 $$</p>
 <p>This output is now passed through a <em>positional encoder</em>. Broadly, this is useful to provide the model with information about the position of words or tokens within a sequence. You might wonder why we need to positionally encode each token. What does it even mean to positionally encode something? Why can&rsquo;t we just use the index of the item? These questions are for another post.</p>
-<p>The only thing that matters for now, is that each of our numerical representations (vectors) are slightly altered. For the numerical representation of the token ``$\colorbox{red}{ What}$&quot; that we get from our embedding model, it might look something like:</p>
+<p>The only thing that matters for now, is that each of our numerical representations (vectors) are slightly altered. For the numerical representation of the token $\colorbox{red}{ What}$ that we get from our embedding model, it might look something like:</p>
 <p>\begin{equation}
 \text{positional encoder}\Bigg(\begin{pmatrix} -0.415 \\    \vdots \\    0.571 \\   \end{pmatrix}\Bigg) =
 \begin{pmatrix} -0.424 \\  \vdots \\   0.534 \\   \end{pmatrix}
 \end{equation}</p>
 <p>Importantly, the positional encoder does not alter the length of our vector, $d_{\text{model}}$. It simply tweaks the values slightly. So far, we entered our prompt:</p>
-<blockquote>
-<p>\textit{``What is the capital of Paris?&quot;}</p>
-</blockquote>
+<p><em>What is the capital of France?</em></p>
 <p>This was tokenized</p>
-<blockquote>
-<p>``<em>$\colorbox{red}{What}\colorbox{magenta}{ is}\colorbox{green}{ the}\colorbox{orange}{ capital}\colorbox{purple}{ of}\colorbox{brown}{ France}\colorbox{cyan}?&quot;$</em></p>
-</blockquote>
+<p><em>$\colorbox{red}{What}\colorbox{magenta}{ is}\colorbox{green}{ the}\colorbox{orange}{ capital}\colorbox{purple}{ of}\colorbox{brown}{ France}\colorbox{cyan}?$</em></p>
 <p>Then embedded</p>
 <p>$$
 \begin{pmatrix} -0.415 \\ -0.514 \\  0.569 \\  \vdots \\  -0.257 \\   0.571 \\   \end{pmatrix}
@@ -138,10 +134,10 @@ M = \begin{pmatrix}
 0.123 &amp; 0.455 &amp; 0.110 &amp; \dots &amp; -0.121 &amp; 0.489
 \end{pmatrix}
 = \text{positional encoding}\begin{pmatrix}
-\text{\colorbox{red}{ What}} \\
-\text{\colorbox{magenta}{ is}} \\
+\colorbox{red}{ What} \\
+\colorbox{magenta}{ is} \\
 \vdots \\
-\text{\colorbox{cyan}{?}}
+\colorbox{cyan}{?}
 \end{pmatrix}
 \end{equation}</p>
 <p>The top row is the first vector output of our positional encoding. The second row is the second, and so on. If we had $n$ tokens in our input sequence, then matrix $M$ would have $n$ rows. The dimensions of $M$ are as follows</p>
@@ -157,7 +153,7 @@ y_i = \sum_{j = 1}^{{n}} w_{ij} \cdot x_j, \text{ } \forall 1 \leq i \leq m.
 <h3 id="scaled-dot-product-self-attention-to-compute-scaled-dot-product-self-attention-we-will-use-the-matrix-m-with-rows-corresponding-to-the-positionally-encoded-vectors-m-has-dimensions-n-times-d_textmodel">Scaled Dot Product Self Attention. To compute scaled dot product self attention, we will use the matrix $M$ with rows corresponding to the positionally encoded vectors. $M$ has dimensions $(n \times d_{\text{model}})$.</h3>
 <p>We begin by producing query, key and value matrices, analogous to how a search engine maps a user query to relevant items in its database. We will make 3 copies of our matrix $M$. These become the matrices $Q, K$ and $V$. Each of these has dimension $(n \times d_{\text{model}})$. We let $d_k$ denote the dimensions of the keys, which in this case is $d_{\text{model}}$. We are ready to define attention as</p>
 <p>\begin{equation}
-\text{attention}(Q,K,V) = \text{softmax}\Big(\frac{Q K^T}{\sqrt{d_k}}\Big) \cdot V.
+\text{attention}(Q,K,V) = \text{softmax} \Big( \frac{Q K^T}{\sqrt{d_k}} \Big) V.
 \end{equation}</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">attention</span>(Q, K, V):
 </span></span><span style="display:flex;"><span>    dk <span style="color:#f92672">=</span> K<span style="color:#f92672">.</span>size(<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>)
@@ -240,8 +236,6 @@ h_i = \text{attention}(M \cdot W_h^Q, M\cdot W_h^K,M\cdot W_h^V)
 				<ul class="tags">
 					
 					<li><a href="/tags/attention">attention</a></li>
-					
-					<li><a href="/tags/inference">inference</a></li>
 					
 				</ul>
 			</nav>

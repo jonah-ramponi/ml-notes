@@ -20,7 +20,7 @@
       <link>https://www.jonahramponi.com/posts/intro_to_attention/</link>
       <pubDate>Fri, 22 Mar 2024 00:00:00 +0000</pubDate>
       <guid>https://www.jonahramponi.com/posts/intro_to_attention/</guid>
-      <description>Suppose you give an LLM the input&#xA;``What is the capital of France?&amp;quot;&#xA;The first thing the LLM will do is split this input into tokens. A token is just some combinations of characters. You can see an example of the tokenization outputs for the question below.&#xA;``$\colorbox{red}{What}\colorbox{magenta}{ is}\colorbox{green}{ the}\colorbox{orange}{ capital}\colorbox{purple}{ of}\colorbox{brown}{ France}\colorbox{cyan}?$&amp;quot;&#xA;(This tokenization was produced using cl100k_base, the tokenizer used in GPT-3.5-turbo and GPT-4.)&#xA;In this example we have $(n = 7)$ tokens.</description>
+      <description>Suppose you give an LLM the input&#xA;What is the capital of France?&#xA;The first thing the LLM will do is split this input into tokens. A token is just some combinations of characters. You can see an example of the tokenization outputs for the question below.&#xA;$\colorbox{red}{What}\colorbox{magenta}{ is}\colorbox{green}{ the}\colorbox{orange}{ capital}\colorbox{purple}{ of}\colorbox{brown}{ France}\colorbox{cyan}?$&#xA;(This tokenization was produced using cl100k_base, the tokenizer used in GPT-3.5-turbo and GPT-4.)&#xA;In this example we have $(n = 7)$ tokens.</description>
     </item>
     <item>
       <title>Multi &amp; Grouped Query Attention</title>
