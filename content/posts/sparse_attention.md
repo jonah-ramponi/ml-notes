@@ -39,9 +39,8 @@ Here, $A_i^{(1)}$ simply takes the previous $l$ locations. $A_i^{(2)}$ then take
 
 **Fixed Attention**. Our goal with this approach is to allow specific cells to summarize the previous locations, and to propagate this information on to future cells.
 
-$$ A^{(1)}_i = \Big\{ j : \text{floor}(\frac{j}{l}) = \text{floor}( \frac{i}{l}) \Big\}, $$
-
-$$ A^{(2)}_i = \Big\{ j : j \mod l \in \{ t, t + 1, \ldots, l \} \Big\},  \text{ where } t = l - c \text{ and } c \text{ is a hyperparameter.} $$
+$$ A^{(1)}_i = \{ j : \text{floor}(\frac{j}{l}) = \text{floor}( \frac{i}{l}) \}, $$
+$$ A^{(2)}_i = \{ j : j \mod l \in \{ t, t + 1, \dots, l \} \},  \text{ where } t = l - c \text{ and } c \text{ is a hyperparameter.} $$
 
 These are best understood visually in my opinion. In the image below, $A_i^{(1)}$ is responsible for the dark blue shading and $A_i^{(2)}$ for the light blue shading. If we take stride, $l$ = 128 and $c=8$, then all positions greater than 128 can attend to positions $120-128$. The authors find choosing $c \in \{8,16,32\}$ worked well. 
 

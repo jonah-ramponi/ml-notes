@@ -6,7 +6,7 @@ tldr: Reduce the memory usage used to compute exact attention.
 draft: false
 tags: [attention, inference] 
 ---
-The goal of [*Flash Attention*](https://arxiv.org/pdf/2205.14135.pdf) is to compute the attention value with fewer high bandwidth memory read / writes. The approach has since been refined in  [*Flash Attention 2*](https://arxiv.org/pdf/2307.08691.pdf). 
+The goal of ![*Flash Attention*](https://arxiv.org/pdf/2205.14135.pdf) is to compute the attention value with fewer high bandwidth memory read / writes. The approach has since been refined in  ![*Flash Attention 2*](https://arxiv.org/pdf/2307.08691.pdf). 
 
 We will split the attention inputs $Q,K,V$ into blocks. Each block will be handled separately, and attention will therefore be computed with respect to each block. With the correct scaling, adding the outputs from each block we will give us the same attention value as we would get by computing everything all together. 
 
