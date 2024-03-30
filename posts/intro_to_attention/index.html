@@ -170,7 +170,7 @@ y_i = \sum_{j = 1}^{{n}} w_{ij} \cdot x_j, \text{ } \forall 1 \leq i \leq m.
 <p><strong>Why do we divide by $\sqrt{d_k}?$</strong> This was introduced to counteract the effect of having the dot products grow large in magnitude for large dimensional inputs $d_k&raquo;1$. In cases where the dot product grew large in size, it was suspect suspected that application of the softmax function was returning extremely small gradients which in turn lead to the vanishing gradients problem.</p>
 <p>We multiply the softmax of the attention matrix with each row of $V$. This re-scales each row of the output matrix to sum to one. The equation for softmax applied to a matrix $X$ is as follows</p>
 <p>\begin{equation}
-\text{softmax}(X)<em>{ij} = \frac{e^{X</em>{ij}}}{\sum_{k=1}^{n} e^{X_{ik}}}.
+softmax(X)_{ i j } = \frac{e^{X_{ij}}}{\sum_{k=1}^{n} e^{X_{ik}}}.
 \end{equation}</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">softmax</span>(X):
 </span></span><span style="display:flex;"><span>    exp_X <span style="color:#f92672">=</span> torch<span style="color:#f92672">.</span>exp(X)
@@ -193,7 +193,7 @@ v_1 \\ v_2 \\ \vdots \\ v_n
 \end{pmatrix}
 ]</p>
 <p>The attention matrix is a nice thing to visualize. For our toy example, it might look like</p>
-<!-- raw HTML omitted -->
+<p>1<a href="/img/attnm.png">Attention Matrix Visualisation</a></p>
 <p>What can we notice about our attention matrix?</p>
 <p><strong>It is symmetric.</strong>
 That is, $w = w^T$. This is to be expected, as remember it was produced by computing $QK^T$ where $Q$ and $K$ are identical.</p>
