@@ -8,17 +8,20 @@
 <meta property="og:description" content="A brief introduction to attention in the transformer architecture." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://www.jonahramponi.com/posts/intro_to_attention/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2024-03-22T00:00:00+00:00" />
-<meta property="article:modified_time" content="2024-03-22T00:00:00+00:00" />
+<meta property="article:published_time" content="2024-03-30T00:00:00+00:00" />
+<meta property="article:modified_time" content="2024-03-30T00:00:00+00:00" />
 <meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Intro to Attention"/>
 <meta name="twitter:description" content="A brief introduction to attention in the transformer architecture."/>
-
+<script src="https://www.jonahramponi.com/js/feather.min.js"></script>
+	
 	
         <link href="https://www.jonahramponi.com/css/fonts.2c2227b81b1970a03e760aa2e6121cd01f87c88586803cbb282aa224720a765f.css" rel="stylesheet">
 	
 
 	
 	<link rel="stylesheet" type="text/css" media="screen" href="https://www.jonahramponi.com/css/main.ac08a4c9714baa859217f92f051deb58df2938ec352b506df655005dcaf98cc0.css" />
+		<link id="darkModeStyle" rel="stylesheet" type="text/css" href="https://www.jonahramponi.com/css/dark.726cd11ca6eb7c4f7d48eb420354f814e5c1b94281aaf8fd0511c1319f7f78a4.css"  disabled />
+	
 
 	
 	
@@ -70,6 +73,12 @@
 	</div>
 	<nav>
 		
+		<a href="/">Home</a>
+		
+		<a href="/about">About</a>
+		
+		| <span id="dark-mode-toggle" onclick="toggleTheme()"></span>
+		<script src="https://www.jonahramponi.com/js/themetoggle.js"></script>
 		
 	</nav>
 </header>
@@ -78,7 +87,7 @@
 	<article>
 		<div class="title">
 			<h1 class="title">Intro to Attention</h1>
-			<div class="meta">Posted on Mar 22, 2024</div>
+			<div class="meta">Posted on Mar 30, 2024</div>
 		</div>
 		
 		<div class="tldr">
@@ -115,16 +124,18 @@ $$</p>
 <p><em>$\colorbox{red}{What}\colorbox{magenta}{ is}\colorbox{green}{ the}\colorbox{orange}{ capital}\colorbox{purple}{ of}\colorbox{brown}{ France}\colorbox{cyan}?$</em></p>
 <p>Then embedded</p>
 <p>$$
-\begin{pmatrix} -0.415 \\ -0.514 \\  0.569 \\  \vdots \\  -0.257 \\   0.571 \\   \end{pmatrix}
-\begin{pmatrix} -0.130 \\ -0.464 \\ 0.23 \\ \vdots \\ -0.154 \\ 0.192 \\ \end{pmatrix}
+\begin{pmatrix} -0.415 \\  \vdots \\   0.571 \\   \end{pmatrix}
+\begin{pmatrix} -0.130  \\ \vdots  \\ 0.192 \\ \end{pmatrix}
 , \dots ,
-\begin{pmatrix} 0.127 \\ 0.453 \\ 0.110 \\ \vdots \\ -0.155 \\ 0.484 \\ \end{pmatrix}
+\begin{pmatrix} 0.127  \\ \vdots \\ 0.484 \\ \end{pmatrix}
 $$</p>
 <p>and finally positionally encoded</p>
-<p>\begin{equation}
-\text{positional encoder}\Bigg(\begin{pmatrix} -0.415 \\ -0.514 \\    \vdots \\  -0.257 \\   0.571 \\   \end{pmatrix}\Bigg) =
-\begin{pmatrix} -0.424 \\ -0.574 \\  \vdots \\  -0.235 \\   0.534 \\   \end{pmatrix}
-\end{equation}</p>
+<p>$$
+\begin{pmatrix} -0.424 \\  \vdots \\   0.534 \\   \end{pmatrix}
+\begin{pmatrix} 0.110  \\ \vdots  \\ 0.212 \\ \end{pmatrix}
+, \dots ,
+\begin{pmatrix} 0.070  \\ \vdots \\ 0.324 \\ \end{pmatrix}
+$$</p>
 <p>We&rsquo;re now very close to being able to introduce attention. One last thing remains, at this point we will transform the output of our positional encoding to a matrix $M$ as follows</p>
 <p>\begin{equation}
 M = \begin{pmatrix}
@@ -150,10 +161,11 @@ M = \Big( \text{number of tokens in input} \times \text{length of embedding}  \B
 y_i = \sum_{j = 1}^{{n}} w_{ij} \cdot x_j, \text{ } \forall 1 \leq i \leq m.
 \end{equation}</p>
 <p>for some mapping $w_{ij}$. The challenge is in figuring out how we should define our mapping $w_{ij}$. Let&rsquo;s look at the first way $w_{ij}$ was defined, introduced in <a href="https://arxiv.org/pdf/1706.03762.pdf">Attention is All You Need</a>.</p>
-<h3 id="scaled-dot-product-self-attention-to-compute-scaled-dot-product-self-attention-we-will-use-the-matrix-m-with-rows-corresponding-to-the-positionally-encoded-vectors-m-has-dimensions-n-times-d_textmodel">Scaled Dot Product Self Attention. To compute scaled dot product self attention, we will use the matrix $M$ with rows corresponding to the positionally encoded vectors. $M$ has dimensions $(n \times d_{\text{model}})$.</h3>
+<h3 id="scaled-dot-product-self-attention">Scaled Dot Product Self Attention.</h3>
+<p>To compute scaled dot product self attention, we will use the matrix $M$ with rows corresponding to the positionally encoded vectors. $M$ has dimensions $(n \times d_{\text{model}})$.</p>
 <p>We begin by producing query, key and value matrices, analogous to how a search engine maps a user query to relevant items in its database. We will make 3 copies of our matrix $M$. These become the matrices $Q, K$ and $V$. Each of these has dimension $(n \times d_{\text{model}})$. We let $d_k$ denote the dimensions of the keys, which in this case is $d_{\text{model}}$. We are ready to define attention as</p>
 <p>\begin{equation}
-\text{attention}(Q,K,V) = \text{softmax} \Big( \frac{Q K^T}{\sqrt{d_k}} \Big) V.
+\text{attention}(Q,K,V) = \mathrm{softmax} \Big( \frac{Q K^T}{\sqrt{d_k}} \Big) V.
 \end{equation}</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">attention</span>(Q, K, V):
 </span></span><span style="display:flex;"><span>    dk <span style="color:#f92672">=</span> K<span style="color:#f92672">.</span>size(<span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>)

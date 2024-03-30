@@ -6,21 +6,21 @@
     <description>Recent content in Attention on Jonah&#39;s ML Notes</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 26 Mar 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 30 Mar 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://www.jonahramponi.com/tags/attention/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Intro to Attention</title>
+      <link>https://www.jonahramponi.com/posts/intro_to_attention/</link>
+      <pubDate>Sat, 30 Mar 2024 00:00:00 +0000</pubDate>
+      <guid>https://www.jonahramponi.com/posts/intro_to_attention/</guid>
+      <description>Suppose you give an LLM the input&#xA;What is the capital of France?&#xA;The first thing the LLM will do is split this input into tokens. A token is just some combinations of characters. You can see an example of the tokenization outputs for the question below.&#xA;$\colorbox{red}{What}\colorbox{magenta}{ is}\colorbox{green}{ the}\colorbox{orange}{ capital}\colorbox{purple}{ of}\colorbox{brown}{ France}\colorbox{cyan}?$&#xA;(This tokenization was produced using cl100k_base, the tokenizer used in GPT-3.5-turbo and GPT-4.)&#xA;In this example we have $(n = 7)$ tokens.</description>
+    </item>
     <item>
       <title>Flash Attention</title>
       <link>https://www.jonahramponi.com/posts/flash_attention/</link>
       <pubDate>Tue, 26 Mar 2024 00:00:00 +0000</pubDate>
       <guid>https://www.jonahramponi.com/posts/flash_attention/</guid>
       <description>The goal of Flash Attention is to compute the attention value with fewer high bandwidth memory read / writes. The approach has since been refined in Flash Attention 2.&#xA;We will split the attention inputs $Q,K,V$ into blocks. Each block will be handled separately, and attention will therefore be computed with respect to each block. With the correct scaling, adding the outputs from each block we will give us the same attention value as we would get by computing everything all together.</description>
-    </item>
-    <item>
-      <title>Intro to Attention</title>
-      <link>https://www.jonahramponi.com/posts/intro_to_attention/</link>
-      <pubDate>Fri, 22 Mar 2024 00:00:00 +0000</pubDate>
-      <guid>https://www.jonahramponi.com/posts/intro_to_attention/</guid>
-      <description>Suppose you give an LLM the input&#xA;What is the capital of France?&#xA;The first thing the LLM will do is split this input into tokens. A token is just some combinations of characters. You can see an example of the tokenization outputs for the question below.&#xA;$\colorbox{red}{What}\colorbox{magenta}{ is}\colorbox{green}{ the}\colorbox{orange}{ capital}\colorbox{purple}{ of}\colorbox{brown}{ France}\colorbox{cyan}?$&#xA;(This tokenization was produced using cl100k_base, the tokenizer used in GPT-3.5-turbo and GPT-4.)&#xA;In this example we have $(n = 7)$ tokens.</description>
     </item>
     <item>
       <title>Multi &amp; Grouped Query Attention</title>

@@ -12,13 +12,16 @@
 <meta property="og:url" content="https://www.jonahramponi.com/" />
 <meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Jonah&#39;s ML Notes"/>
 <meta name="twitter:description" content=""/>
-
+<script src="https://www.jonahramponi.com/js/feather.min.js"></script>
+	
 	
         <link href="https://www.jonahramponi.com/css/fonts.2c2227b81b1970a03e760aa2e6121cd01f87c88586803cbb282aa224720a765f.css" rel="stylesheet">
 	
 
 	
 	<link rel="stylesheet" type="text/css" media="screen" href="https://www.jonahramponi.com/css/main.ac08a4c9714baa859217f92f051deb58df2938ec352b506df655005dcaf98cc0.css" />
+		<link id="darkModeStyle" rel="stylesheet" type="text/css" href="https://www.jonahramponi.com/css/dark.726cd11ca6eb7c4f7d48eb420354f814e5c1b94281aaf8fd0511c1319f7f78a4.css"  disabled />
+	
 
 	
 	
@@ -72,6 +75,12 @@
 	</div>
 	<nav>
 		
+		<a href="/">Home</a>
+		
+		<a href="/about">About</a>
+		
+		| <span id="dark-mode-toggle" onclick="toggleTheme()"></span>
+		<script src="https://www.jonahramponi.com/js/themetoggle.js"></script>
 		
 	</nav>
 </header>
@@ -81,6 +90,17 @@
 				<div class="site-description"></div>
 				
 				
+				
+				<section class="list-item">
+					<h1 class="title"><a href="/posts/intro_to_attention/">Intro to Attention</a></h1>
+					<time>Mar 30, 2024</time>
+					<br><div class="description">
+	
+	A brief introduction to attention in the transformer architecture.
+	
+</div>
+					<a class="readmore" href="/posts/intro_to_attention/">Read more ⟶</a>
+				</section>
 				
 				<section class="list-item">
 					<h1 class="title"><a href="/posts/flash_attention/">Flash Attention</a></h1>
@@ -94,17 +114,6 @@
 				</section>
 				
 				<section class="list-item">
-					<h1 class="title"><a href="/posts/intro_to_attention/">Intro to Attention</a></h1>
-					<time>Mar 22, 2024</time>
-					<br><div class="description">
-	
-	A brief introduction to attention in the transformer architecture.
-	
-</div>
-					<a class="readmore" href="/posts/intro_to_attention/">Read more ⟶</a>
-				</section>
-				
-				<section class="list-item">
 					<h1 class="title"><a href="/posts/mqa_gqa/">Multi &amp; Grouped Query Attention</a></h1>
 					<time>Mar 22, 2024</time>
 					<br><div class="description">
@@ -115,51 +124,18 @@
 					<a class="readmore" href="/posts/mqa_gqa/">Read more ⟶</a>
 				</section>
 				
-				<section class="list-item">
-					<h1 class="title"><a href="/posts/sliding_window_attention/">Sliding Window Attention</a></h1>
-					<time>Mar 22, 2024</time>
-					<br><div class="description">
-	
-	Altering the tokens to which a token in the input sequence attends.
-	
-</div>
-					<a class="readmore" href="/posts/sliding_window_attention/">Read more ⟶</a>
-				</section>
 				
-				<section class="list-item">
-					<h1 class="title"><a href="/posts/sparse_attention/">Sparse Attention</a></h1>
-					<time>Mar 22, 2024</time>
-					<br><div class="description">
+
+<ul class="pagination">
+	<span class="page-item page-prev">
 	
-	Reducing the number of calculations to compute attention.
+	</span>
+	<span class="page-item page-next">
 	
-</div>
-					<a class="readmore" href="/posts/sparse_attention/">Read more ⟶</a>
-				</section>
-				
-				<section class="list-item">
-					<h1 class="title"><a href="/posts/kv_cache/">The KV Cache</a></h1>
-					<time>Mar 22, 2024</time>
-					<br><div class="description">
+    <a href="/page/2/" class="page-link" aria-label="Next"><span aria-hidden="true">Next →</span></a>
 	
-	Computing the attention more efficiently at inference.
-	
-</div>
-					<a class="readmore" href="/posts/kv_cache/">Read more ⟶</a>
-				</section>
-				
-				<section class="list-item">
-					<h1 class="title"><a href="/posts/resources/">PDFs and Resources</a></h1>
-					<time>Feb 28, 2024</time>
-					<br><div class="description">
-	
-	The contents of this website can be found as a pdf here.&hellip;
-	
-</div>
-					<a class="readmore" href="/posts/resources/">Read more ⟶</a>
-				</section>
-				
-				
+	</span>
+</ul>
 
 
 			</main>

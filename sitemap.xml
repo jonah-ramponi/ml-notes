@@ -3,7 +3,19 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://www.jonahramponi.com/tags/attention/</loc>
-    <lastmod>2024-03-26T00:00:00+00:00</lastmod>
+    <lastmod>2024-03-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://www.jonahramponi.com/posts/intro_to_attention/</loc>
+    <lastmod>2024-03-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://www.jonahramponi.com/</loc>
+    <lastmod>2024-03-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://www.jonahramponi.com/posts/</loc>
+    <lastmod>2024-03-30T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>https://www.jonahramponi.com/tags/</loc>
+    <lastmod>2024-03-30T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://www.jonahramponi.com/posts/flash_attention/</loc>
     <lastmod>2024-03-26T00:00:00+00:00</lastmod>
@@ -11,19 +23,7 @@
     <loc>https://www.jonahramponi.com/tags/inference/</loc>
     <lastmod>2024-03-26T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://www.jonahramponi.com/</loc>
-    <lastmod>2024-03-26T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://www.jonahramponi.com/posts/</loc>
-    <lastmod>2024-03-26T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://www.jonahramponi.com/tags/</loc>
-    <lastmod>2024-03-26T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>https://www.jonahramponi.com/tags/attention-matrix/</loc>
-    <lastmod>2024-03-22T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>https://www.jonahramponi.com/posts/intro_to_attention/</loc>
     <lastmod>2024-03-22T00:00:00+00:00</lastmod>
   </url><url>
     <loc>https://www.jonahramponi.com/posts/mqa_gqa/</loc>
