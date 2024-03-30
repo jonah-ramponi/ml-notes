@@ -34,7 +34,7 @@
       <link>https://www.jonahramponi.com/posts/sparse_attention/</link>
       <pubDate>Fri, 22 Mar 2024 00:00:00 +0000</pubDate>
       <guid>https://www.jonahramponi.com/posts/sparse_attention/</guid>
-      <description>\textit{Sparse Attention} \cite{sparseatt} introduces sparse factorizations on the attention matrix. To implement this we introduce a \textit{connectivity pattern} $S = {S_1,\dots,S_n}$. Here, $S_i$ denotes the set of indices of the input vectors to which the $i$th output vector attends. For instance, in regular $n^2$ attention every input vector attends to every output vector before it in the sequence. Remember that $d_k$ is the inner dimension of our queries and keys. Sparse Attention is given as follows</description>
+      <description>Sparse Attention introduces sparse factorizations on the attention matrix. To implement this we introduce a connectivity pattern $S = {S_1,\dots,S_n}$. Here, $S_i$ denotes the set of indices of the input vectors to which the $i$th output vector attends. For instance, in regular $n^2$ attention every input vector attends to every output vector before it in the sequence. Remember that $d_k$ is the inner dimension of our queries and keys. Sparse Attention is given as follows</description>
     </item>
     <item>
       <title>The KV Cache</title>
