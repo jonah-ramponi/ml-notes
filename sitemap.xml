@@ -2,16 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://www.jonahramponi.com/docs/</loc>
-    <lastmod>2024-03-30T11:49:13+00:00</lastmod>
-  </url><url>
     <loc>https://www.jonahramponi.com/</loc>
     <lastmod>2024-03-30T11:49:13+00:00</lastmod>
   </url><url>
-    <loc>https://www.jonahramponi.com/docs/test-copy/</loc>
+    <loc>https://www.jonahramponi.com/posts/test-copy/</loc>
     <lastmod>2024-03-30T11:49:13+00:00</lastmod>
   </url><url>
-    <loc>https://www.jonahramponi.com/docs/test/</loc>
+    <loc>https://www.jonahramponi.com/posts/</loc>
+    <lastmod>2024-03-30T11:49:13+00:00</lastmod>
+  </url><url>
+    <loc>https://www.jonahramponi.com/posts/test/</loc>
     <lastmod>2024-03-30T11:49:13+00:00</lastmod>
   </url><url>
     <loc>https://www.jonahramponi.com/categories/</loc>
