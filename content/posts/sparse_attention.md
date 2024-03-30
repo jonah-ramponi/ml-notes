@@ -4,7 +4,7 @@ description: Reducing the number of calculations to compute attention.
 date: 2024-03-22
 tldr: Reducing the number of calculations to compute attention.
 draft: false
-tags: [attention, inference] 
+tags: [attention] 
 ---
 
 [*Sparse Attention*](https://arxiv.org/pdf/1904.10509v1.pdf) introduces sparse factorizations on the attention matrix. To implement this we introduce a *connectivity pattern* $S = \{S_1,\dots,S_n\}$. Here, $S_i$ denotes the set of indices of the input vectors to which the $i$th output vector attends. For instance, in regular $n^2$ attention every input vector attends to every output vector before it in the sequence. Remember that $d_k$ is the inner dimension of our queries and keys. Sparse Attention is given as follows

@@ -4,7 +4,7 @@ description: Use less K and V matrices to use less memory.
 date: 2024-03-22
 tldr: Use less K and V matrices to use less memory.
 draft: false
-tags: [attention, inference] 
+tags: [attention, attention matrix] 
 ---
 
 #### Multi Query Attention

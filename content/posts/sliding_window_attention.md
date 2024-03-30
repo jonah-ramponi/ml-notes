@@ -4,7 +4,7 @@ description: Altering the tokens to which a token in the input sequence attends.
 date: 2024-03-22
 tldr: Altering the tokens to which a token in the input sequence attends.
 draft: false
-tags: [attention, inference] 
+tags: [attention] 
 ---
 
 [*Sliding Window Attention*](https://arxiv.org/pdf/2004.05150.pdf) reduces the number of calculations we are doing when computing self attention. Previously, to compute attention we took our input matrix of positional encodings $M$, and made copies named $Q, K$ and $V$. We used these copies to compute

@@ -4,16 +4,16 @@ description: A brief introduction to attention in the transformer architecture.
 date: 2024-03-22
 tldr: A brief introduction to attention in the transformer architecture.  
 draft: false
-tags: [attention, inference] 
+tags: [attention] 
 ---
 
 Suppose you give an LLM the input
 
-*``What is the capital of France?"*
+*What is the capital of France?*
 
 The first thing the LLM will do is split this input into tokens. A token is just some combinations of characters. You can see an example of the tokenization outputs for the question below.
 
-``*$\colorbox{red}{What}\colorbox{magenta}{ is}\colorbox{green}{ the}\colorbox{orange}{ capital}\colorbox{purple}{ of}\colorbox{brown}{ France}\colorbox{cyan}?$*" 
+*$\colorbox{red}{What}\colorbox{magenta}{ is}\colorbox{green}{ the}\colorbox{orange}{ capital}\colorbox{purple}{ of}\colorbox{brown}{ France}\colorbox{cyan}?$*
 
 (This tokenization was produced using cl100k_base, the tokenizer used in GPT-3.5-turbo and GPT-4.)
 
@@ -35,7 +35,7 @@ $$
 
 This output is now passed through a *positional encoder*. Broadly, this is useful to provide the model with information about the position of words or tokens within a sequence. You might wonder why we need to positionally encode each token. What does it even mean to positionally encode something? Why can't we just use the index of the item? These questions are for another post.
 
-The only thing that matters for now, is that each of our numerical representations (vectors) are slightly altered. For the numerical representation of the token ``$\colorbox{red}{ What}$" that we get from our embedding model, it might look something like:  
+The only thing that matters for now, is that each of our numerical representations (vectors) are slightly altered. For the numerical representation of the token $\colorbox{red}{ What}$ that we get from our embedding model, it might look something like:  
 
 \begin{equation}
      \text{positional encoder}\Bigg(\begin{pmatrix} -0.415 \\\\    \vdots \\\\    0.571 \\\\   \end{pmatrix}\Bigg) = 
@@ -44,11 +44,11 @@ The only thing that matters for now, is that each of our numerical representatio
 
 Importantly, the positional encoder does not alter the length of our vector, $d_{\text{model}}$. It simply tweaks the values slightly. So far, we entered our prompt: 
 
-> \textit{``What is the capital of Paris?"}
+*What is the capital of France?*
 
 This was tokenized
 
-> ``*$\colorbox{red}{What}\colorbox{magenta}{ is}\colorbox{green}{ the}\colorbox{orange}{ capital}\colorbox{purple}{ of}\colorbox{brown}{ France}\colorbox{cyan}?"$*
+*$\colorbox{red}{What}\colorbox{magenta}{ is}\colorbox{green}{ the}\colorbox{orange}{ capital}\colorbox{purple}{ of}\colorbox{brown}{ France}\colorbox{cyan}?$*
 
 Then embedded 
 
@@ -76,10 +76,10 @@ We're now very close to being able to introduce attention. One last thing remain
         0.123 & 0.455 & 0.110 & \dots & -0.121 & 0.489
     \end{pmatrix}
     = \text{positional encoding}\begin{pmatrix}
-        \text{\colorbox{red}{ What}} \\\\
-        \text{\colorbox{magenta}{ is}} \\\\
+        \colorbox{red}{ What} \\\\
+        \colorbox{magenta}{ is} \\\\
         \vdots \\\\
-        \text{\colorbox{cyan}{?}}
+        \colorbox{cyan}{?}
     \end{pmatrix}
 \end{equation}
 
@@ -103,7 +103,7 @@ for some mapping $w_{ij}$. The challenge is in figuring out how we should define
 We begin by producing query, key and value matrices, analogous to how a search engine maps a user query to relevant items in its database. We will make 3 copies of our matrix $M$. These become the matrices $Q, K$ and $V$. Each of these has dimension $(n \times d_{\text{model}})$. We let $d_k$ denote the dimensions of the keys, which in this case is $d_{\text{model}}$. We are ready to define attention as 
 
 \begin{equation}
-    \text{attention}(Q,K,V) = \text{softmax}\Big(\frac{Q K^T}{\sqrt{d_k}}\Big) \cdot V.
+    \text{attention}(Q,K,V) = \text{softmax} \Big( \frac{Q K^T}{\sqrt{d_k}} \Big) V.
 \end{equation}
 
 ```python
