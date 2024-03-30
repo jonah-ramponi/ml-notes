@@ -103,18 +103,6 @@ We begin by producing query, key and value matrices, analogous to how a search e
     \text{attention}(Q,K,V) = \mathrm{softmax} \Big( \frac{Q K^T}{\sqrt{d_k}} \Big) V.
 \end{equation}
 
-\begin{equation}
-    \text{attention}(Q,K,V) = \mathrm{softmax}
-\end{equation}
-
-\begin{equation}
-    \text{attention}(Q,K,V) = \text{softmax} \Big( \frac{Q K^T}{\sqrt{d_k}} \Big)
-\end{equation}
-
-\begin{equation}
-    \frac{Q K^T}{\sqrt{d_k}}
-\end{equation}
-
 ```python
 def attention(Q, K, V):
     dk = K.size(-1)
@@ -211,12 +199,6 @@ Concat() simply concatenates our output matrices. The output matrix of size $(n 
 
 \begin{equation*}
     \text{Concat}(\text{head}_1, \dots, \text{head}_h) = 
-    \begin{pmatrix}
-        \text{head}_{1_{11}} & \dots & \text{head}_{1_{1d_v}} & \dots & \text{head}_{H_{11}} & \dots & \text{head}_{H_{1d_v}} \\\\ 
-        \text{head}_{1_{21}} & \dots & \text{head}_{1_{2d_v}} & \dots & \text{head}_{H_{21}} & \dots & \text{head}_{H_{2d_v}} \\\\ 
-        \vdots & \ddots & \vdots & \dots & \vdots & \ddots & \vdots \\\\
-        \text{head}_{1_{n1}} & \dots & \text{head}_{1_{nd_v}} & \dots & \text{head}_{H_{n1}} & \dots & \text{head}_{H_{nd_v}} \\\\ 
-    \end{pmatrix}
 \end{equation*}
 
-This output has dimension $(n \times H d_v)$. We still have $n$ rows, however now we have $h$ different representations of $d_v$. Our output, $W^O$, is another trainable weight matrix which has dimensions $W^O = (Hd_v \times d_{\text{model}})$. Therefore, the multiplication of Concat $(\text{head}_1, \dots, \text{head}_H)$ and $W^O$ results in a matrix with dimension $(n \times d_{\text{model}})$.
+This output has dimension $(n \times H d_v)$. We still have $n$ rows, however now we have $h$ different representations of $d_v$. Our output, $W^O$, is another trainable weight matrix which has dimensions $W^O = (Hd_v \times d_{\text{model}})$. Therefore, the multiplication of Concat $ (head_1, \dots, head_H)$ and $W^O$ results in a matrix with dimension $(n \times d_{\text{model}})$.
