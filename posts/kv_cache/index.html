@@ -87,9 +87,7 @@
 		</div>
 
 		<section class="body">
-			<p>$\require{\nicematrix}$
-$\require{\minted}$</p>
-<p>The computation of attention is costly. Remember that our decoder works in an auto-regressive fashion. For our given input <em>$$\colorbox{red}{What}\colorbox{magenta}{ is}\colorbox{green}{ the}\colorbox{orange}{ capital}\colorbox{purple}{ of}\colorbox{brown}{ France}\colorbox{cyan}{?}&quot;$$</em></p>
+			<p>The computation of attention is costly. Remember that our decoder works in an auto-regressive fashion. For our given input <em>$$\colorbox{red}{What}\colorbox{magenta}{ is}\colorbox{green}{ the}\colorbox{orange}{ capital}\colorbox{purple}{ of}\colorbox{brown}{ France}\colorbox{cyan}{?}&quot;$$</em></p>
 <p>\begin{align}
 \text{Prediction 1} &amp;= \colorbox{orange}{The} \\
 \text{Prediction 2} &amp;= \colorbox{orange}{The}\colorbox{pink}{ capital} \\
@@ -97,34 +95,9 @@ $\require{\minted}$</p>
 \text{Prediction $p$} &amp;= \colorbox{orange}{The}\colorbox{pink}{ capital} (\dots) \colorbox{red}{ Paris.}
 \end{align}</p>
 <p>To produce prediction $2$, we will take the output from prediction $1$. At each step, the model will also see our input sequence. Without any tricks, at every step, we&rsquo;re going to be re-computing values that have already been calculated. Our attention matrix used for our first prediction will have the following structure</p>
-<p>\begin{equation}
-\begin{bmatrix}
-&amp; \textit{\colorbox{red}{What}} &amp; \textit{\colorbox{magenta}{ is}} &amp; \textit{\colorbox{green}{ the}} &amp; \textit{\colorbox{orange}{ capital}} &amp; \textit{\colorbox{purple}{ of}} &amp; \textit{\colorbox{brown}{ France}} &amp; \textit{\colorbox{cyan}{?}} \textit{\colorbox{orange}{The}} \\
-\textit{\colorbox{red}{What}} &amp; &amp; &amp; &amp; &amp; &amp; &amp; \\
-\textit{\colorbox{magenta}{ is}}  &amp; &amp; &amp; &amp; &amp; &amp; &amp; \\
-\textit{\colorbox{green}{ the}} &amp; &amp; &amp; &amp; &amp; &amp; &amp; \\
-\textit{\colorbox{orange}{ capital}} &amp; &amp; &amp; &amp; &amp; &amp; &amp; \\
-\textit{\colorbox{purple}{ of}} &amp; &amp; &amp; &amp; &amp; &amp; &amp; \\
-\textit{\colorbox{brown}{ France}} &amp; &amp; &amp; &amp; &amp; &amp; &amp; \\
-\textit{\colorbox{cyan}{?}} &amp; &amp; &amp; &amp; &amp; &amp; &amp; \\
-\textit{\colorbox{orange}{The}} &amp; &amp; &amp; &amp; &amp; &amp; &amp;
-\end{bmatrix}<br>
-\end{equation}</p>
+<p><img src="/img/first_pred_kv.png" alt="Sliding Window Attention Visual"></p>
 <p>When we compute the second prediction, the structure of our attention matrix looks very similar. Notice that the attention matrix after prediction one is actually contained within this matrix!</p>
-<p>\begin{equation}
-\begin{bmatrix}
-&amp; \textit{\colorbox{red}{What}} &amp; \textit{\colorbox{magenta}{ is}} &amp; \textit{\colorbox{green}{ the}} &amp; \textit{\colorbox{orange}{ capital}} &amp; \textit{\colorbox{purple}{ of}} &amp; \textit{\colorbox{brown}{ France}} &amp; \textit{\colorbox{cyan}{?}} &amp; \textit{\colorbox{orange}{The}} &amp; \textit{\colorbox{pink}{ capital} \\
-\textit{\colorbox{red}{What}} &amp; &amp; &amp; &amp; &amp; &amp; &amp; \\
-\textit{\colorbox{magenta}{ is}}  &amp; &amp; &amp; &amp; &amp; &amp; &amp; \\
-\textit{\colorbox{green}{ the}} &amp; &amp; &amp; &amp; &amp; &amp; &amp; \\
-\textit{\colorbox{orange}{ capital}} &amp; &amp; &amp; &amp; &amp; &amp; &amp; \\
-\textit{\colorbox{purple}{ of}} &amp; &amp; &amp; &amp; &amp; &amp; &amp; \\
-\textit{\colorbox{brown}{ France}} &amp; &amp; &amp; &amp; &amp; &amp; &amp; \\
-\textit{\colorbox{cyan}{?}} &amp; &amp; &amp; &amp; &amp; &amp; &amp; \\
-\textit{\colorbox{orange}{The}} &amp; &amp; &amp; &amp; &amp; &amp; &amp; \\
-\textit{\colorbox{pink}{ capital}} &amp; &amp; &amp; &amp; &amp; &amp; &amp;
-\end{bmatrix}<br>
-\end{equation}</p>
+<p><img src="/img/second_pred_kv.png" alt="Dilated Sliding Window Attention Visual"></p>
 <p>Remember, $Q$ and $K^T$ are just defined by our matrix $M$ which contains one row per input token. Thus, $Q$ and $K^T$ are very similar between the first and second predictions - only one row / column has changed! By caching $K$ for each prediction, we can make the computation of our attention matrix more efficient and by caching $V$, we make our attention mechanism output calculation more efficient.</p>
 
 		</section>
