@@ -198,7 +198,12 @@ The overall output of the process is then simply
 Concat() simply concatenates our output matrices. The output matrix of size $(n \times d_v)$ for each head is simply our matrices stacked on top of one another like so
 
 \begin{equation*}
-    \text{Concat}(\text{head}_1, \dots, \text{head}_h) = 
+    \text{Concat}(\text{head}_1, \dots, \text{head}_h) = \begin{pmatrix}
+head_{1_{11}} & \dots & head_{1_{1d_v}} & \dots & head_{H_{11}} & \dots & head_{H_{1d_v}} \\ 
+head_{1_{21}} & \dots & head_{1_{2d_v}} & \dots & head_{H_{21}} & \dots & head_{H_{2d_v}} \\ 
+\vdots & \ddots & \vdots & \dots & \vdots & \ddots & \vdots \\ 
+head_{1_{n1}} & \dots & head_{1_{nd_v}} & \dots & head_{H_{n1}} & \dots & head_{H_{nd_v}} \\ 
+    \end{pmatrix}
 \end{equation*}
 
 This output has dimension $(n \times H d_v)$. We still have $n$ rows, however now we have $h$ different representations of $d_v$. Our output, $W^O$, is another trainable weight matrix which has dimensions $W^O = (Hd_v \times d_{\text{model}})$. Therefore, the multiplication of Concat $ (head_1, \dots, head_H)$ and $W^O$ results in a matrix with dimension $(n \times d_{\text{model}})$.
