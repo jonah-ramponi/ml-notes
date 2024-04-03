@@ -198,7 +198,7 @@ The overall output of the process is then simply
 Concat() simply concatenates our output matrices. The output matrix of size $(n \times d_v)$ for each head is simply our matrices stacked on top of one another like so
 
 \begin{equation*}
-    \text{Concat}(\text{head}_1, \dots, \text{head}_h) = \begin{pmatrix}
+    \text{Concat}(head_1, \dots, head_h) = \begin{pmatrix}
 head_{1_{11}} & \dots & head_{1_{1d_v}} & \dots & head_{H_{11}} & \dots & head_{H_{1d_v}} \\ 
 head_{1_{21}} & \dots & head_{1_{2d_v}} & \dots & head_{H_{21}} & \dots & head_{H_{2d_v}} \\ 
 \vdots & \ddots & \vdots & \dots & \vdots & \ddots & \vdots \\ 
