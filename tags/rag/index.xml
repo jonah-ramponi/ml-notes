@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>RAG on Jonah&#39;s ML Notes</title>
+    <link>https://www.jonahramponi.com/tags/rag/</link>
+    <description>Recent content in RAG on Jonah&#39;s ML Notes</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 30 Jan 2024 00:00:00 +0000</lastBuildDate>
+    <atom:link href="https://www.jonahramponi.com/tags/rag/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Knowledge Graphs</title>
+      <link>https://www.jonahramponi.com/posts/knowledge_graphs/</link>
+      <pubDate>Tue, 30 Jan 2024 00:00:00 +0000</pubDate>
+      <guid>https://www.jonahramponi.com/posts/knowledge_graphs/</guid>
+      <description>Please check back later, this section is in progress :)</description>
+    </item>
+    <item>
+      <title>Vector Databases</title>
+      <link>https://www.jonahramponi.com/posts/vector_databases/</link>
+      <pubDate>Tue, 30 Jan 2024 00:00:00 +0000</pubDate>
+      <guid>https://www.jonahramponi.com/posts/vector_databases/</guid>
+      <description>Please check back later, this section is in progress :)</description>
+    </item>
+  </channel>
+</rss>
