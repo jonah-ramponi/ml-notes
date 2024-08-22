@@ -2,7 +2,7 @@
 title: LoRa
 description: Efficient LLM Finetuning.
 date: 2024-03-24
-tldr: Efficient LLM Finetuning.
+tldr: Efficient LLM Finetuning techniques.
 draft: false
 tags: [fine-tuning, training] 
 ---

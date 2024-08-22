@@ -1,6 +1,6 @@
 ---
 title: Fancy Pants Attention Techniques
-description: Different techniques used surrounding the concept of attention.
+description: Changes to the traditional attention implementation.
 date: 2024-03-23
 tldr: Many different approaches exist.
 draft: false
