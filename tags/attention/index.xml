@@ -16,39 +16,11 @@
       <description>Suppose you give an LLM the input&#xA;What is the capital of France?&#xA;The first thing the LLM will do is split this input into tokens. A token is just some combinations of characters. You can see an example of the tokenization outputs for the question below.&#xA;$\colorbox{red}{What}\colorbox{magenta}{ is}\colorbox{green}{ the}\colorbox{orange}{ capital}\colorbox{purple}{ of}\colorbox{brown}{ France}\colorbox{cyan}?$&#xA;(This tokenization was produced using cl100k_base, the tokenizer used in GPT-3.5-turbo and GPT-4.)&#xA;In this example we have $(n = 7)$ tokens.</description>
     </item>
     <item>
-      <title>Sliding Window Attention</title>
-      <link>https://www.jonahramponi.com/posts/sliding_window_attention/</link>
-      <pubDate>Wed, 27 Mar 2024 00:00:00 +0000</pubDate>
-      <guid>https://www.jonahramponi.com/posts/sliding_window_attention/</guid>
-      <description>Sliding Window Attention reduces the number of calculations we are doing when computing self attention. Previously, to compute attention we took our input matrix of positional encodings $M$, and made copies named $Q, K$ and $V$. We used these copies to compute&#xA;\begin{equation} \text{attention}(Q,K,V) = \text{softmax}\Big(\frac{Q K^T}{\sqrt{d_k}}\Big) V. \end{equation}&#xA;For now, let&amp;rsquo;s ignore the re-scaling by $\sqrt{d_k}$ and just look at the computation of $QK^T$. This computation looks like \begin{equation} Q \times K^T = \begin{pmatrix} Q_{11} &amp;amp; Q_{12} &amp;amp; \cdots &amp;amp; Q_{1d} \\ \vdots &amp;amp; \ddots &amp;amp; \cdots &amp;amp; \vdots \\ Q_{n1} &amp;amp; Q_{n2} &amp;amp; \cdots &amp;amp; Q_{nd} \end{pmatrix} \times \begin{pmatrix} K_{11} &amp;amp; K_{21} &amp;amp; \cdots &amp;amp; K_{n1} \\ \vdots &amp;amp; \ddots &amp;amp; \cdots &amp;amp; \vdots \\ K_{1d} &amp;amp; K_{2d} &amp;amp; \cdots &amp;amp; K_{nd} \end{pmatrix} \end{equation}</description>
-    </item>
-    <item>
-      <title>Sparse Attention</title>
-      <link>https://www.jonahramponi.com/posts/sparse_attention/</link>
-      <pubDate>Mon, 25 Mar 2024 00:00:00 +0000</pubDate>
-      <guid>https://www.jonahramponi.com/posts/sparse_attention/</guid>
-      <description>Sparse Attention introduces sparse factorizations on the attention matrix. To implement this we introduce a connectivity pattern $S = {S_1,\dots,S_n}$. Here, $S_i$ denotes the set of indices of the input vectors to which the $i$th output vector attends. For instance, in regular $n^2$ attention every input vector attends to every output vector before it in the sequence. Remember that $d_k$ is the inner dimension of our queries and keys. Sparse Attention is given as follows</description>
-    </item>
-    <item>
-      <title>Flash Attention</title>
-      <link>https://www.jonahramponi.com/posts/flash_attention/</link>
+      <title>Fancy Pants Attention Techniques</title>
+      <link>https://www.jonahramponi.com/posts/fancy_pants_attention/</link>
       <pubDate>Sat, 23 Mar 2024 00:00:00 +0000</pubDate>
-      <guid>https://www.jonahramponi.com/posts/flash_attention/</guid>
-      <description>The goal of Flash Attention is to compute the attention value with fewer high bandwidth memory read / writes. The approach has since been refined in Flash Attention 2.&#xA;We will split the attention inputs $Q,K,V$ into blocks. Each block will be handled separately, and attention will therefore be computed with respect to each block. With the correct scaling, adding the outputs from each block we will give us the same attention value as we would get by computing everything all together.</description>
-    </item>
-    <item>
-      <title>Multi &amp; Grouped Query Attention</title>
-      <link>https://www.jonahramponi.com/posts/mqa_gqa/</link>
-      <pubDate>Fri, 22 Mar 2024 00:00:00 +0000</pubDate>
-      <guid>https://www.jonahramponi.com/posts/mqa_gqa/</guid>
-      <description>Multi Query Attention Multi Query Attention (MQA) using the same $K$ and $V$ matrices for each head in our multi head self attention mechanism. For a given head, $h$, $1 \leq h \leq H$, the attention mechanism is calculated as&#xA;\begin{equation} h_i = \text{attention}(M\cdot W_h^Q, M \cdot W^K,M \cdot W^V). \end{equation}&#xA;For each of our $H$ heads, the only difference in the weight matrices is in $W_h^Q$. Each of these $W_h$ has dimension $(n \times d_q)$.</description>
-    </item>
-    <item>
-      <title>The KV Cache</title>
-      <link>https://www.jonahramponi.com/posts/kv_cache/</link>
-      <pubDate>Fri, 22 Mar 2024 00:00:00 +0000</pubDate>
-      <guid>https://www.jonahramponi.com/posts/kv_cache/</guid>
-      <description>The computation of attention is costly. Remember that our decoder works in an auto-regressive fashion. For our given input $$\colorbox{red}{What}\colorbox{magenta}{ is}\colorbox{green}{ the}\colorbox{orange}{ capital}\colorbox{purple}{ of}\colorbox{brown}{ France}\colorbox{cyan}{?}&amp;quot;$$&#xA;\begin{align} \text{Prediction 1} &amp;amp;= \colorbox{orange}{The} \\ \text{Prediction 2} &amp;amp;= \colorbox{orange}{The}\colorbox{pink}{ capital} \\ &amp;amp;\vdots \\ \text{Prediction $p$} &amp;amp;= \colorbox{orange}{The}\colorbox{pink}{ capital} (\dots) \colorbox{red}{ Paris.} \end{align}&#xA;To produce prediction $2$, we will take the output from prediction $1$. At each step, the model will also see our input sequence.</description>
+      <guid>https://www.jonahramponi.com/posts/fancy_pants_attention/</guid>
+      <description>Sparse Attention Sparse Attention introduces sparse factorizations on the attention matrix. To implement this we introduce a connectivity pattern $S = {S_1,\dots,S_n}$. Here, $S_i$ denotes the set of indices of the input vectors to which the $i$th output vector attends. For instance, in regular $n^2$ attention every input vector attends to every output vector before it in the sequence. Remember that $d_k$ is the inner dimension of our queries and keys.</description>
     </item>
   </channel>
 </rss>
