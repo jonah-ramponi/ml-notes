@@ -2,6 +2,7 @@
 title: Why Meta published Llama 3 for free
 description: Some brief thoughts on why the open sourcing of llama 3 model weights was a strategic move by Meta. 
 date: 2024-08-23 
+tldr: Meta make money from adverts
 draft: false
 tags: [Strategy] 
 ---
