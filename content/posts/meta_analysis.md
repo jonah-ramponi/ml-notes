@@ -65,5 +65,7 @@ Similarly, Microsoft's (and OpenAI’s) dominance in Generative AI might have be
 So, while Meta’s actions might seem altruistic on the surface, they’re likely driven by the same competitive instincts that have shaped big tech for years. Whether this leads to a better world, with more innovation and access, or just a noisier one full of whoopee cushions, remains to be seen.
 
 (1) In the second quarter of 2024, 98.1% of Meta’s revenue came from adverts. [Meta Q2 Earnings](ps://investor.fb.com/investor-news/press-release-details/2024/Meta-Reports-Second-Quarter-2024-Results/default.aspx)
+
 (2) [We Have No Moat, And Neither Does OpenAI](https://www.semianalysis.com/p/google-we-have-no-moat-and-neither)
+
 (3) [Joel on Software discusses Commoditizing your Complement](https://www.joelonsoftware.com/2002/06/12/strategy-letter-v/)
