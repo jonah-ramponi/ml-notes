@@ -7,7 +7,7 @@ draft: false
 tags: [] 
 ---
 
-To understand why Meta has open sourced the Llama family of models, I think it is important to understand how Meta makes money. Meta makes money from adverts. Almost their entire revenue comes from adverts [1]. So, why have Meta invested so much money into the Llama models?
+To understand why Meta has open sourced the Llama family of models, I think it is important to understand how Meta makes money. Meta makes money from adverts. Almost their entire revenue comes from adverts (1). So, why have Meta invested so much money into the Llama models?
 
 *Probably, to make more money from adverts.*
 
@@ -17,7 +17,7 @@ Here are some ways in which the open source release of the Llama models might he
 
 Open sourcing the Llama model weights has led to massive adoption of the Llama models by developers and researchers. This community-driven effort has greatly advanced understanding of generative AI models. These advancements should enable Meta to extract more value from their data.
 
-A while back, a leaked memo from a Google Researcher titled *“We Have No Moat, And Neither Does OpenAI“* was released [2]. Meta promptly decided to get into the bridge building business with the open source community . They do, however, keep a deep moat filled with crocodiles around what is truly valuable to them - their data.
+A while back, a leaked memo from a Google Researcher titled *“We Have No Moat, And Neither Does OpenAI“* was released (2). Meta promptly decided to get into the bridge building business with the open source community . They do, however, keep a deep moat filled with crocodiles around what is truly valuable to them - their data.
 
 It would not surprise me if we never hear about the models trained on our Instagram and Facebook data. I think it will be these models which will reap the biggest rewards for Meta - because those models might increase advertising revenues by a percentage or two, and that is worth a lot.
 
@@ -25,13 +25,13 @@ So what exactly might this value add look like?
 
 I don’t know. That’s a question for the researchers at Meta under super strict NDAs. But maybe:  
 
-- Improvements to multimodal models could allow them to better extract information from user’s posts. For instance, they could better identify the types, values, styles, etc., of clothes an individual wears. They might better understand the look they go for. This could be used for targeted advertising. 
+1. Improvements to multimodal models could allow them to better extract information from user’s posts. For instance, they could better identify the types, values, styles, etc., of clothes an individual wears. They might better understand the look they go for. This could be used for targeted advertising. 
 
-- Improvements to language models may allow for better analysis of the tone and sentiment in posts. Meta could then better tailor ads to match the user’s current emotional state, improving engagement and relevance. For instance, if emotional stress were detected Meta could recommend using Facebook less. 
+2. Improvements to language models may allow for better analysis of the tone and sentiment in posts. Meta could then better tailor ads to match the user’s current emotional state, improving engagement and relevance. For instance, if emotional stress were detected Meta could recommend using Facebook less. 
 
 But why didn’t Meta just train the Llama models privately and keep them for internal use? Why expose themselves to potential legal issues or lawsuits by making them open source?
 
-I believe the prevailing theory is that Meta is strategically commoditizing its complements [3]. They have a core revenue stream—advertising—and by making certain technologies widely available, they indirectly enhance their primary money-making activity. 
+I believe the prevailing theory is that Meta is strategically commoditizing its complements (3). They have a core revenue stream—advertising—and by making certain technologies widely available, they indirectly enhance their primary money-making activity. 
 
 I would guess that Meta intends to commoditize as much of their tech stack as possible. For instance, perhaps they might create a new frontend framework which makes it easier to build scalable social network sites. Or a better framework than tensorflow for building digital advertising ML models. 
 
@@ -64,6 +64,6 @@ Similarly, Microsoft's (and OpenAI’s) dominance in Generative AI might have be
 
 So, while Meta’s actions might seem altruistic on the surface, they’re likely driven by the same competitive instincts that have shaped big tech for years. Whether this leads to a better world, with more innovation and access, or just a noisier one full of whoopee cushions, remains to be seen.
 
-[1] In the second quarter of 2024, 98.1% of Meta’s revenue came from adverts. [Meta Q2 Earnings](ps://investor.fb.com/investor-news/press-release-details/2024/Meta-Reports-Second-Quarter-2024-Results/default.aspx)
-[2] [We Have No Moat, And Neither Does OpenAI](https://www.semianalysis.com/p/google-we-have-no-moat-and-neither)
-[3] [Joel on Software discusses Commoditizing your Complement](https://www.joelonsoftware.com/2002/06/12/strategy-letter-v/)
+(1) In the second quarter of 2024, 98.1% of Meta’s revenue came from adverts. [Meta Q2 Earnings](ps://investor.fb.com/investor-news/press-release-details/2024/Meta-Reports-Second-Quarter-2024-Results/default.aspx)
+(2) [We Have No Moat, And Neither Does OpenAI](https://www.semianalysis.com/p/google-we-have-no-moat-and-neither)
+(3) [Joel on Software discusses Commoditizing your Complement](https://www.joelonsoftware.com/2002/06/12/strategy-letter-v/)
