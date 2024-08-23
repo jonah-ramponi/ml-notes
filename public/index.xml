@@ -6,8 +6,15 @@
     <description>Recent content on Jonah&#39;s ML Notes</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 30 Mar 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 23 Aug 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://www.jonahramponi.com/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Why did Meta publish the Llama models for free?</title>
+      <link>https://www.jonahramponi.com/posts/meta_analysis/</link>
+      <pubDate>Fri, 23 Aug 2024 00:00:00 +0000</pubDate>
+      <guid>https://www.jonahramponi.com/posts/meta_analysis/</guid>
+      <description>To understand why Meta has open sourced the Llama family of models, I think it is important to understand how Meta makes money. Meta makes money from adverts. Almost their entire revenue comes from adverts [1]. So, why have Meta invested so much money into the Llama models?&#xA;Probably, to make more money from adverts.&#xA;Here are some ways in which the open source release of the Llama models might help Meta make more money from adverts.</description>
+    </item>
     <item>
       <title>Intro to Attention</title>
       <link>https://www.jonahramponi.com/posts/intro_to_attention/</link>

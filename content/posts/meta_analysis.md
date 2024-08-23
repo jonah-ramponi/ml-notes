@@ -1,10 +1,10 @@
 ---
-title: Why Meta published Llama 3 for free
-description: Some brief thoughts on why the open sourcing of llama 3 model weights was a strategic move by Meta. 
-date: 2024-08-23 
-tldr: Meta make money from adverts
+title: Why did Meta publish the Llama models for free?
+description: My thoughts on Meta's strategic decision to open source the llama model weights. 
+date: 2024-08-23
+tldr: Meta makes money from adverts
 draft: false
-tags: [Strategy] 
+tags: [] 
 ---
 
 To understand why Meta has open sourced the Llama family of models, I think it is important to understand how Meta makes money. Meta makes money from adverts. Almost their entire revenue comes from adverts [1]. So, why have Meta invested so much money into the Llama models?
