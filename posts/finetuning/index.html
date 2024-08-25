@@ -1,102 +1,217 @@
 <!DOCTYPE html>
-<html><head lang="en">
-	<meta charset="utf-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>LoRa - Jonah&#39;s ML Notes</title><meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="description" content="Efficient LLM Finetuning." />
-	<meta property="og:image" content=""/>
-	<meta property="og:title" content="LoRa" />
+<html lang="en" dir="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>LoRa | Jonah&#39;s ML Notes</title>
+<meta name="keywords" content="fine-tuning, training">
+<meta name="description" content="Efficient LLM Finetuning.">
+<meta name="author" content="">
+<link rel="canonical" href="https://www.jonahramponi.com/posts/finetuning/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.b609c58d5c11bb90b1a54e04005d74ad1ddf22165eb79f5533967e57df9c3b50.css" integrity="sha256-tgnFjVwRu5CxpU4EAF10rR3fIhZet59VM5Z&#43;V9&#43;cO1A=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://www.jonahramponi.com/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://www.jonahramponi.com/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://www.jonahramponi.com/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://www.jonahramponi.com/apple-touch-icon.png">
+<link rel="mask-icon" href="https://www.jonahramponi.com/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://www.jonahramponi.com/posts/finetuning/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css"
+    integrity="sha384-MlJdn/WNKDGXveldHDdyRP1R4CTHr3FeuDNfhsLPYrq2t0UBkUdK2jyTnXPEK1NQ" crossorigin="anonymous">
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.js"
+    integrity="sha384-VQ8d8WVFw0yHhCk5E8I86oOhv48xLpnDZx5T9GogA/Y84DcCKWXDmSDfn13bzFZY"
+    crossorigin="anonymous"></script>
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/auto-render.min.js"
+    integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"
+    onload="renderMathInElement(document.body);"></script>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        renderMathInElement(document.body, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false }
+            ]
+        });
+    });
+</script>
+
+
+<meta property="og:title" content="LoRa" />
 <meta property="og:description" content="Efficient LLM Finetuning." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://www.jonahramponi.com/posts/finetuning/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2024-03-24T00:00:00+00:00" />
 <meta property="article:modified_time" content="2024-03-24T00:00:00+00:00" />
-<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="LoRa"/>
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="LoRa"/>
 <meta name="twitter:description" content="Efficient LLM Finetuning."/>
-<script src="https://www.jonahramponi.com/js/feather.min.js"></script>
-	
-	
-        <link href="https://www.jonahramponi.com/css/fonts.2c2227b81b1970a03e760aa2e6121cd01f87c88586803cbb282aa224720a765f.css" rel="stylesheet">
-	
 
-	
-	<link rel="stylesheet" type="text/css" media="screen" href="https://www.jonahramponi.com/css/main.ac08a4c9714baa859217f92f051deb58df2938ec352b506df655005dcaf98cc0.css" />
-		<link id="darkModeStyle" rel="stylesheet" type="text/css" href="https://www.jonahramponi.com/css/dark.726cd11ca6eb7c4f7d48eb420354f814e5c1b94281aaf8fd0511c1319f7f78a4.css"  disabled />
-	
 
-	
-	
-		<script type="text/javascript"
-		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-		</script>
-	
-		
-		<script type="text/x-mathjax-config">
-		MathJax.Hub.Config({
-			tex2jax: {
-				inlineMath: [['$','$'], ['\\(','\\)']],
-				displayMath: [['$$','$$'], ['\[','\]']],
-				processEscapes: true,
-				processEnvironments: true,
-				skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
-				TeX: { equationNumbers: { autoNumber: "AMS" },
-						 extensions: ["AMSmath.js", "AMSsymbols.js"] }
-			}
-		});
-		</script>
-	
-
-	
-	
-		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css">
-		<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.js"></script>
-		<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
-		
-		
-		<script>
-			document.addEventListener("DOMContentLoaded", function() {
-					renderMathInElement(document.body, {
-							delimiters: [
-									{left: "$$", right: "$$", display: true},
-									{left: "$", right: "$", display: false}
-							]
-					});
-			});
-			</script>
-	
-	
-	
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "Posts",
+      "item": "https://www.jonahramponi.com/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "LoRa",
+      "item": "https://www.jonahramponi.com/posts/finetuning/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "LoRa",
+  "name": "LoRa",
+  "description": "Efficient LLM Finetuning.",
+  "keywords": [
+    "fine-tuning", "training"
+  ],
+  "articleBody": "Let’s consider a weight matrix $W$. Typically, the weight matrices in a dense neural networks layers have full-rank. Full-rank means many different things mathematically. I think the easiest explanation of a $d$-dimensional matrix (let’s consider a square matrix $,M \\in \\mathbb{R}^{d,d}$) being full-rank is one in which the columns could be used to span (hit every point) in $d$-dimensional space. If you consider $d=3$, a matrix like\n\\begin{equation} M = \\begin{pmatrix} 1 \u0026 0 \u0026 1 \\\\ 1 \u0026 0 \u0026 1 \\\\ 1 \u0026 1 \u0026 0 \\end{pmatrix} \\end{equation}\nis not full-rank. $M$ has rank 2; notice that no combination of $(a,b,c)$ (that is no linear combination of the columns of the matrix) could solve the following equation\n\\begin{equation} \\begin{pmatrix} 0 \\\\ 1 \\\\ 0 \\end{pmatrix} = a \\times \\begin{pmatrix} 1 \\\\ 1 \\\\ 1 \\end{pmatrix} + b \\times \\begin{pmatrix} 0 \\\\ 0 \\\\ 1 \\end{pmatrix} + c \\times \\begin{pmatrix} 1 \\\\ 1 \\\\ 0 \\end{pmatrix}. \\end{equation}\n$M$ has rank $2$ because it has two linearly in-dependant rows, because it has a column span of 2, because its’ null space is 1, and a whole list of other mathematical explanations. What is important, is that for large dimensional space, sometimes you might have a rank which is far lower than $d$.\nImagine a one thousand dimensional matrix ($d=1000$).\nIn our square matrix case, we will have a matrix with 1000 rows and 1000 columns. Storing such a large matrix is in-efficient if the rank was something like $200$. This is precisely why LoRa is so useful. Large language models are thought to have a low intrinsic dimension. The authors of the LoRa approach propose that we could apply lower dimensional weight updates when training. We achieve this by manipulating the weight update matrix’s size.\nWhen we’re updating the weight matrix, at each step we’re figuring out how to slightly alter the values in our matrix. To visualize in a low dimensional case, we’re doing something like\n$$ \\begin{aligned} W + \\Delta W \u0026= \\begin{pmatrix} 1 \u0026 0 \u0026 1 \\\\ 1 \u0026 0 \u0026 1 \\\\ 1 \u0026 1 \u0026 0 \\end{pmatrix} + \\begin{pmatrix} -0.00002 \u0026 -0.001 \u0026 0.000 \\\\ 0.00003 \u0026 0.0002 \u0026 0.00001 \\\\ 0.01 \u0026 -0.0001 \u0026 0.003 \\end{pmatrix} \\\\ \u0026= \\begin{pmatrix} 0.99998 \u0026 -0.001 \u0026 1.000 \\\\ 1.00003 \u0026 0.0002 \u0026 1.00001 \\\\ 1.01 \u0026 0.9999 \u0026 0.003 \\end{pmatrix} \\end{aligned} $$\nBut if $d$ is large, the matrix $\\Delta W$ will contain lots of values. We’re doing lots of calculations, and this is costly. And importantly, if $W$ has a low intrinsic dimension, we can assume that we may not even need to perform this update to each and every row of $W$. Remember, a matrix having a rank $r \u003c d$ implies that the information stored in the matrix could be stored in something with $r$ dimensions instead of $d$.\nThe authors propose that you could describe $\\Delta W$ as the product of two smaller matrices. Remember, in this case $\\Delta W$ has dimension $(d \\times d)$. The rules of matrix multiplication tell us that if we take matrix $A$ with dimension $(d \\times r)$ and $B$ with dimension $(r \\times d)$ then $A \\times B$ has dimension $(d \\times d)$. So what they suggest, is simply letting $\\Delta W = A \\times B$ for $A,B$ described above for some chosen $r$. The golden thing to remember is that for multiply matrices:\n\\begin{equation} W (d \\times d) = A (d \\times r) \\times B(r \\times d) \\leftrightarrow W (d \\times d) = \\Delta W(d \\times d) \\end{equation}\nBut why, you might wonder? What does this matrix decomposition give us? Well, importantly, now instead of having $d^2$ values in $\\Delta W$, as we would if it had dimension $(d \\times d)$, we have $2 \\times (r \\times d)$. Before LoRa, we had $d^2$ entries to compute and now with LoRa we have $2\\times r\\times d$. So now let’s consider an example.\nExample. Consider a weight matrix with dimension $10,000$. Before applying LoRa, we’d have $10,000 \\times 10,000 = 100,000,000$ values in our update weight matrix. Now, let’s apply LoRa with $r = 100$. We’re saying instead of using $\\Delta W$ with dimension ($10,000 \\times 10,000$), let’s use $\\Delta W = A \\times B$ where $A$ has dimension $(10,000 \\times 100)$ and $B$ has dimension $(100 \\times 10,000)$. Instead of 100 million values, we now have just $2 \\times 100 \\times 10,000 = 2,000,000$. We’ve reduced the number of values we’re updating by a factor of 50.\nWhen LoRa is implemented, we typically also scale our update to the weights $\\Delta W$. We use the update $\\frac{\\alpha}{r} \\Delta W$.Increasing $\\alpha$ will increase the size (and thus affect) of our weight update relative to the initial weights. We take $\\alpha$ to be constant in $r$. This means that if we took $r=50$ or $r=20$, we implement $\\alpha$ such that the size of the weight matrix update would be the same.\nReLora Using regular LoRa, we describe our weight update matrix as $\\Delta W = A \\times B$ where $A$ has dimension $(d \\times r)$ and $B$ has dimension $(r \\times d)$. The resulting matrix, $\\Delta W$, can have at most rank $r$. We remember the fundamental rule from maths that\n\\begin{align} \\text{rank}(A + B) \u0026\\leq \\text{rank} (A) + \\text{rank}(B) \\end{align}\nBecause using LoRa the update we make is restricted to rank $r \\leq d$, what this really means is that the weight update we apply isn’t of full rank. However, maybe we want to try to apply an update to the weight matrices with as high a rank as possible. To do this, the authors essentially propose applying LoRa multiple times. Say we choose to perform three LoRa updates. Enumerate these $\\Delta W_1, \\Delta W_2$ and $\\Delta W_3$. Then we have that\n\\begin{equation} \\Delta W = \\Delta W_1 + \\Delta W_2 + \\Delta W_3 \\end{equation}\nOur total weight update is described as the sum of the three component updates. Each of these three updates has, at most, rank $r$. Thus, the important conclusion we can draw is that\n\\begin{equation} r \\leq \\text{rank}(\\Delta W_1) + \\text{rank}(\\Delta W_2) + \\text{rank}(\\Delta W_3) = \\text{rank}(\\Delta W) \\end{equation}\nTherefore, the dimension of the rank update we would have achieved with LoRa $(r)$ is less than or equal to the dimension of the rank update using ReLoRa. However, a number of practical considerations must be made. First of all, how do we implement these three weight updates with respect to the original optimization process?\nThe first thing we need to do is implement a scheduler. This scheduler controls the learning rate. We want to ensure that upon starting to produce a new set of weight updates, i.e. $\\Delta W_4$ for instance, we reset the learning rate to $0$. We also ensure that we have set $99%$ of the low-magnitude optimizer state values to zero too. All this means is that the vast majority of our optimizer state values that are close to zero, we will simply set to zero for each new $\\Delta W_i$ we look to produce.\nThe type of scheduler we use here is called a Jagged Cosine Scheduler. In the above image, you can see that $4$ different updates have been made. At each update, the learning rate is set to zero. There is a brief warm up period for the learning rate after the reset, the authors suggest 50-100 steps.\n",
+  "wordCount" : "1231",
+  "inLanguage": "en",
+  "datePublished": "2024-03-24T00:00:00Z",
+  "dateModified": "2024-03-24T00:00:00Z",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://www.jonahramponi.com/posts/finetuning/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Jonah's ML Notes",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://www.jonahramponi.com/favicon.ico"
+    }
+  }
+}
+</script>
 </head>
-<body>
-        <div class="content"><header>
-	<div class="main">
-		<a href="https://www.jonahramponi.com/">Jonah&#39;s ML Notes</a>
-	</div>
-	<nav>
-		
-		<a href="/">Home</a>
-		
-		<a href="/about">About</a>
-		
-		| <span id="dark-mode-toggle" onclick="toggleTheme()"></span>
-		<script src="https://www.jonahramponi.com/js/themetoggle.js"></script>
-		
-	</nav>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://www.jonahramponi.com/" accesskey="h" title="Jonah&#39;s ML Notes (Alt + H)">Jonah&#39;s ML Notes</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://www.jonahramponi.com/" title="Home">
+                    <span>Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://www.jonahramponi.com/about" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
 </header>
+<main class="main">
 
-<main>
-	<article>
-		<div class="title">
-			<h1 class="title">LoRa</h1>
-			<div class="meta">Posted on Mar 24, 2024</div>
-		</div>
-		
-		<div class="tldr">
-			<strong>tl;dr:</strong>
-			Efficient LLM Finetuning techniques.
-		</div>
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      LoRa
+    </h1>
+    <div class="post-description">
+      Efficient LLM Finetuning.
+    </div>
+    <div class="post-meta"><span title='2024-03-24 00:00:00 +0000 UTC'>March 24, 2024</span>
 
-		<section class="body">
-			<p>Let&rsquo;s consider a weight matrix $W$. Typically, the weight matrices in a dense neural networks layers have full-rank. Full-rank means many different things mathematically. I think the easiest explanation of a $d$-dimensional matrix (let&rsquo;s consider a square matrix $,M \in \mathbb{R}^{d,d}$) being full-rank is one in which the columns could be used to span (hit every point) in $d$-dimensional space. If you consider $d=3$, a matrix like</p>
+</div>
+  </header> 
+  <div class="post-content"><p>Let&rsquo;s consider a weight matrix $W$. Typically, the weight matrices in a dense neural networks layers have full-rank. Full-rank means many different things mathematically. I think the easiest explanation of a $d$-dimensional matrix (let&rsquo;s consider a square matrix $,M \in \mathbb{R}^{d,d}$) being full-rank is one in which the columns could be used to span (hit every point) in $d$-dimensional space. If you consider $d=3$, a matrix like</p>
 <p>\begin{equation}
 M = \begin{pmatrix}
 1 &amp; 0 &amp; 1 \\
@@ -121,21 +236,12 @@ M = \begin{pmatrix}
 <p>Imagine a one thousand dimensional matrix ($d=1000$).</p>
 <p>In our square matrix case, we will have a matrix with 1000 rows and 1000 columns. Storing such a large matrix is in-efficient if the <em>rank</em> was something like $200$. This is precisely why LoRa is so useful. Large language models are <a href="https://arxiv.org/pdf/1804.08838.pdf">thought</a> to have a low intrinsic dimension. The <a href="https://arxiv.org/pdf/2106.09685.pdf">authors of the LoRa approach</a> propose that we could apply lower dimensional weight updates when training. We achieve this by manipulating the weight update matrix&rsquo;s <em>size</em>.</p>
 <p>When we&rsquo;re updating the weight matrix, at each step we&rsquo;re figuring out how to slightly alter the values in our matrix. To visualize in a low dimensional case, we&rsquo;re doing something like</p>
-<p>\begin{equation*}
-W + \Delta W = \begin{pmatrix}
-1 &amp; 0 &amp; 1 \\
-1 &amp; 0 &amp; 1 \\
-1 &amp; 1 &amp; 0
-\end{pmatrix} + \begin{pmatrix}
--0.00002 &amp; -0.001 &amp; 0.000 \\
-0.00003 &amp; 0.0002 &amp; 0.00001 \\
-0.01 &amp; -0.0001 &amp; 0.003
-\end{pmatrix} = \begin{pmatrix}
-0.99998 &amp; -0.001 &amp; 1.000 \\
-1.00003 &amp; 0.0002 &amp; 1.00001 \\
-1.01 &amp; 0.9999 &amp; 0.003
-\end{pmatrix}
-\end{equation*}</p>
+<p>$$
+\begin{aligned}
+W + \Delta W &amp;= \begin{pmatrix} 1 &amp; 0 &amp; 1 \\ 1 &amp; 0 &amp; 1 \\ 1 &amp; 1 &amp; 0 \end{pmatrix} + \begin{pmatrix} -0.00002 &amp; -0.001 &amp; 0.000 \\ 0.00003 &amp; 0.0002 &amp; 0.00001 \\ 0.01 &amp; -0.0001 &amp; 0.003 \end{pmatrix} \\
+&amp;= \begin{pmatrix} 0.99998 &amp; -0.001 &amp; 1.000 \\ 1.00003 &amp; 0.0002 &amp; 1.00001 \\ 1.01 &amp; 0.9999 &amp; 0.003 \end{pmatrix}
+\end{aligned}
+$$</p>
 <p>But if $d$ is large, the matrix $\Delta W$ will contain lots of values. We&rsquo;re doing lots of calculations, and this is costly. And importantly, if $W$ has a low intrinsic dimension, we can assume that we may not even need to perform this update to each and every row of $W$. Remember, a matrix having a rank $r &lt; d$ implies that the <em>information</em> stored in the matrix could be stored in something with $r$ dimensions instead of $d$.</p>
 <p>The authors propose that you could describe $\Delta W$ as the product of two smaller matrices. Remember, in this case $\Delta W$ has dimension $(d \times d)$. The rules of matrix multiplication tell us that if we take matrix $A$ with dimension $(d \times r)$ and $B$ with dimension $(r \times d)$ then $A \times B$ has dimension $(d \times d)$. So what they suggest, is simply letting $\Delta W = A \times B$ for $A,B$ described above for some chosen $r$. The golden thing to remember is that for multiply matrices:</p>
 <p>\begin{equation}
@@ -144,7 +250,7 @@ W (d \times d) = A (d \times r) \times B(r \times d) \leftrightarrow W (d \times
 <p>But why, you might wonder? What does this matrix decomposition give us? Well, importantly, now instead of having $d^2$ values in $\Delta W$, as we would if it had dimension $(d \times d)$, we have $2 \times (r \times d)$. Before LoRa, we had $d^2$ entries to compute and now with LoRa we have $2\times r\times d$. So now let&rsquo;s consider an example.</p>
 <p><strong>Example.</strong> Consider a weight matrix with dimension $10,000$. Before applying LoRa, we&rsquo;d have $10,000 \times 10,000 = 100,000,000$ values in our update weight matrix. Now, let&rsquo;s apply LoRa with $r = 100$. We&rsquo;re saying instead of using $\Delta W$ with dimension ($10,000 \times 10,000$), let&rsquo;s use $\Delta W = A \times B$ where $A$ has dimension $(10,000 \times 100)$ and $B$ has dimension $(100 \times 10,000)$. Instead of 100 million values, we now have just $2 \times 100 \times 10,000 = 2,000,000$. We&rsquo;ve reduced the number of values we&rsquo;re updating by a factor of 50.</p>
 <p>When LoRa is implemented, we typically also scale our update to the weights $\Delta W$. We use the update $\frac{\alpha}{r} \Delta W$.Increasing $\alpha$ will increase the size (and thus affect) of our weight update relative to the initial weights. We take $\alpha$ to be constant in $r$. This means that if we took $r=50$ or $r=20$, we implement $\alpha$ such that the size of the weight matrix update would be the same.</p>
-<h4 id="relora">ReLora</h4>
+<h4 id="relora">ReLora<a hidden class="anchor" aria-hidden="true" href="#relora">#</a></h4>
 <p>Using regular LoRa, we describe our weight update matrix as $\Delta W = A \times B$ where $A$ has dimension $(d \times r)$ and $B$ has dimension $(r \times d)$. The resulting matrix, $\Delta W$, can have at most rank $r$. We remember the fundamental rule from maths that</p>
 <p>\begin{align}
 \text{rank}(A + B) &amp;\leq \text{rank} (A) + \text{rank}(B)
@@ -159,37 +265,90 @@ r \leq \text{rank}(\Delta W_1) + \text{rank}(\Delta W_2) + \text{rank}(\Delta W_
 \end{equation}</p>
 <p>Therefore, the dimension of the rank update we would have achieved with LoRa $(r)$ is less than or equal to the dimension of the rank update using ReLoRa. However, a number of practical considerations must be made. First of all, how do we implement these three weight updates with respect to the original optimization process?</p>
 <p>The first thing we need to do is implement a scheduler. This scheduler controls the learning rate. We want to ensure that upon starting to produce a <em>new</em> set of weight updates, i.e. $\Delta W_4$ for instance, we reset the learning rate to $0$. We also ensure that we have set $99%$ of the low-magnitude optimizer state values to zero too. All this means is that the vast majority of our optimizer state values that are close to zero, we will simply set to zero for each new $\Delta W_i$ we look to produce.</p>
-<p><img src="/img/relora.png" alt="ReLora Cosine Scheduler"></p>
+<p><img loading="lazy" src="/img/relora.png" alt="ReLora Cosine Scheduler"  />
+</p>
 <p>The type of scheduler we use here is called a <em>Jagged Cosine Scheduler</em>. In the above image, you can see that $4$ different updates have been made. At each update, the learning rate is set to zero. There is a brief warm up period for the learning rate after the reset, the authors suggest 50-100 steps.</p>
 
-		</section>
 
-		<div class="post-tags">
-			
-			
-			<nav class="nav tags">
-				<ul class="tags">
-					
-					<li><a href="/tags/fine-tuning">fine-tuning</a></li>
-					
-					<li><a href="/tags/training">training</a></li>
-					
-				</ul>
-			</nav>
-			
-			
-		</div>
-		</article>
-</main>
-<footer>
-  <div style="display:flex"></div>
-  <div class="footer-info">
-    2024  <a
-      href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
   </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="https://www.jonahramponi.com/tags/fine-tuning/">Fine-Tuning</a></li>
+      <li><a href="https://www.jonahramponi.com/tags/training/">Training</a></li>
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="https://www.jonahramponi.com/">Jonah&#39;s ML Notes</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
 </footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
 
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
 
-</div>
-    </body>
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
 </html>
