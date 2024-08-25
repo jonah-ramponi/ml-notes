@@ -1,14 +1,15 @@
 baseURL: https://www.jonahramponi.com
 languageCode: en-us
 title: Jonah's ML Notes
-theme: Archie
+theme: PaperMod
+# theme: Archie
 pygmentsstyle: "monokai"
 pygmentscodefences: true
 pygmentscodefencesguesssyntax: true
 paginate: 3
 
 params:
-  mode: "toggle" 
+  # mode: "toggle" 
   math: true
   mathjax: true 
   katex: true 

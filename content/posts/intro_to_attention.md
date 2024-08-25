@@ -1,5 +1,5 @@
 ---
-title: Intro to Attention
+title: Introuction to Attention
 description: A brief introduction to attention in the transformer architecture. 
 date: 2024-03-30
 tldr: A brief introduction to attention in the transformer architecture.  
@@ -70,14 +70,15 @@ $$
 
 We're now very close to being able to introduce attention. One last thing remains, at this point we will transform the output of our positional encoding to a matrix $M$ as follows 
 
-\begin{equation}
-    M = \begin{pmatrix}
-        -0.424 & -0.574 & 0.513 &  \dots & -0.235 & 0.534 \\\\ 
-        -0.133 & 0.461 & 0.228 & \dots & -0.151 & 0.193 \\\\  
-        \vdots & \vdots & \vdots & \ddots & \vdots & \vdots \\\\
-        0.123 & 0.455 & 0.110 & \dots & -0.121 & 0.489
-    \end{pmatrix}
-\end{equation}
+$$ 
+M = \begin{pmatrix}
+    -0.424 & -0.574 & 0.513 &  \dots & -0.235 & 0.534 \\\\
+        -0.133 & 0.461 & 0.228 & \dots & -0.151 & 0.193 \\\\
+    \vdots & \vdots & \vdots & \ddots & \vdots & \vdots \\\\
+    0.123 & 0.455 & 0.110 & \dots & -0.121 & 0.489
+\end{pmatrix}
+$$
+
 
 The top row is the first vector output of our positional encoding. The second row is the second, and so on. If we had $n$ tokens in our input sequence, then matrix $M$ would have $n$ rows. The dimensions of $M$ are as follows
 
@@ -139,16 +140,7 @@ Earlier on in we described attention as
 
 Well, our *attention matrix* after softmax has been applied is simply $w$ with $(i,j)th$ element $w_{ij}$. The output $y_i$ is just the weighted sum using $w$ on the value vectors, $v = (\vec{v}_1,\dots,\vec{v}_n)$. It may be clearer to visualize the output as
 
-\[
-\vec{y} = \begin{pmatrix}
-    w_{11} & w_{12} & \dots & w_{1n} \\\\
-    w_{21} & w_{22} & \dots & w_{2n} \\\\
-    \vdots & \vdots & \ddots & \vdots \\\\
-    w_{n1} & w_{n2} & \dots & w_{nn}
-\end{pmatrix} \times \begin{pmatrix}
-        v_1 \\\\ v_2 \\\\ \vdots \\\\ v_n
-    \end{pmatrix}
-\]
+\begin{equation}\vec{y} = \begin{pmatrix} w_{11} & w_{12} & \dots & w_{1n} \\\\ w_{21} & w_{22} & \dots & w_{2n} \\\\ \vdots & \vdots & \ddots & \vdots \\\\ w_{n1} & w_{n2} & \dots & w_{nn} \end{pmatrix} \times \begin{pmatrix} v_1 \\\\ v_2 \\\\ \vdots \\\\ v_n \end{pmatrix}\end{equation}
 
 The attention matrix is a nice thing to visualize. For our toy example, it might look like 
 
@@ -170,16 +162,16 @@ This is because in this attention approach, every token attends to every other t
 
 It's important to acknowledge that there may not exist a single perfect representation of the attention matrix. Multi Head Self Attention allows us to produce many different representations of the attention matrix. Each individual attention mechanism is referred to as a ``head". Each head learns slightly different representations of the input sequence, which the original researchers found prompted the best output. Firstly, we're going to introduce some new matrices. These will be defined as
 
-\begin{align*}
+\begin{align}
     Q = (n \times d_q), \hspace{3mm} K = (n \times d_k), \hspace{3mm} V = (n \times d_v)
-\end{align*}
+\end{align}
 
 These matrices will be obtained by linearly transforming the original matrix $M$, using weight matrices $W^Q$, $W^K$ and $W^V$ respectively: 
-\begin{align*}
+\begin{align}
     Q &= M\times W^Q, \\\\
     K &= M \times W^K, \\\\
     V &= M \times W^V.
-\end{align*}
+\end{align}
 
 Each of these matrices has $d_{\text{model}}$ rows, and remember that $M$ has $d_{\text{model}}$ columns. We have control over parameters $d_q, d_k, d_v$. In the original research they took $d_q = d_k =  d_v = d_{\text{model}}/8 = 64$.
 
@@ -192,7 +184,7 @@ We're going to use a different set of weight matrices $W^Q$, $W^K$ and $W^V$ for
 The overall output of the process is then simply 
 
 \begin{equation}
-       \text{MultiHead}(Q,K,V) = \text{Concat}(\text{head}_1, \cdots, \text{head}_H)W^O.  
+       \text{MultiHead}(Q,K,V) = \text{Concat}(\text{head}_1, \cdots, \text{head}_H)W^O.
 \end{equation}
 
 Concat() simply concatenates our output matrices. The output matrix of size $(n \times d_v)$ for each head is simply our matrices stacked on top of one another. The final output therefore has dimension $(n \times H d_v)$. We still have $n$ rows, however now we have $h$ different representations of $d_v$. Our output, $W^O$, is another trainable weight matrix which has dimensions $W^O = (Hd_v \times d_{\text{model}})$. Therefore, the multiplication of Concat $ (head_1, \dots, head_H)$ and $W^O$ results in a matrix with dimension $(n \times d_{\text{model}})$.

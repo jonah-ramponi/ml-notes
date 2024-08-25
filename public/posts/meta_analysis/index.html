@@ -1,159 +1,278 @@
 <!DOCTYPE html>
-<html><head lang="en">
-	<meta charset="utf-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>Why did Meta publish the Llama models for free? - Jonah&#39;s ML Notes</title><meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="description" content="My thoughts on Meta&#39;s strategic decision to open source the llama model weights." />
-	<meta property="og:image" content=""/>
-	<meta property="og:title" content="Why did Meta publish the Llama models for free?" />
-<meta property="og:description" content="My thoughts on Meta&#39;s strategic decision to open source the llama model weights." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://www.jonahramponi.com/posts/meta_analysis/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2024-08-23T00:00:00+00:00" />
-<meta property="article:modified_time" content="2024-08-23T00:00:00+00:00" />
-<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Why did Meta publish the Llama models for free?"/>
-<meta name="twitter:description" content="My thoughts on Meta&#39;s strategic decision to open source the llama model weights."/>
-<script src="https://www.jonahramponi.com/js/feather.min.js"></script>
-	
-	
-        <link href="https://www.jonahramponi.com/css/fonts.11a1877508139eac0b5b4852ceb110c35641b3533321e66e39149e901ed5756b.css" rel="stylesheet">
-	
+<html lang="en" dir="auto">
 
-	
-	<link rel="stylesheet" type="text/css" media="screen" href="https://www.jonahramponi.com/css/main.d902908ac6e0fab67957de5db5aea1b6455b19ae2ca98eac4c95a4a0fdc02238.css" />
-		<link id="darkModeStyle" rel="stylesheet" type="text/css" href="https://www.jonahramponi.com/css/dark.c95c5dcf5f32f8b67bd36f7dab66680e068fce2b303087294114aabf7a7c080b.css"  disabled />
-	
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>Why did Meta publish the Llama models for free? | Jonah&#39;s ML Notes</title>
+<meta name="keywords" content="">
+<meta name="description" content="My thoughts on Meta&#39;s strategic decision to open source the llama model weights.">
+<meta name="author" content="">
+<link rel="canonical" href="http://localhost:1313/posts/meta_analysis/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.4599eadb9eb2ad3d0a8d6827b41a8fda8f2f4af226b63466c09c5fddbc8706b7.css" integrity="sha256-RZnq256yrT0KjWgntBqP2o8vSvImtjRmwJxf3byHBrc=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/meta_analysis/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
 
-	
-	
-		<script type="text/javascript"
-		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-		</script>
-	
-		
-		<script type="text/x-mathjax-config">
-		MathJax.Hub.Config({
-			tex2jax: {
-				inlineMath: [['$','$'], ['\\(','\\)']],
-				displayMath: [['$$','$$'], ['\[','\]']],
-				processEscapes: true,
-				processEnvironments: true,
-				skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
-				TeX: { equationNumbers: { autoNumber: "AMS" },
-						 extensions: ["AMSmath.js", "AMSsymbols.js"] }
-			}
-		});
-		</script>
-	
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
 
-	
-	
-		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css">
-		<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.js"></script>
-		<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
-		
-		
-		<script>
-			document.addEventListener("DOMContentLoaded", function() {
-					renderMathInElement(document.body, {
-							delimiters: [
-									{left: "$$", right: "$$", display: true},
-									{left: "$", right: "$", display: false}
-							]
-					});
-			});
-			</script>
-	
-	
-	
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css"
+    integrity="sha384-MlJdn/WNKDGXveldHDdyRP1R4CTHr3FeuDNfhsLPYrq2t0UBkUdK2jyTnXPEK1NQ" crossorigin="anonymous">
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.js"
+    integrity="sha384-VQ8d8WVFw0yHhCk5E8I86oOhv48xLpnDZx5T9GogA/Y84DcCKWXDmSDfn13bzFZY"
+    crossorigin="anonymous"></script>
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/auto-render.min.js"
+    integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"
+    onload="renderMathInElement(document.body);"></script>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        renderMathInElement(document.body, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false }
+            ]
+        });
+    });
+</script>
+
+
+
 </head>
-<body>
-        <div class="content"><header>
-	<div class="main">
-		<a href="https://www.jonahramponi.com/">Jonah&#39;s ML Notes</a>
-	</div>
-	<nav>
-		
-		<a href="/">Home</a>
-		
-		<a href="/about">About</a>
-		
-		| <span id="dark-mode-toggle" onclick="toggleTheme()"></span>
-		<script src="https://www.jonahramponi.com/js/themetoggle.js"></script>
-		
-	</nav>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="Jonah&#39;s ML Notes (Alt + H)">Jonah&#39;s ML Notes</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/" title="Home">
+                    <span>Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/about" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
 </header>
+<main class="main">
 
-<main>
-	<article>
-		<div class="title">
-			<h1 class="title">Why did Meta publish the Llama models for free?</h1>
-			<div class="meta">Posted on Aug 23, 2024</div>
-		</div>
-		
-		<div class="tldr">
-			<strong>tl;dr:</strong>
-			Meta makes money from adverts
-		</div>
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Why did Meta publish the Llama models for free?
+    </h1>
+    <div class="post-description">
+      My thoughts on Meta&#39;s strategic decision to open source the llama model weights.
+    </div>
+    <div class="post-meta"><span title='2024-08-23 00:00:00 +0000 UTC'>August 23, 2024</span>
 
-		<section class="body">
-			<p>To understand why Meta has open sourced the Llama family of models, I think it is important to understand how Meta makes money. Meta makes money from adverts. Almost their entire revenue comes from adverts (1). So, why have Meta invested so much money into the Llama models?</p>
+</div>
+  </header> 
+  <div class="post-content"><p>To understand why Meta has open sourced the Llama family of models, it is important to understand how Meta makes money. Meta makes money from adverts. Almost their entire revenue comes from adverts (1). So,</p>
+<p>why have Meta invested so much money into the Llama models?</p>
 <p><em>Probably, to make more money from adverts.</em></p>
 <p>Here are some ways in which the open source release of the Llama models might help Meta make more money from adverts.</p>
-<h3 id="to-increase-the-value-of-their-data">To increase the value of their data</h3>
+<h3 id="to-increase-the-value-of-their-data">To increase the value of their data<a hidden class="anchor" aria-hidden="true" href="#to-increase-the-value-of-their-data">#</a></h3>
 <p>Open sourcing the Llama model weights has led to massive adoption of the Llama models by developers and researchers. This community-driven effort has greatly advanced understanding of generative AI models. These advancements should enable Meta to extract more value from their data.</p>
-<p>A while back, a leaked memo from a Google Researcher titled <em>“We Have No Moat, And Neither Does OpenAI“</em> was released (2). Meta promptly decided to get into the bridge building business with the open source community . They do, however, keep a deep moat filled with crocodiles around what is truly valuable to them - their data.</p>
-<p>It would not surprise me if we never hear about the models trained on our Instagram and Facebook data. I think it will be these models which will reap the biggest rewards for Meta - because those models might increase advertising revenues by a percentage or two, and that is worth a lot.</p>
+<p>A while back, a leaked memo from a Google Researcher titled <em>“We Have No Moat, And Neither Does OpenAI“</em> was released (2). Meta promptly decided to focus on building bridges with the open source community. They do, however, keep a deep moat filled with crocodiles around what is truly valuable to them - their data.</p>
+<p>It would not surprise me if we never hear about the models trained on our Instagram and Facebook data. I think it will be these models which will reap the biggest rewards for Meta - because those models might have the potential to increase advertising revenues by a percentage or two, and that is worth a lot to Meta.</p>
 <p>So what exactly might this value add look like?</p>
 <p>I don’t know. That’s a question for the researchers at Meta under super strict NDAs. But maybe:</p>
 <ol>
 <li>
-<p>Improvements to multimodal models could allow them to better extract information from user’s posts. For instance, they could better identify the types, values, styles, etc., of clothes an individual wears. They might better understand the look they go for. This could be used for targeted advertising.</p>
+<p>Improvements to multimodal models which could allow them to extract more information from user’s posts. For instance, they could better identify the types, values, styles, etc., of the clothes an individual wears. They might better understand the look they go for. This would enhance targeted advertising.</p>
 </li>
 <li>
-<p>Improvements to language models may allow for better analysis of the tone and sentiment in posts. Meta could then better tailor ads to match the user’s current emotional state, improving engagement and relevance. For instance, if emotional stress were detected Meta could recommend using Facebook less.</p>
+<p>Improvements to language models may allow for better analysis of the tone and sentiment in posts. Meta could then tailor ads to match the user’s current emotional state, improving engagement and relevance. For instance, if emotional stress were detected Meta could recommend <em>using Facebook less</em>.</p>
 </li>
 </ol>
 <p>But why didn’t Meta just train the Llama models privately and keep them for internal use? Why expose themselves to potential legal issues or lawsuits by making them open source?</p>
 <p>I believe the prevailing theory is that Meta is strategically commoditizing its complements (3). They have a core revenue stream—advertising—and by making certain technologies widely available, they indirectly enhance their primary money-making activity.</p>
-<p>I would guess that Meta intends to commoditize as much of their tech stack as possible. For instance, perhaps they might create a new frontend framework which makes it easier to build scalable social network sites. Or a better framework than tensorflow for building digital advertising ML models.</p>
-<p>Meta might initial development to what they need internally, providing top quality engineering for the initial codebase. Once released to the open-source community, developers around the world contribute to refining and expanding its functionality.</p>
-<p>When a company like Meta finds itself behind the competition in certain areas, open-sourcing its work can help bridge the gap. This approach ensures that Meta not only catches up thanks to continual improvements by the community. In turn, these developments feed back into Meta’s ultimate goal—better advertising revenues</p>
-<h3 id="to-recruit">To recruit</h3>
+<p>I would guess that Meta intends to commoditize as much of their tech stack as possible. For instance, by creating a new frontend framework which makes it easier to build scalable social network sites. Or by creating a better framework than tensorflow for building digital advertising ML models.</p>
+<p>Meta can initial development this to serve what they need internally, providing top quality engineering for the initial codebase. Once released to the open-source community, developers around the world contribute to refining and expanding its functionality.</p>
+<p>When a company like Meta finds itself behind the competition in certain areas, open-sourcing its work will help bridge the gap. This approach ensures that Meta catches up thanks to continual improvements by the community. These developments feed back into Meta’s ultimate goal—better advertising revenues</p>
+<h3 id="to-recruit">To recruit<a hidden class="anchor" aria-hidden="true" href="#to-recruit">#</a></h3>
 <p>Open-sourcing the Llama models exposes thousands of developers to Meta’s technology. New hires, particularly researchers, may already be familiar with Meta’s tools and models, reducing the need for extensive training.</p>
-<p>Furthermore, by publishing models for free, Meta may attract researchers and developers who want to work on cutting-edge AI technologies. It might not be quite as good an advert as The Internship, but I think the decision to open source the Llama models has improved Meta’s reputation amongst the community. And that is worth something.</p>
-<h3 id="because-big-tech-is-a-battlefield">Because big tech is a battlefield</h3>
+<p>Furthermore, by publishing models for free, Meta will attract researchers and developers who want to work on cutting-edge AI technologies. It might not be quite as good an advert as <em>The Internship</em> was for Google, but I believe that the decision to open source the Llama models has improved Meta’s reputation amongst much of the community. And that is worth something.</p>
+<h3 id="because-big-tech-is-a-battlefield">Because big tech is a battlefield<a hidden class="anchor" aria-hidden="true" href="#because-big-tech-is-a-battlefield">#</a></h3>
 <p>In 1812, during Napoleon Bonaparte’s invasion of Russia, the Russian army employed a ruthless strategy as they retreated: they burned crops, villages, and resources to deny the advancing French any supplies. This <em>&ldquo;Scorched Earth&rdquo;</em> tactic is a military strategy where anything that could aid the enemy is destroyed.</p>
-<p>With Generative AI, Meta is doing the opposite. For an analogy, let’s compare AI to whoopee cushions.</p>
-<p>Imagine a world in which one company has managed to produce the best whoopee cushions (Microsoft). Initially, they have seemingly total dominance. Nobody is safe.
-To stop Microsoft’s dominance, Meta takes whoopee cushions and gives them to everyone. They teach everyone how to make them. Microsoft is now far less big and scary to Meta. Their threats of price increases on the Big Whooper 3000 model can no longer be justified. The power is no longer concentrated in Microsoft&rsquo;s hands, as everyone now has access to whoopee cushions.  Thus, the problem is solved.</p>
-<p>However, this strategy isn&rsquo;t as simple as it seems. While it might appear that Meta is levelling the playing field, the reality is more complex. Not everyone can leverage these whoopee cushions effectively. Small players might benefit, but large enterprises might still prefer Microsoft&rsquo;s integrated solutions, even at a higher cost. Microsoft&rsquo;s dominance isn&rsquo;t just about the whoopee cushions themselves; it&rsquo;s about the entire flatulent ecosystem they control.</p>
-<p>Truthfully, if the world is a better place in this example is up for debate. I’m sure many people would rather live in a world with no whoopee cushions.</p>
-<p>Big tech seems to be full of battlefield-like tactics. Take, for example, Alphabet’s dominance in the smartphone market. For a while Facebook thought they might like to make phones. To make phones, Facebook wanted their own operating system and their own devices, and as such needed navigation software for it. So, Facebook tried to buy Waze (a similar service to Google Maps).</p>
-<p>There were many other reasons Facebook wanted Waze; another key reason would be to deliver better location-based mobile advertising and optimise local search results. Right before they could buy Waze for 500 million dollars, Google stepped in and spent nearly a billion dollars to snatch it. Why? Google bought Waze so that Facebook would not have it. Google probably didn&rsquo;t really need Waze, but it partially contributed to Facebook abandoning their smartphone plans. It stunted Facebook&rsquo;s expansion. For big tech, messing up each other&rsquo;s game is a legitimate business strategy.</p>
-<p>Similarly, Microsoft&rsquo;s (and OpenAI’s) dominance in Generative AI might have been enough of a threat to prompt Meta into action. By making AI tools freely available, Meta isn’t just playing nice—it’s playing smart. It’s a calculated move to dilute Microsoft’s power and level the playing field, ensuring that no one company holds too much sway in the AI landscape.</p>
-<p>So, while Meta’s actions might seem altruistic on the surface, they’re likely driven by the same competitive instincts that have shaped big tech for years. Whether this leads to a better world, with more innovation and access, or just a noisier one full of whoopee cushions, remains to be seen.</p>
+<p>With Generative AI, Meta is doing the opposite. Let’s compare AI to whoopee cushions.</p>
+<p>Imagine a world in which one company has a strategy to produce the best whoopee cushions (Microsoft). Initially, they have seemingly total dominance. Nobody is safe.</p>
+<p>To counter Microsoft’s dominance, Meta takes whoopee cushions and gives them to everyone. They teach everyone how to make them. Microsoft is now far less big and scary to Meta. Their threats of price increases on the Big Whooper 3000 model can no longer be justified. The power is no longer concentrated in Microsoft&rsquo;s hands as everyone now has open access to whoopee cushions.</p>
+<p>However, this strategy isn&rsquo;t as simple as it seems. While it might appear that Meta is levelling the playing field, not everyone can leverage these whoopee cushions effectively. Small players should benefit, but large enterprises might still prefer Microsoft&rsquo;s integrated solutions, even at a higher cost. Microsoft&rsquo;s dominance isn&rsquo;t just about the whoopee cushions themselves; it&rsquo;s about the entire flatulent ecosystem they control.</p>
+<p>Whether the world is a better place in this example is up for debate.</p>
+<p>I’m sure many people would rather live in a world with no whoopee cushions at all.</p>
+<p>Big tech is full of battlefield-like tactics. Another example is Alphabet’s dominance in the smartphone market. For a while Facebook considered developing phones. To make these phones, Facebook wanted their own operating system and their own devices, and needed navigation software for it. So, So, Facebook tried to buy Waze (a similar service to Google Maps).</p>
+<p>There were many other reasons Facebook wanted Waze; one key reason being to deliver better location-based mobile advertising and optimise local search results. However, right before they could buy Waze for 500 million dollars, Google stepped in and paid nearly a billion dollars to snatch it up.</p>
+<p>Why? I think that Google probably bought Waze so that Facebook would not have it. They probably didn&rsquo;t really need Waze, but it contributed to Facebook abandoning their smartphone plans. It stunted Facebook&rsquo;s expansion. For big tech, messing up each other&rsquo;s game is a key, legitimate business strategy.</p>
+<p>Similarly, Microsoft&rsquo;s (and OpenAI’s) dominance in Generative AI may have been enough of a threat to prompt Meta into action. By making AI tools freely available, Meta isn&rsquo;t simply playing nice—it’s playing smart. It’s a calculated move to dilute Microsoft’s power and shift the balance in the game, ensuring that no one company holds too much sway in the AI landscape.</p>
+<p>So, while Meta’s actions might seem altruistic on the surface, they are driven by the same competitive instincts that have shaped big tech for years.</p>
+<p>Whether this leads to a better world, with more innovation and access, or just a noisier one full of whoopee cushions, remains to be seen.</p>
 <p>(1) In the second quarter of 2024, 98.1% of Meta’s revenue came from adverts. <a href="ps://investor.fb.com/investor-news/press-release-details/2024/Meta-Reports-Second-Quarter-2024-Results/default.aspx">Meta Q2 Earnings</a></p>
 <p>(2) <a href="https://www.semianalysis.com/p/google-we-have-no-moat-and-neither">We Have No Moat, And Neither Does OpenAI</a></p>
 <p>(3) <a href="https://www.joelonsoftware.com/2002/06/12/strategy-letter-v/">Joel on Software discusses Commoditizing your Complement</a></p>
 
-		</section>
 
-		<div class="post-tags">
-			
-			
-			
-		</div>
-		</article>
-</main>
-<footer>
-  <div style="display:flex"></div>
-  <div class="footer-info">
-    2024  <a
-      href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
   </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="http://localhost:1313/">Jonah&#39;s ML Notes</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
 </footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
 
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
 
-</div>
-    </body>
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
 </html>

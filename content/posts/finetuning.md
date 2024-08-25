@@ -40,21 +40,13 @@ In our square matrix case, we will have a matrix with 1000 rows and 1000 columns
 
 When we're updating the weight matrix, at each step we're figuring out how to slightly alter the values in our matrix. To visualize in a low dimensional case, we're doing something like  
 
-\begin{equation*}
-    W + \Delta W = \begin{pmatrix}
-        1 & 0 & 1 \\\\ 
-        1 & 0 & 1 \\\\
-        1 & 1 & 0 
-    \end{pmatrix} + \begin{pmatrix}
-        -0.00002 & -0.001 & 0.000 \\\\ 
-        0.00003 & 0.0002 & 0.00001 \\\\ 
-        0.01 & -0.0001 & 0.003 
-    \end{pmatrix} = \begin{pmatrix}
-        0.99998 & -0.001 & 1.000 \\\\ 
-        1.00003 & 0.0002 & 1.00001 \\\\ 
-        1.01 & 0.9999 & 0.003 
-    \end{pmatrix} 
-\end{equation*}
+$$
+\begin{aligned}
+W + \Delta W &= \begin{pmatrix} 1 & 0 & 1 \\\\ 1 & 0 & 1 \\\\ 1 & 1 & 0 \end{pmatrix} + \begin{pmatrix} -0.00002 & -0.001 & 0.000 \\\\ 0.00003 & 0.0002 & 0.00001 \\\\ 0.01 & -0.0001 & 0.003 \end{pmatrix} \\\\
+&= \begin{pmatrix} 0.99998 & -0.001 & 1.000 \\\\ 1.00003 & 0.0002 & 1.00001 \\\\ 1.01 & 0.9999 & 0.003 \end{pmatrix}
+\end{aligned}
+$$
+
 
 But if $d$ is large, the matrix $\Delta W$ will contain lots of values. We're doing lots of calculations, and this is costly. And importantly, if $W$ has a low intrinsic dimension, we can assume that we may not even need to perform this update to each and every row of $W$. Remember, a matrix having a rank $r < d$ implies that the *information* stored in the matrix could be stored in something with $r$ dimensions instead of $d$.   
 

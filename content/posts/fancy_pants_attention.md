@@ -10,9 +10,7 @@ tags: [attention]
 ### Sparse Attention
 [*Sparse Attention*](https://arxiv.org/pdf/1904.10509v1.pdf) introduces sparse factorizations on the attention matrix. To implement this we introduce a *connectivity pattern* $S = \{S_1,\dots,S_n\}$. Here, $S_i$ denotes the set of indices of the input vectors to which the $i$th output vector attends. For instance, in regular $n^2$ attention every input vector attends to every output vector before it in the sequence. Remember that $d_k$ is the inner dimension of our queries and keys. Sparse Attention is given as follows
 
-\begin{equation*}
-    \text{attention}(Q,K,V, S_i) = \text{softmax}\Big( \frac{(Q_{S_i}) K^T_{S_i}}{\sqrt{d_k}} \Big) V_{S_i}.
-\end{equation*}
+\begin{equation} \text{attention}(Q,K,V, S_i) = \text{softmax}\Big( \frac{(Q_{S_i}) K^T_{S_i}}{\sqrt{d_k}} \Big) V_{S_i}.\end{equation}
 
 Here, we have defined 
 
@@ -154,12 +152,12 @@ This looks unfriendly, but is really just the notation for a more numerically st
 
 
 *Proof* 
-\begin{align*}
+\begin{align}
 \text{softmax}(\vec{x} - c) &= \frac{e^{\vec{x} - c}}{\sum_{j} e^{x_j - c}} \\\\
 &= \frac{e^{\vec{x}} \cdot e^{-c}}{\sum_{j} e^{x_j} \cdot e^{-c}} \\\\
 &= \frac{e^{\vec{x}}}{\sum_{j} e^{x_j}} \\\\
 &= \text{softmax}(\vec{x})
-\end{align*}
+\end{align}
 
 In this case, we improve numerical stability by ensuring we do not take the exponential of very large numbers. This can lead to overflow issues. This simply means our number gets too big to store in the given datatype. By subtracting the largest element, we ensure the vector $\vec{x}$ only has non-positive entries. For example, in floating point 64, the maximum value we can represent is very large $(10^{308})$. However
 
@@ -185,12 +183,7 @@ We certainly do not want our model to hit any overflow errors. It is therefore p
 
 To compute softmax in blocks, we decompose our vector $\vec{x} \in \mathbb{R}^{2n}$ into two smaller vectors in $\mathbb{R}^n$.Let's look at the simple case of decomposing into two vectors. Denote these vectors $\vec{x}_1,\vec{x}_2$ each in $\mathbb{R}^n$. Our softmax calculation becomes
 
-\begin{aligned}
-    m(x) &= m([x_1\hspace{3mm}  x_2]) = \max (m(x_1),m(x_2)), \\\\
-    f(x) &= [e^{m(x_1) - m(x)}f(x_1) \hspace{3mm} e^{m(x_2) - m(x)}f(x_2)], \\\\
-    \ell(x) &= \ell([x_1\hspace{3mm}  x_2]) = [e^{m(x_1) - m(x)}\ell(x_1) \hspace{3mm} e^{m(x_2) - m(x)}\ell(x_2)], \\\\
-    \text{softmax}(x) &= \frac{f(x)}{\ell(x)}.
-\end{aligned}
+\begin{align} m(x) &= m([x_1\hspace{3mm}  x_2]) = \max (m(x_1),m(x_2)), \\\\ f(x) &= [e^{m(x_1) - m(x)}f(x_1) \hspace{3mm} e^{m(x_2) - m(x)}f(x_2)], \\\\ \ell(x) &= \ell([x_1\hspace{3mm}  x_2]) = [e^{m(x_1) - m(x)}\ell(x_1) \hspace{3mm} e^{m(x_2) - m(x)}\ell(x_2)], \\\\ \text{softmax}(x) &= \frac{f(x)}{\ell(x)}. \end{align}
 
 Notice that we use $m(x_i) - m(x)$ as the normalization factor, as we do not know which group will contain the maximum value of $\vec{x}$. By keeping track of both $m(x)$ and $\ell(x)$ we will be able to accurately recombine the softmax outputs for each block, as will know how to rescale the softmax outputs.
 

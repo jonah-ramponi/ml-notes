@@ -1,106 +1,159 @@
 <!DOCTYPE html>
-<html><head lang="en">
-	<meta charset="utf-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>Fancy Pants Attention Techniques - Jonah&#39;s ML Notes</title><meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="description" content="Changes to the traditional attention implementation." />
-	<meta property="og:image" content=""/>
-	<meta property="og:title" content="Fancy Pants Attention Techniques" />
-<meta property="og:description" content="Changes to the traditional attention implementation." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://www.jonahramponi.com/posts/fancy_pants_attention/" /><meta property="article:section" content="posts" />
-<meta property="article:published_time" content="2024-03-23T00:00:00+00:00" />
-<meta property="article:modified_time" content="2024-03-23T00:00:00+00:00" />
-<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Fancy Pants Attention Techniques"/>
-<meta name="twitter:description" content="Changes to the traditional attention implementation."/>
-<script src="https://www.jonahramponi.com/js/feather.min.js"></script>
-	
-	
-        <link href="https://www.jonahramponi.com/css/fonts.11a1877508139eac0b5b4852ceb110c35641b3533321e66e39149e901ed5756b.css" rel="stylesheet">
-	
+<html lang="en" dir="auto">
 
-	
-	<link rel="stylesheet" type="text/css" media="screen" href="https://www.jonahramponi.com/css/main.d902908ac6e0fab67957de5db5aea1b6455b19ae2ca98eac4c95a4a0fdc02238.css" />
-		<link id="darkModeStyle" rel="stylesheet" type="text/css" href="https://www.jonahramponi.com/css/dark.c95c5dcf5f32f8b67bd36f7dab66680e068fce2b303087294114aabf7a7c080b.css"  disabled />
-	
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="noindex, nofollow">
+<title>Fancy Pants Attention Techniques | Jonah&#39;s ML Notes</title>
+<meta name="keywords" content="attention">
+<meta name="description" content="Changes to the traditional attention implementation.">
+<meta name="author" content="">
+<link rel="canonical" href="http://localhost:1313/posts/fancy_pants_attention/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.4599eadb9eb2ad3d0a8d6827b41a8fda8f2f4af226b63466c09c5fddbc8706b7.css" integrity="sha256-RZnq256yrT0KjWgntBqP2o8vSvImtjRmwJxf3byHBrc=" rel="preload stylesheet" as="style">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/fancy_pants_attention/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
 
-	
-	
-		<script type="text/javascript"
-		src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-		</script>
-	
-		
-		<script type="text/x-mathjax-config">
-		MathJax.Hub.Config({
-			tex2jax: {
-				inlineMath: [['$','$'], ['\\(','\\)']],
-				displayMath: [['$$','$$'], ['\[','\]']],
-				processEscapes: true,
-				processEnvironments: true,
-				skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
-				TeX: { equationNumbers: { autoNumber: "AMS" },
-						 extensions: ["AMSmath.js", "AMSsymbols.js"] }
-			}
-		});
-		</script>
-	
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+            }
 
-	
-	
-		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css">
-		<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.js"></script>
-		<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
-		
-		
-		<script>
-			document.addEventListener("DOMContentLoaded", function() {
-					renderMathInElement(document.body, {
-							delimiters: [
-									{left: "$$", right: "$$", display: true},
-									{left: "$", right: "$", display: false}
-							]
-					});
-			});
-			</script>
-	
-	
-	
+            .list {
+                background: var(--theme);
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-track {
+                background: 0 0;
+            }
+
+            .list:not(.dark)::-webkit-scrollbar-thumb {
+                border-color: var(--theme);
+            }
+        }
+
+    </style>
+</noscript>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.css"
+    integrity="sha384-MlJdn/WNKDGXveldHDdyRP1R4CTHr3FeuDNfhsLPYrq2t0UBkUdK2jyTnXPEK1NQ" crossorigin="anonymous">
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/katex.min.js"
+    integrity="sha384-VQ8d8WVFw0yHhCk5E8I86oOhv48xLpnDZx5T9GogA/Y84DcCKWXDmSDfn13bzFZY"
+    crossorigin="anonymous"></script>
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.2/dist/contrib/auto-render.min.js"
+    integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"
+    onload="renderMathInElement(document.body);"></script>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        renderMathInElement(document.body, {
+            delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false }
+            ]
+        });
+    });
+</script>
+
+
+
 </head>
-<body>
-        <div class="content"><header>
-	<div class="main">
-		<a href="https://www.jonahramponi.com/">Jonah&#39;s ML Notes</a>
-	</div>
-	<nav>
-		
-		<a href="/">Home</a>
-		
-		<a href="/about">About</a>
-		
-		| <span id="dark-mode-toggle" onclick="toggleTheme()"></span>
-		<script src="https://www.jonahramponi.com/js/themetoggle.js"></script>
-		
-	</nav>
+
+<body class="" id="top">
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.body.classList.add('dark');
+    } else if (localStorage.getItem("pref-theme") === "light") {
+        document.body.classList.remove('dark')
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.body.classList.add('dark');
+    }
+
+</script>
+
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="http://localhost:1313/" accesskey="h" title="Jonah&#39;s ML Notes (Alt + H)">Jonah&#39;s ML Notes</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="http://localhost:1313/" title="Home">
+                    <span>Home</span>
+                </a>
+            </li>
+            <li>
+                <a href="http://localhost:1313/about" title="About">
+                    <span>About</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
 </header>
+<main class="main">
 
-<main>
-	<article>
-		<div class="title">
-			<h1 class="title">Fancy Pants Attention Techniques</h1>
-			<div class="meta">Posted on Mar 23, 2024</div>
-		</div>
-		
-		<div class="tldr">
-			<strong>tl;dr:</strong>
-			Many different approaches exist.
-		</div>
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Fancy Pants Attention Techniques
+    </h1>
+    <div class="post-description">
+      Changes to the traditional attention implementation.
+    </div>
+    <div class="post-meta"><span title='2024-03-23 00:00:00 +0000 UTC'>March 23, 2024</span>
 
-		<section class="body">
-			<h3 id="sparse-attention">Sparse Attention</h3>
+</div>
+  </header> 
+  <div class="post-content"><h3 id="sparse-attention">Sparse Attention<a hidden class="anchor" aria-hidden="true" href="#sparse-attention">#</a></h3>
 <p><a href="https://arxiv.org/pdf/1904.10509v1.pdf"><em>Sparse Attention</em></a> introduces sparse factorizations on the attention matrix. To implement this we introduce a <em>connectivity pattern</em> $S = {S_1,\dots,S_n}$. Here, $S_i$ denotes the set of indices of the input vectors to which the $i$th output vector attends. For instance, in regular $n^2$ attention every input vector attends to every output vector before it in the sequence. Remember that $d_k$ is the inner dimension of our queries and keys. Sparse Attention is given as follows</p>
-<p>\begin{equation*}
-\text{attention}(Q,K,V, S_i) = \text{softmax}\Big( \frac{(Q_{S_i}) K^T_{S_i}}{\sqrt{d_k}} \Big) V_{S_i}.
-\end{equation*}</p>
+<p>\begin{equation} \text{attention}(Q,K,V, S_i) = \text{softmax}\Big( \frac{(Q_{S_i}) K^T_{S_i}}{\sqrt{d_k}} \Big) V_{S_i}.\end{equation}</p>
 <p>Here, we have defined</p>
 <p>$$ Q_{S_i} = (W_q x_j), K_{S_i} = (W_k x_j), V_{S_i} = (W_v x_j) \text{ for } j \in S_i $$</p>
 <p>So how do we define the set of connectivity patterns $S$? Formally, we let $S_i = A_i^{h}$ for head $h$ where $A_i^{h} \subset {j : j \leq i}$. It is still no clearer how we pick which indices we should take for a given $S_i$. The original authors consider two key criteria initially:</p>
@@ -109,20 +162,21 @@ We should pick $|A_i^h| \propto n^{1/H}$ where $H$ is our total number of heads.
 <p><strong>Criteria 2</strong>
 All input positions are connected to output positions across $p$ steps of attention. For instance, for a pair $j \leq i$ we would like $i$ to be able to attend to $j$ through a path of locations with maximum length $p+1$. This helps us propagate signals from input to output in a constant number of steps.</p>
 <p>We now investigate two different approaches that satisfy this criteria, and allow us to implement sparse attention.</p>
-<h4 id="strided-attention">Strided Attention.</h4>
+<h4 id="strided-attention">Strided Attention.<a hidden class="anchor" aria-hidden="true" href="#strided-attention">#</a></h4>
 <p>We will define a factorized attention pattern in two heads. One head will attend to the previous $l$ locations, while the other head will attend to every $l$th location. We call $l$ the stride and it is chosen to be close to $\sqrt{n}$.</p>
 <p>\begin{align}
 A_i^{(1)} &amp;= {y,y+1,\dots,i} \text{ for } t = \max(0,i-l), \\
 A_i^{(2)} &amp;= {j: (i-j)\mod l \equiv 0}.
 \end{align}</p>
 <p>Here, $A_i^{(1)}$ simply takes the previous $l$ locations. $A_i^{(2)}$ then takes every $l$th head from the first head where $i-j$ was divisible by $l$ without remainder. This is particularly useful where you can align the structure of your input with the stride. For instance, with a piece of music. Where our input does not have a well defined structured, we use something different. In the image below, you can see $A_i^{(1)}$ responsible for the dark blue shading and $A_i^{(2)}$ responsible for the light blue.</p>
-<h4 id="fixed-attention">Fixed Attention.</h4>
+<h4 id="fixed-attention">Fixed Attention.<a hidden class="anchor" aria-hidden="true" href="#fixed-attention">#</a></h4>
 <p>Our goal with this approach is to allow specific cells to summarize the previous locations, and to propagate this information on to future cells.</p>
 <p>$$ A^{(1)}_i = { j : \text{floor}(\frac{j}{l}) = \text{floor}( \frac{i}{l}) }, $$
 $$ A^{(2)}_i = { j : j \mod l \in { t, t + 1, \dots, l } },  \text{ where } t = l - c \text{ and } c \text{ is a hyperparameter.} $$</p>
 <p>These are best understood visually in my opinion. In the image below, $A_i^{(1)}$ is responsible for the dark blue shading and $A_i^{(2)}$ for the light blue shading. If we take stride, $l$ = 128 and $c=8$, then all positions greater than 128 can attend to positions $120-128$. The authors find choosing $c \in {8,16,32}$ worked well.</p>
-<p><img src="/img/sparse_attention.png" alt="Sparse Attention Matrix"></p>
-<h3 id="sliding-window-attention">Sliding Window Attention</h3>
+<p><img loading="lazy" src="/img/sparse_attention.png" alt="Sparse Attention Matrix"  />
+</p>
+<h3 id="sliding-window-attention">Sliding Window Attention<a hidden class="anchor" aria-hidden="true" href="#sliding-window-attention">#</a></h3>
 <p><a href="https://arxiv.org/pdf/2004.05150.pdf"><em>Sliding Window Attention</em></a> reduces the number of calculations we are doing when computing self attention. Previously, to compute attention we took our input matrix of positional encodings $M$, and made copies named $Q, K$ and $V$. We used these copies to compute</p>
 <p>\begin{equation}
 \text{attention}(Q,K,V) = \text{softmax}\Big(\frac{Q K^T}{\sqrt{d_k}}\Big) V.
@@ -141,18 +195,21 @@ K_{1d} &amp; K_{2d} &amp; \cdots &amp; K_{nd}
 \end{pmatrix}
 \end{equation}</p>
 <p>Our goal is to simplify this computation. Instead of letting each token attend to all of the other tokens, we will define a window size $w$. The token we are calculating attention values for will then only get to look at the tokens $\frac{1}{2}w$ either side of it. For our example, we could consider a sliding window of size $2$ which will look $1$ token to either side of the current token. Only the values shaded in $\colorbox{olive}{olive}$ will be calculated.</p>
-<p><img src="/img/sliding_window.png" alt="Sliding Window Attention Matrix"></p>
+<p><img loading="lazy" src="/img/sliding_window.png" alt="Sliding Window Attention Matrix"  />
+</p>
 <p>This greatly reduces the cost of the computation of $Q \times K^T$, however, the original authors encountered a problem in training. The authors found that this approach is not flexible enough to learn to complete specific tasks. They solved this problem through the introduction of <em>global attention</em>. This will give a few of our tokens some special properties: A token with a global attention attends to all other tokens in the sequence and all tokens in the sequence attend to every token with a global attention.</p>
 <p>The local attention (sliding window attention) is primarily used to build contextual representations, while the global attention allows the model to build full sequence representations for prediction.</p>
 <p>We will require two sets of our projection matrices. Firstly, projections to compute attention scores for our sliding window approach ${Q_s, K_s, V_s}$ and secondly attention scores for the global attention ${Q_g,K_g,V_g}$. These are initialized to the same values.</p>
 <p>We first calculate local attention weights using ${Q_s,K_s,V_s}$. This gives us an attention output, which is then combined with the output using the global attention weights. The global weights are written on top of the output attention weight matrix calculated by the local attention calculation.</p>
-<h4 id="dilated-sliding-window-attention">Dilated Sliding Window Attention.</h4>
+<h4 id="dilated-sliding-window-attention">Dilated Sliding Window Attention.<a hidden class="anchor" aria-hidden="true" href="#dilated-sliding-window-attention">#</a></h4>
 <p>This is another approach to achieve a similar result. This time, instead of simply taking the $\frac{1}{2}w$ tokens either side of a given $w$ we will introduce some gaps of size $d$. This is referred to as the dilation. Using $w=2, d=1$ in our example we would have an attention matrix which looks like</p>
-<p><img src="/img/dilated_sliding_window.png" alt="Dilated Sliding Window Attention Matrix"></p>
+<p><img loading="lazy" src="/img/dilated_sliding_window.png" alt="Dilated Sliding Window Attention Matrix"  />
+</p>
 <p>The authors provide a nice visual of how this looks generally, which you can see in the image below. The authors note they use dilated sliding window attention with small window sizes for lower layers, and larger window sizes for higher layers. They do not introduce dilation for lower layers, however for higher layers a small amount of increasing dilation was introduced on $2$ heads.</p>
-<p><img src="/img/longformer.png" alt="Attention Matrix Visualizations from the Longformer Paper"></p>
-<h3 id="mqa-and-gqa">MQA and GQA</h3>
-<h4 id="multi-query-attention">Multi Query Attention</h4>
+<p><img loading="lazy" src="/img/longformer.png" alt="Attention Matrix Visualizations from the Longformer Paper"  />
+</p>
+<h3 id="mqa-and-gqa">MQA and GQA<a hidden class="anchor" aria-hidden="true" href="#mqa-and-gqa">#</a></h3>
+<h4 id="multi-query-attention">Multi Query Attention<a hidden class="anchor" aria-hidden="true" href="#multi-query-attention">#</a></h4>
 <p><a href="https://arxiv.org/pdf/1911.02150v1.pdf"><em>Multi Query Attention</em></a> (MQA) using the same $K$ and $V$ matrices for each head in our multi head self attention mechanism. For a given head, $h$, $1 \leq h \leq H$, the attention mechanism is calculated as</p>
 <p>\begin{equation}
 h_i = \text{attention}(M\cdot W_h^Q, M \cdot W^K,M \cdot W^V).
@@ -162,7 +219,7 @@ h_i = \text{attention}(M\cdot W_h^Q, M \cdot W^K,M \cdot W^V).
 \text{attention}(Q_h,K,V) = \text{softmax}\Big(\frac{Q_h \cdot K^T}{\sqrt{d_k}} \Big) \cdot V
 \end{equation}</p>
 <p>As before, we simply concatenate our attention outputs and multiply by $W^O$, which is defined as before.</p>
-<h4 id="grouped-query-attention">Grouped Query Attention</h4>
+<h4 id="grouped-query-attention">Grouped Query Attention<a hidden class="anchor" aria-hidden="true" href="#grouped-query-attention">#</a></h4>
 <p><a href="https://arxiv.org/pdf/2305.13245v3.pdf"><em>Grouped Query Attention</em></a> (GQA) is very similar to MQA. The difference is that instead of using just one set of $K$, $V$ values for attention calculations it uses $G$ different sets of $K,V$ values. If we have $H$ heads, GQA is equivalent to MHA if $G=H$ and equivalent to MQA if $G=1$. Suppose we want to use $G$ groups. We would firstly allocate each of our $H$ heads into one of the $G$ groups. It would likely make sense to pick $G$ such that $G \mod H \equiv 0$. Though this is not a requirement.</p>
 <p>For each  head in a given group, we calculate attention outputs as
 \begin{align}
@@ -170,7 +227,7 @@ h_i = \text{attention}(M\cdot W_h^Q, M \cdot W^K,M \cdot W^V).
 &amp;= \text{softmax}\Big(\frac{Q_h \cdot K^T_g}{\sqrt{d_k}} \Big) \cdot V_g
 \end{align}</p>
 <p>The query matrices will be shared by all groups under a given head, and the key and value matrices will be used for all attention calculations within a given group.</p>
-<h4 id="conversions-from-multi-head-attention">Conversions from Multi Head Attention.</h4>
+<h4 id="conversions-from-multi-head-attention">Conversions from Multi Head Attention.<a hidden class="anchor" aria-hidden="true" href="#conversions-from-multi-head-attention">#</a></h4>
 <p>A natural question might be how one could take a model which uses multi-head attention and convert it to model using multi query attention or grouped query attention. To convert to multi query attention, we want to find a single representative matrix for both $K$ and $V$ from our set of $H$ different heads. We achieve this via mean pooling. For instance for $K$,</p>
 <p>\begin{equation}
 \text{mean pooling}(K_1,\dots,K_h) \rightarrow K&rsquo;.
@@ -178,7 +235,7 @@ h_i = \text{attention}(M\cdot W_h^Q, M \cdot W^K,M \cdot W^V).
 <p>We need to decide the size of our mean pooling window, $w$. Our process then involves three steps.</p>
 <p>Firstly, divide each of the input matrices $(K_1,\dots,K_H)$ into non-overlapping $w \times w$ regions. Then compute the average value within each $w \times w$ region for each input matrix $(K_1,\dots,K_H)$. Finally compute the mean of the corresponding regions across all $H$ input matrices and set this to the corresponding values in our final matrix $K&rsquo;$.</p>
 <p>We now have our matrix $K&rsquo;$. It is required at this stage to pre-train for a small portion of the original training steps. The process is nearly identical for grouped query attention. However this time we mean pool over each group of matrices (instead of the whole set). The matrices within a given group are simply dictated by how we chose to assign our $G$ groups to the original $H$ heads.</p>
-<h3 id="flash-attention">Flash Attention</h3>
+<h3 id="flash-attention">Flash Attention<a hidden class="anchor" aria-hidden="true" href="#flash-attention">#</a></h3>
 <p>The goal of <a href="https://arxiv.org/pdf/2205.14135.pdf"><em>Flash Attention</em></a> is to compute the attention value with fewer high bandwidth memory read / writes. The approach has since been refined in  <a href="https://arxiv.org/pdf/2307.08691.pdf"><em>Flash Attention 2</em></a>.</p>
 <p>We will split the attention inputs $Q,K,V$ into blocks. Each block will be handled separately, and attention will therefore be computed with respect to each block. With the correct scaling, adding the outputs from each block we will give us the same attention value as we would get by computing everything all together.</p>
 <p><strong>Tilling.</strong> To compute attention, we multiply $Q \times K^T$, divide by $\sqrt{d_k}$ and then take the softmax. Keeping track of the scaling values in softmax is the key to making this technique work. The softmax for a vector $\vec{x} \in \mathbb{R}^{2n}$ is given by</p>
@@ -187,12 +244,12 @@ m(x):= \max_i x_i, \hspace{3mm} f(x):= [e^{x_1-m(x)}, \dots, e^{x_b -m(x)}], \hs
 $$</p>
 <p>This looks unfriendly, but is really just the notation for a more numerically stable softmax. What does that mean? Well, notice we are just applying regular softmax but with some shifting of each element of vector $\vec{x}$ by $\max(x)$ units. We can do this because softmax$(\vec{x}) = \text{softmax}(\vec{x}-c)$ for any scalar $c$.</p>
 <p><em>Proof</em>
-\begin{align*}
+\begin{align}
 \text{softmax}(\vec{x} - c) &amp;= \frac{e^{\vec{x} - c}}{\sum_{j} e^{x_j - c}} \\
 &amp;= \frac{e^{\vec{x}} \cdot e^{-c}}{\sum_{j} e^{x_j} \cdot e^{-c}} \\
 &amp;= \frac{e^{\vec{x}}}{\sum_{j} e^{x_j}} \\
 &amp;= \text{softmax}(\vec{x})
-\end{align*}</p>
+\end{align}</p>
 <p>In this case, we improve numerical stability by ensuring we do not take the exponential of very large numbers. This can lead to overflow issues. This simply means our number gets too big to store in the given datatype. By subtracting the largest element, we ensure the vector $\vec{x}$ only has non-positive entries. For example, in floating point 64, the maximum value we can represent is very large $(10^{308})$. However</p>
 <p>$$
 e^x &gt; 10^{308} \implies x &gt; \ln(10^{308}) \implies x &gt; 308 \times \ln(10) \implies x &gt; 709.
@@ -205,41 +262,89 @@ $$</p>
 </span></span><span style="display:flex;"><span><span style="color:#75715e"># inf</span>
 </span></span></code></pre></div><p>We certainly do not want our model to hit any overflow errors. It is therefore preferable to use this numerically stable version of softmax.</p>
 <p>To compute softmax in blocks, we decompose our vector $\vec{x} \in \mathbb{R}^{2n}$ into two smaller vectors in $\mathbb{R}^n$.Let&rsquo;s look at the simple case of decomposing into two vectors. Denote these vectors $\vec{x}_1,\vec{x}_2$ each in $\mathbb{R}^n$. Our softmax calculation becomes</p>
-<p>\begin{aligned}
-m(x) &amp;= m([x_1\hspace{3mm}  x_2]) = \max (m(x_1),m(x_2)), \\
-f(x) &amp;= [e^{m(x_1) - m(x)}f(x_1) \hspace{3mm} e^{m(x_2) - m(x)}f(x_2)], \\
-\ell(x) &amp;= \ell([x_1\hspace{3mm}  x_2]) = [e^{m(x_1) - m(x)}\ell(x_1) \hspace{3mm} e^{m(x_2) - m(x)}\ell(x_2)], \\
-\text{softmax}(x) &amp;= \frac{f(x)}{\ell(x)}.
-\end{aligned}</p>
+<p>\begin{align} m(x) &amp;= m([x_1\hspace{3mm}  x_2]) = \max (m(x_1),m(x_2)), \\ f(x) &amp;= [e^{m(x_1) - m(x)}f(x_1) \hspace{3mm} e^{m(x_2) - m(x)}f(x_2)], \\ \ell(x) &amp;= \ell([x_1\hspace{3mm}  x_2]) = [e^{m(x_1) - m(x)}\ell(x_1) \hspace{3mm} e^{m(x_2) - m(x)}\ell(x_2)], \\ \text{softmax}(x) &amp;= \frac{f(x)}{\ell(x)}. \end{align}</p>
 <p>Notice that we use $m(x_i) - m(x)$ as the normalization factor, as we do not know which group will contain the maximum value of $\vec{x}$. By keeping track of both $m(x)$ and $\ell(x)$ we will be able to accurately recombine the softmax outputs for each block, as will know how to rescale the softmax outputs.</p>
 <p><strong>Recomputation.</strong> We also do not wish to store all the intermediate values we calculate for every backward pass. Typically we require the attention matrix, $QK^T$, and the output after softmax, simply softmax($QK^T$) in each backward pass. However, by using our blocks of $Q,K,V$ the whole attention matrix is not required to be loaded in during every backward pass.</p>
 
-		</section>
 
-		<div class="post-tags">
-			
-			
-			<nav class="nav tags">
-				<ul class="tags">
-					
-					<li><a href="/tags/attention">attention</a></li>
-					
-				</ul>
-			</nav>
-			
-			
-		</div>
-		</article>
-</main>
-<footer>
-  <div style="display:flex"></div>
-  <div class="footer-info">
-    2024  <a
-      href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
   </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/attention/">Attention</a></li>
+    </ul>
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+    <span>&copy; 2024 <a href="http://localhost:1313/">Jonah&#39;s ML Notes</a></span>
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
 </footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
 
+<script>
+    let menu = document.getElementById('menu')
+    if (menu) {
+        menu.scrollLeft = localStorage.getItem("menu-scroll-position");
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
 
-</div>
-    </body>
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        if (document.body.className.includes("dark")) {
+            document.body.classList.remove('dark');
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            document.body.classList.add('dark');
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+</body>
+
 </html>
