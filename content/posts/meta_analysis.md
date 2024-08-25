@@ -1,6 +1,6 @@
 ---
-title: Why did Meta publish the Llama models for free?
-description: My thoughts on Meta's strategic decision to open source the llama model weights. 
+title: Meta's Open-Source Llama Models - What's the Catch?
+description: My thoughts on Meta's decision to open source the llama model weights. 
 date: 2024-08-23
 tldr: Meta makes money from adverts
 draft: false
