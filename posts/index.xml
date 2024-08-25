@@ -9,11 +9,11 @@
     <lastBuildDate>Fri, 23 Aug 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://www.jonahramponi.com/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Why did Meta publish the Llama models for free?</title>
+      <title>Meta&#39;s Open-Source Llama Models - What&#39;s the Catch?</title>
       <link>https://www.jonahramponi.com/posts/meta_analysis/</link>
       <pubDate>Fri, 23 Aug 2024 00:00:00 +0000</pubDate>
       <guid>https://www.jonahramponi.com/posts/meta_analysis/</guid>
-      <description>My thoughts on Meta&amp;#39;s strategic decision to open source the llama model weights.</description>
+      <description>My thoughts on Meta&amp;#39;s decision to open source the llama model weights.</description>
     </item>
     <item>
       <title>Introuction to Attention</title>
