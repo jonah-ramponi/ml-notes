@@ -6,14 +6,28 @@
     <description>Recent content in Posts on Jonah&#39;s ML Notes</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 23 Aug 2024 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 28 Oct 2024 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://www.jonahramponi.com/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Interesting LLM Titbits</title>
+      <link>https://www.jonahramponi.com/posts/interesting_titbits/</link>
+      <pubDate>Mon, 28 Oct 2024 00:00:00 +0000</pubDate>
+      <guid>https://www.jonahramponi.com/posts/interesting_titbits/</guid>
+      <description>An asortment of short LLM research findings</description>
+    </item>
     <item>
       <title>Meta&#39;s Open-Source Llama Models - What&#39;s the Catch?</title>
       <link>https://www.jonahramponi.com/posts/meta_analysis/</link>
       <pubDate>Fri, 23 Aug 2024 00:00:00 +0000</pubDate>
       <guid>https://www.jonahramponi.com/posts/meta_analysis/</guid>
       <description>My thoughts on Meta&amp;#39;s decision to open source the llama model weights.</description>
+    </item>
+    <item>
+      <title>Jonah&#39;s Project Ideas</title>
+      <link>https://www.jonahramponi.com/posts/ai_project_ideas/</link>
+      <pubDate>Sat, 15 Jun 2024 00:00:00 +0000</pubDate>
+      <guid>https://www.jonahramponi.com/posts/ai_project_ideas/</guid>
+      <description>Things I want to develop</description>
     </item>
     <item>
       <title>Introuction to Attention</title>
