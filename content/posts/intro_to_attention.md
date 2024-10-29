@@ -7,7 +7,7 @@ draft: false
 tags: [attention] 
 ---
 
-Suppose you give an LLM the input
+Models like ChatGPT are Large Language Models (LLMs). An important concept in modern LLM architectures is thee attention mechanism. Suppose you pass the following as input to an LLM: 
 
 *What is the capital of France?*
 
@@ -17,7 +17,7 @@ The first thing the LLM will do is split this input into tokens. A token is just
 
 (This tokenization was produced using cl100k_base, the tokenizer used in GPT-3.5-turbo and GPT-4.)
 
-In this example we have $(n = 7)$ tokens. Importantly, from our model's point of view, our input size is defined by the number of tokens instead of words. A numerical representation (vector representation) of each token is now found. Finding this vector representation is called producing an embedding of the token. The token *$\colorbox{red}{ What}$* might get tokenized as follows 
+In this example we have $(n = 7)$ tokens. From our model's point of view, our input size is defined by the number of tokens. It doesn't really understand the concept of a word. A numerical representation (called a vector representation) of each token is now found. Finding this vector representation of a token is called producing an embedding of the token. The token *$\colorbox{red}{ What}$* might get tokenized as follows 
 
 \begin{equation}
     \text{tokenizer}(\textit{\colorbox{red}{What}}) \rightarrow \begin{pmatrix} -0.4159 \\\\  \vdots \\\\   0.5710 \\\\   \end{pmatrix}
